@@ -1,0 +1,47 @@
+.zona-sidebar {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 320px;
+  height: calc(100vh - 50px);
+  background-color: #f9f9f9;
+  border-left: 1px solid #ddd;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  overflow-y: auto;
+  padding: 20px;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.zona-sidebar h2 {
+  margin-bottom: 16px;
+}
+
+.zona-sidebar hr {
+  margin: 20px 0;
+}
+
+.zona-sidebar__listado {
+  list-style: none;
+  padding: 0;
+}
+
+.zona-sidebar__item {
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.zona-sidebar__close {
+  margin-top: 0px;
+  margin-bottom: 50px;
+  background-color: #222;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}

@@ -1,0 +1,25 @@
+.form-sidebar {
+  position: fixed;
+  top: 50px; /* debajo del navbar */
+  right: -400px;
+  width: 350px;
+  height: calc(100% - 50px);
+  background-color: #333;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: right 0.3s ease;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1200;
+}
+
+.form-sidebar.open {
+  right: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  float: right;
+  cursor: pointer;
+}

@@ -1,0 +1,35 @@
+.viewmode-container {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #333; /* fondo oscuro como el navbar */
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.viewmode-container label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-right: 8px;
+  color: white;
+}
+
+.viewmode-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #666;
+  font-size: 14px;
+  background-color: #444; /* fondo similar al navbar */
+  color: white;
+  font-weight: 500;
+  appearance: none;
+  transition: border-color 0.3s ease;
+  min-width: 120px;
+}
+
+.viewmode-select:focus {
+  outline: none;
+  border-color: #999;
+}

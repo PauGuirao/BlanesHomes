@@ -1,0 +1,110 @@
+.piso-form {
+  width: 100%;
+  max-width: 600px; /* Puedes ampliar un poco si quieres más espacio */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #f1f1f1;
+}
+
+.piso-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+}
+
+.piso-form input::placeholder {
+  color: #aaa;
+}
+
+.piso-form input:focus,
+.piso-form select:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.piso-form button {
+  background-color: #3498db;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.piso-form button:hover {
+  background-color: #2980b9;
+}
+
+.piso-form .resultado {
+  margin-top: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* NUEVO: contenedor de fila de dos columnas */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.form-group {
+  flex: 1 1 calc(50% - 8px); /* 2 columnas con espacio entre ellas */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  min-width: 0; /* Para evitar que crezca fuera del contenedor */
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #bbbbbb;
+  margin-bottom: 4px;
+  padding-left: 2px;
+}
+
+.form-group input,
+.form-group select {
+  background-color: #111;
+  border: 1px solid #333;
+  color: #f1f1f1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.sugerencias {
+  margin-top: 20px;
+  padding: 12px;
+  background: #222;
+  border-radius: 10px;
+}
+
+.sugerencia-card {
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+}
+
+.sugerencia-card:last-child {
+  border-bottom: none;
+}
