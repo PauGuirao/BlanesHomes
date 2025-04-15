@@ -4,7 +4,7 @@ import axios from "axios";
 import HipotecaTab from "./HipotecaTab"; // Asegúrate de que la ruta sea correcta
 import RecomendadosTab from "./RecomendadosTab";
 
-const Sidebar = ({ piso, onClose }) => {
+const Sidebar = ({ piso, onClose, onCompare }) => {
   if (!piso) return null;
   const [recomendados, setRecomendados] = useState([]);
   const [tab, setTab] = useState("compra"); // por defecto la tab dinámica
@@ -65,6 +65,13 @@ const Sidebar = ({ piso, onClose }) => {
         </div>
       </div>
 
+      <button 
+          className="compare-action" 
+          onClick={() => onCompare(piso)}
+        >
+          🔍 Añadir a comparador
+        </button>
+
       {/* 🧭 Selector de pestañas */}
       <div className="sidebar-tabs">
         <button
@@ -85,6 +92,7 @@ const Sidebar = ({ piso, onClose }) => {
         >
           🔍 Similares
         </button>
+        
       </div>
       {tab === "compra" && <HipotecaTab precio={piso.precio} />}
       {recomendados.length > 0 && tab === "inversion" && (

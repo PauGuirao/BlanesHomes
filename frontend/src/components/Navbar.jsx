@@ -1,25 +1,26 @@
-// src/components/Navbar.jsx
 import React from "react";
-import "./Navbar.css"; // We'll style it here
+import "./Navbar.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faBalanceScale } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = ({ onAbrirFormulario }) => {
+const Navbar = ({ onAbrirFormulario, onAbrirComparator, comparateCount }) => {
   return (
     <nav className="navbar">
       <div className="navbar-title">🏠 Blanes Homes</div>
       <ul className="navbar-links">
-        <li>
-          <a href="#">Mapa</a>
-        </li>
-        <li>
-          <a href="#">Estadísticas</a>
-        </li>
-        <li>
-          <a href="#">Contacto</a>
-        </li>
+        <li><a href="#">Mapa</a></li>
+        <li><a href="#">Estadísticas</a></li>
+        <li><a href="#">Contacto</a></li>
       </ul>
-      <button className="navbar-button" onClick={onAbrirFormulario}>
-        Busca un piso
-      </button>
+      <div className="navbar-actions">
+        <button className="navbar-button" onClick={onAbrirFormulario}>
+          <FontAwesomeIcon icon={faSearch} /> Buscar piso
+        </button>
+        <button className="navbar-button comparate-button" onClick={onAbrirComparator}>
+          Comparar
+          {comparateCount > 0 && <span className="comparate-badge">{comparateCount}</span>}
+        </button>
+      </div>
     </nav>
   );
 };

@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import React from "react";
+// Styles
+import "./App.css";
 
 import {
   MapContainer,
@@ -8,6 +10,7 @@ import {
   Popup,
   Polygon,
   useMap,
+  Tooltip,
 } from "react-leaflet";
 import { zonas, color_por_zona } from "./data/zonas";
 import {
@@ -28,6 +31,7 @@ import Legend from "./components/Legend";
 import FormularioSidebar from "./components/FormularioSidebar";
 import PisoForm from "./components/PisoForm";
 import ListSidebar from "./components/ListSidebar";
+import ComparePanel from "./components/ComparePanel";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 
@@ -64,7 +68,9 @@ function App() {
   const [zonaSeleccionada, setZonaSeleccionada] = useState(null);
   const [centroZona, setCentroZona] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [mostrarComparator, setMostrarComparator] = useState(false);
   const [mostrarListado, setMostrarListado] = useState(true);
+  const [comparePisos, setComparePisos] = useState([]);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -91,9 +97,15 @@ function App() {
     }
   };
 
+  const handleAddToCompare = (piso) => {
+    if (!comparePisos.find(p => p.id === piso.id)) {
+      setComparePisos([...comparePisos, piso]);
+    }
+  };
+
   return (
     <>
-      <Navbar onAbrirFormulario={() => setMostrarFormulario(true)} />
+      <Navbar onAbrirFormulario={() => setMostrarFormulario(true)} onAbrirComparator={()=> setMostrarComparator(true)} comparateCount={comparePisos.length} />
       <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
       <button 
         className="list-button" 
@@ -142,6 +154,7 @@ function App() {
         {pisos.map((piso, i) => {
           let color;
           const isSelected = pisoSeleccionado && pisoSeleccionado.id === piso.id;
+          const isComparing = comparePisos.some(p => p.id === piso.id);
 
           if (viewMode === "zona") {
             color = color_por_zona[piso.zona] || "gray";
@@ -161,19 +174,19 @@ function App() {
               <CircleMarker
                 key={i}
                 center={[piso.latitud, piso.longitud]}
-                radius={5}
+                radius={isComparing && mostrarComparator ? 8 : 5}
                 ref={markerRef}
                 pathOptions={{
                   color: color,
                   fillColor: color,
-                  fillOpacity: 0.8,
-                  weight: isSelected ? 2 : 1,
+                  fillOpacity: isComparing && mostrarComparator ? 1 : 0.8,
+                  weight: isSelected || (isComparing && mostrarComparator) ? 2 : 1,
                 }}
                 eventHandlers={{
                   click: () => {
                     setPisoSeleccionado(piso);
-                    setZonaSeleccionada(null); // 👈 cierra panel de zona si estaba abierto
-                    setCentroZona(null); // opcional: recentra si hiciste zoom en zona
+                    setZonaSeleccionada(null);
+                    setCentroZona(null);
                   },
                   mouseover: () => markerRef.current.openPopup(),
                   mouseout: () => markerRef.current.closePopup(),
@@ -186,7 +199,17 @@ function App() {
                   <br />
                   💰 Precio: {piso.precio.toLocaleString()} €<br />
                   📐 {piso.metros} m²
+                  {isComparing && (
+                    <>
+                      <br />✓ En comparador
+                    </>
+                  )}
                 </Popup>
+                {isComparing && mostrarComparator && (
+                  <Tooltip permanent direction="top" offset={[0, -10]} className="comparing-tooltip">
+                    {comparePisos.findIndex(p => p.id === piso.id) + 1}
+                  </Tooltip>
+                )}
               </CircleMarker>
               {isSelected && (
                 <CircleMarker
@@ -229,6 +252,13 @@ function App() {
       <Sidebar
         piso={pisoSeleccionado}
         onClose={() => setPisoSeleccionado(null)}
+        onCompare={handleAddToCompare}
+      />
+      <ComparePanel 
+        visible={mostrarComparator}
+        onClose={() => setMostrarComparator(false)}
+        pisos={comparePisos}
+        onRemove={(id) => setComparePisos(comparePisos.filter(p => p.id !== id))}
       />
       <FormularioSidebar
         visible={mostrarFormulario}
