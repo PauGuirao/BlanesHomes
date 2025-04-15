@@ -54,9 +54,31 @@
 BlanesHomes/
 ├── frontend/        # React app (map, filters, UI)
 ├── backend/         # FastAPI app + ML models
+├── notebook/        # File used to train and evaluate the models
 ├── models/          # Trained ML models
 └── data/            # Processed Idealista dataset
 ```
+---
+
+## 📂 Dataset
+
+This project uses a cleaned and enriched real estate dataset:
+
+- **📄 File:** `data/idealista_procesado.csv`  
+- **📍 Focus area:** Blanes (Girona, Spain)  
+- **🔢 Rows:** ~500 properties  
+- **🧩 Fields include:**  
+  - `precio`, `metros`, `zona`, `tipo`, `habitaciones`, `baños`  
+  - Calculated fields: `precio_m2`, `valoracion_score`, `categoria_valor`, `antiguedad_dias`  
+  - Extras: `terraza`, `garaje`, `ascensor`, etc.  
+
+### 🔍 Sample preview:
+
+| id  | zona     | tipo  | precio | metros | precio_m2 | habitaciones | baños | terraza | garaje | categoria_valor |
+|-----|----------|--------|--------|--------|-----------|--------------|-------|---------|--------|------------------|
+| 1   | Centre   | piso   | 240000 | 80     | 3000.0    | 3            | 2     | 1       | 0      | justo            |
+| 2   | Els Pins | ático  | 215000 | 70     | 3071.4    | 2            | 1     | 1       | 1      | ganga            |
+| 3   | Centre   | piso   | 270000 | 95     | 2842.1    | 4            | 2     | 1       | 1      | caro             |
 
 ---
 
