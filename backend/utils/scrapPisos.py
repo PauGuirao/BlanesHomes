@@ -12,8 +12,24 @@ import time
 import re
 import datetime
 from sklearn.impute import SimpleImputer
+import random
 
 año_actual = datetime.datetime.now().year
+
+proxies = [
+    "43.153.103.91:13001",
+    "49.51.229.252:13001",
+    "43.152.72.76:13001",
+    "43.153.121.25:13001",
+    "43.153.75.63:13001",
+    "43.153.25.42:13001",
+    "43.153.69.199:13001"
+]
+
+# Lista de User-Agents comunes
+user_agents = [
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+]
 
 def main():
     # iterate over the file ids.txt
@@ -28,20 +44,23 @@ def main():
         if df is not None and not df.empty:
             # save the dataframe to a csv file or append to the csv file if it exists
             try:
-                df.to_csv('idealista.csv', mode='a', header=False, index=False)
+                df.to_csv('idealista_test.csv', mode='a', header=False, index=False)
             except FileNotFoundError:
-                df.to_csv('idealista.csv', mode='w', header=True, index=False)
+                df.to_csv('idealista_test.csv', mode='w', header=True, index=False)
             time.sleep(random.randint(1, 3))
         else:
             print(f"[ID {id_piso}] ⚠️ No se guardó (vacío o error).")
 
 def scrap_inmueble(id_piso):
-    #proxies
-    proxy = '170.106.158.82:13001'
+    #random proxies and user agents
+    #proxy = random.choice(proxies)
+    proxy = '43.153.103.91:13001'
+    user_agent = random.choice(user_agents)
 
     options = uc.ChromeOptions()
 
-    options.add_argument(f" - proxy-server={proxy}")
+    options.add_argument(f"--proxy-server=http://{proxy}")
+    #options.add_argument(f"user-agent={user_agent}")
 
     browser = uc.Chrome(
         options=options,
@@ -172,6 +191,14 @@ def scrap_inmueble(id_piso):
     # Obtener todos los elementos de lista
     caracteristicas_items = caracteristicas_div.find_all('li')
 
+    # Get advertiser name
+    advertiser_tag = soup.find('a', class_='about-advertiser-name')
+    advertiser = advertiser_tag.text.strip() if advertiser_tag else None
+
+    # Get full description
+    descripcion_div = soup.find('div', class_='comment')
+    descripcion_completa = descripcion_div.find('p').text.strip() if descripcion_div else None
+    
     # Extraer el texto de cada uno
     caracteristicas = [item.get_text(strip=True) for item in caracteristicas_items]
     atributos = {}
@@ -261,7 +288,8 @@ def scrap_inmueble(id_piso):
         'habitable': [habitable],
         'reforma': [atributos.get('reforma', False)],
         'fecha_publicacion': [fecha_publicacion],
-
+        'anunciante': [advertiser],
+        'descripcion': [descripcion_completa],
     }
 
     return pd.DataFrame(data)
@@ -438,6 +466,4 @@ def procesar_csv_idealista(ruta_csv):
 
 
 if __name__ == "__main__":
-    procesar_csv_idealista('idealista.csv')
-    #get_lat_lon('Carrer del Gironès, Blanes, Girona')
-    #main()
+    main()
