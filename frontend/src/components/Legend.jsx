@@ -13,11 +13,13 @@ const Legend = ({ viewMode, color_por_zona, min, max }) => {
       const div = L.DomUtil.create("div", "custom-legend");
 
       if (viewMode === "zona") {
+        /*
         div.innerHTML = "<b>Zonas</b><br/>";
         for (const zona in color_por_zona) {
           const color = color_por_zona[zona];
           div.innerHTML += `<i style="background:${color}; width: 18px; height: 18px; display: inline-block; margin-right: 6px;"></i>${zona}<br/>`;
         }
+          */
       } else if (viewMode === "precio") {
         div.innerHTML = `
           <canvas id="legend-canvas" width="200" height="10"></canvas>
@@ -43,9 +45,9 @@ const Legend = ({ viewMode, color_por_zona, min, max }) => {
         div.innerHTML = `
             <canvas id="valoracion-legend" width="200" height="10"></canvas>
             <div class="legend-labels">
-                <span>Barato</span>
+                <span>Infrava</span>
                 <span>Justo</span>
-                <span>Caro</span>
+                <span>Sobreva</span>
             </div>
         `;
 

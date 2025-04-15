@@ -27,6 +27,9 @@ import ZonaSidebar from "./components/ZonaSideBar";
 import Legend from "./components/Legend";
 import FormularioSidebar from "./components/FormularioSidebar";
 import PisoForm from "./components/PisoForm";
+import ListSidebar from "./components/ListSidebar";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 delete L.Icon.Default.prototype._getIconUrl;
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -41,6 +44,19 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+// Add this custom hook at the top of your component
+function MapController() {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (map) {
+      window.map = map; // This allows us to access the map globally
+    }
+  }, [map]);
+  
+  return null;
+}
+
 function App() {
   const [pisos, setPisos] = useState([]);
   const [viewMode, setViewMode] = useState("zona"); // or "precio"
@@ -48,6 +64,7 @@ function App() {
   const [zonaSeleccionada, setZonaSeleccionada] = useState(null);
   const [centroZona, setCentroZona] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [mostrarListado, setMostrarListado] = useState(true);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +73,7 @@ function App() {
     });
   }, []);
 
-  const centro = [41.675, 2.792]; // centro de Blanes
+  const centro = [41.672, 2.805]; // centro de Blanes
   const precios = pisos.map((p) => p.precio).sort((a, b) => a - b);
   const min = precios[Math.floor(pisos.length * 0.05)]; // 5th percentile
   const max = precios[Math.floor(pisos.length * 0.95)]; // 95th percentile
@@ -67,16 +84,30 @@ function App() {
 
   const minValoracion = Math.min(...valoraciones);
   const maxValoracion = Math.max(...valoraciones);
+  const handleSugerenciaClick = (piso) => {
+    if (window.map) {
+      window.map.setView([piso.latitud, piso.longitud], 16);
+      setPisoSeleccionado(piso);
+    }
+  };
+
   return (
     <>
       <Navbar onAbrirFormulario={() => setMostrarFormulario(true)} />
       <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
+      <button 
+        className="list-button" 
+        onClick={() => setMostrarListado(!mostrarListado)}
+      >
+        <FontAwesomeIcon icon={faEye} />
+      </button>
       <MapContainer
         center={centro}
         ref={mapRef}
         zoom={14}
         style={{ height: "calc(100vh - 50px)", width: "100vw" }}
       >
+        <MapController /> {/* Add this component inside MapContainer */}
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
@@ -110,6 +141,7 @@ function App() {
         {/* Dibujar pisos */}
         {pisos.map((piso, i) => {
           let color;
+          const isSelected = pisoSeleccionado && pisoSeleccionado.id === piso.id;
 
           if (viewMode === "zona") {
             color = color_por_zona[piso.zona] || "gray";
@@ -125,35 +157,51 @@ function App() {
 
           let markerRef = React.createRef();
           return (
-            <CircleMarker
-              key={i}
-              center={[piso.latitud, piso.longitud]}
-              radius={5}
-              ref={markerRef}
-              pathOptions={{
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.8,
-              }}
-              eventHandlers={{
-                click: () => {
-                  setPisoSeleccionado(piso);
-                  setZonaSeleccionada(null); // 👈 cierra panel de zona si estaba abierto
-                  setCentroZona(null); // opcional: recentra si hiciste zoom en zona
-                },
-                mouseover: () => markerRef.current.openPopup(),
-                mouseout: () => markerRef.current.closePopup(),
-              }}
-            >
-              <Popup>
-                <b>{piso.tipo}</b>
-                <br />
-                🏘 Zona: {piso.zona}
-                <br />
-                💰 Precio: {piso.precio.toLocaleString()} €<br />
-                📐 {piso.metros} m²
-              </Popup>
-            </CircleMarker>
+            <>
+              <CircleMarker
+                key={i}
+                center={[piso.latitud, piso.longitud]}
+                radius={5}
+                ref={markerRef}
+                pathOptions={{
+                  color: color,
+                  fillColor: color,
+                  fillOpacity: 0.8,
+                  weight: isSelected ? 2 : 1,
+                }}
+                eventHandlers={{
+                  click: () => {
+                    setPisoSeleccionado(piso);
+                    setZonaSeleccionada(null); // 👈 cierra panel de zona si estaba abierto
+                    setCentroZona(null); // opcional: recentra si hiciste zoom en zona
+                  },
+                  mouseover: () => markerRef.current.openPopup(),
+                  mouseout: () => markerRef.current.closePopup(),
+                }}
+              >
+                <Popup>
+                  <b>{piso.tipo}</b>
+                  <br />
+                  🏘 Zona: {piso.zona}
+                  <br />
+                  💰 Precio: {piso.precio.toLocaleString()} €<br />
+                  📐 {piso.metros} m²
+                </Popup>
+              </CircleMarker>
+              {isSelected && (
+                <CircleMarker
+                  center={[piso.latitud, piso.longitud]}
+                  radius={20}
+                  className="pulse-marker"
+                  pathOptions={{
+                    color: '#fff',
+                    fillColor: '#3498db',
+                    fillOpacity: 0.5,
+                    weight: 2.5,
+                  }}
+                />
+              )}
+            </>
           );
         })}
         <Legend
@@ -161,6 +209,7 @@ function App() {
           color_por_zona={color_por_zona}
           min={viewMode === "valoracion" ? minValoracion : min}
           max={viewMode === "valoracion" ? maxValoracion : max}
+          pisos={pisos}
         />
         <MapClickReset
           zonaSeleccionada={zonaSeleccionada}
@@ -185,8 +234,24 @@ function App() {
         visible={mostrarFormulario}
         onClose={() => setMostrarFormulario(false)}
       >
-        <PisoForm onClose={() => setMostrarFormulario(false)} />
+      <PisoForm onClose={() => setMostrarFormulario(false)} onSugerenciaClick={handleSugerenciaClick} />
       </FormularioSidebar>
+      {mostrarListado && (
+        <ListSidebar
+          pisos={pisos}
+          viewMode={viewMode}
+          color_por_zona={color_por_zona}
+          min={min}
+          max={max}
+          onClose={() => setMostrarListado(false)}
+          onPisoClick={(piso) => {
+            setPisoSeleccionado(piso);
+            if (window.map) {
+              window.map.setView([piso.latitud, piso.longitud], 16);
+            }
+          }}
+        />
+      )}
     </>
   );
 }

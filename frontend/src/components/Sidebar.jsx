@@ -20,6 +20,7 @@ const Sidebar = ({ piso, onClose }) => {
 
   return (
     <div className="sidebar">
+      <button className="close-button" onClick={onClose}>✕</button>
       <h2> {piso.tipo}</h2>
       <div className="sidebar-section-2">
         <div className="sidebar-attribute">
@@ -89,7 +90,6 @@ const Sidebar = ({ piso, onClose }) => {
       {recomendados.length > 0 && tab === "inversion" && (
         <RecomendadosTab recomendados={recomendados} />
       )}
-      <button onClick={onClose}>Cerrar</button>
     </div>
   );
 };

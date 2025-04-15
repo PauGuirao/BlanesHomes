@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./PisoForm.css"; // si quieres un CSS separado
 
-function PisoForm({ onClose }) {
+function PisoForm({ onClose, onSugerenciaClick }) {  // Add onSugerenciaClick prop
   const [formData, setFormData] = useState({
     metros: "",
     habitaciones: "",
@@ -53,7 +53,8 @@ function PisoForm({ onClose }) {
 
   return (
     <div className="piso-form">
-      <h2>🔍 Estima un piso</h2>
+      <button onClick={onClose} className="close-button">✕</button>
+      <h2>Busca un piso</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
@@ -103,8 +104,6 @@ function PisoForm({ onClose }) {
               required
             />
           </div>
-        </div>
-        <div className="form-row">
           <div className="form-group">
             <label htmlFor="metros">Habitaciones</label>
             <input
@@ -128,9 +127,9 @@ function PisoForm({ onClose }) {
             />
           </div>
         </div>
-        <div className="form-section">
-          <label className="section-title">Extras</label>
-          <div className="checkbox-group">
+        <label className="section-title">Extras</label>
+        <div className="form-section extras-section">
+          <div className="extras-grid">
             {[
               "jardin",
               "piscina",
@@ -139,48 +138,62 @@ function PisoForm({ onClose }) {
               "garaje",
               "ascensor",
               "aire_acondicionado",
-            ].map((extra) => (
-              <label key={extra}>
+            ].map((name) => (
+              <label key={name} className="extra-item">
                 <input
                   type="checkbox"
-                  name={extra}
-                  checked={formData[extra]}
+                  name={name}
+                  checked={formData[name]}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      [extra]: e.target.checked,
+                      [name]: e.target.checked,
                     })
                   }
                 />
-                {extra.charAt(0).toUpperCase() +
-                  extra.slice(1).replace("_", " ")}
+                <span className="extra-text">
+                  {name.charAt(0).toUpperCase() + name.slice(1).replace("_", " ")}
+                </span>
               </label>
             ))}
           </div>
         </div>
-        <button type="submit">Estimar precio</button>
+        <button type="submit" className="submit-button">Estimar precio</button>
       </form>
-      <button onClick={onClose}>Cerrar</button>
 
       {precioEstimado !== null && (
-        <div className="resultado">
-          <h3>💰 Precio estimado: {precioEstimado.toLocaleString()} €</h3>
+        <div className="resultado-section">
+          <div className="resultado-card">
+            <h3>Nuestra IA estima</h3>
+            <div className="precio-estimado">
+              {precioEstimado.toLocaleString()} €
+            </div>
+          </div>
         </div>
       )}
+      
       {sugerencias.length > 0 && (
-        <div className="sugerencias">
-          <h3>🏘 Opciones similares en el mercado:</h3>
-          {sugerencias.map((p, i) => (
-            <div key={i} className="sugerencia-card">
-              <div>
-                <strong>{p.tipo}</strong> en {p.zona}
+        <div className="sugerencias-section">
+          <h3>🏘 Propiedades similares</h3>
+          <div className="sugerencias-grid">
+            {sugerencias.map((p, i) => (
+              <div 
+                key={i} 
+                className="sugerencia-card"
+                onClick={() => onSugerenciaClick(p)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="sugerencia-tipo">{p.tipo} en {p.zona}</div>
+                <div className="sugerencia-detalles">
+                  <span>{p.metros} m²</span>
+                  <span>{p.habitaciones} hab</span>
+                  <span>{p.baños} baños</span>
+                </div>
+                <div className="sugerencia-precio">{p.precio.toLocaleString()} €</div>
               </div>
-              <div>
-                {p.metros} m² · {p.habitaciones} hab · {p.baños} baños
-              </div>
-              <div>💰 {p.precio.toLocaleString()} €</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

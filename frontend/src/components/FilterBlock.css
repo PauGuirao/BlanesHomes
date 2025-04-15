@@ -1,0 +1,141 @@
+.filter-block {
+  background-color: #1c1c1c;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.price-section {
+  margin-bottom: 20px;
+}
+.price-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.filters-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-item label {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.filter-item select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #252525;
+  border: 1px solid #444;
+  color: #fff;
+  font-size: 14px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.apply-filters-button {
+  flex: 2;
+  padding: 12px;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.apply-filters-button:hover {
+  background-color: #c0392b;
+}
+
+.reset-filters-button {
+  flex: 1;
+  padding: 12px;
+  background-color: #2c3e50;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.reset-filters-button:hover {
+  background-color: #34495e;
+}
+
+.price-range-slider-container {
+    position: relative;
+    height: 20px;
+    margin: 10px 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #444;
+    border-radius: 4px;
+    outline: none;
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    pointer-events: auto;
+    width: 20px;
+    height: 20px;
+    background: #e74c3c;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #e74c3c;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .min-slider {
+    z-index: 3;
+    pointer-events: auto;
+  }
+  
+  .max-slider {
+    z-index: 2;
+    pointer-events: auto;
+  }

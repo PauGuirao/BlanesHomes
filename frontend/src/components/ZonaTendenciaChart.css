@@ -1,0 +1,59 @@
+.zona-tendencia-chart {
+  border-radius: 8px;
+}
+
+.zona-tendencia-chart h4 {
+  margin: 0 0 20px 0;
+  color: #fff;
+  font-size: 16px;
+}
+
+.custom-tooltip {
+  background: #252525;
+  border: 1px solid #444;
+  padding: 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.tooltip-date {
+  color: #888;
+  margin: 0 0 5px 0;
+  font-size: 12px;
+}
+
+.tooltip-price {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.tooltip-variation {
+  color: #888;
+  font-size: 12px;
+  margin: 0;
+}
+
+.chart-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #444;
+}
+
+.trend-indicator {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.trend-indicator.subiendo { color: #2ecc71; }
+.trend-indicator.bajando { color: #e74c3c; }
+.trend-indicator.estable { color: #f1c40f; }
+
+.average-price {
+  color: #888;
+  font-size: 14px;
+}

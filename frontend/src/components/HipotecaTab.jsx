@@ -67,7 +67,7 @@ const HipotecaTab = ({ precio }) => {
           <label>📅 Plazo (Años)</label>
           <div className="slider-row">
             <input
-              className="slider"
+              className="slider-hipoteca"
               type="range"
               min="5"
               max="40"
@@ -82,7 +82,7 @@ const HipotecaTab = ({ precio }) => {
           <label>🏦 Interés TIN</label>
           <div className="slider-row">
             <input
-              className="slider"
+              className="slider-hipoteca"
               type="range"
               min="1.5"
               max="10"
