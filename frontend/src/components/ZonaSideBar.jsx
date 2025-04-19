@@ -111,8 +111,6 @@ function ZonaSidebar({ zona, pisos, onClose, onPisoClick }) {
       ) : (
         <p>No hay estadísticas disponibles para esta zona.</p>
       )}
-
-      <button className="close-button" onClick={onClose}>✕</button>
     </div>
   );
 }

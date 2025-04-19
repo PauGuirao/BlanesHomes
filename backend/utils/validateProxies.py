@@ -15,7 +15,7 @@ def validate_proxies(proxy_file, timeout=5):
         }
 
         try:
-            response = requests.get("https://httpbin.org/ip", proxies=proxy_dict, timeout=timeout)
+            response = requests.get("https://www.idealista.com/inmueble/104942296/", proxies=proxy_dict, timeout=timeout)
             if response.status_code == 200:
                 print(f"[{i}/{len(proxies)}] ✅ Working: {proxy}")
                 working_proxies.append(proxy)

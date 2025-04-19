@@ -18,15 +18,17 @@ app.add_middleware(
 )
 
 # ========== CARGA DE MODELOS Y DATOS ==========
-model_precio = joblib.load("models/modelo_xgboost.pkl")
+model_precio = joblib.load("models/modelo_xgboost_precio.pkl")
+features_precio = joblib.load("models/features_xgboost_precio.pkl")  # columnas del modelo
+
 model_precio_m2 = joblib.load("models/modelo_precio_m2.pkl")
 features_precio_m2 = joblib.load("models/features_precio_m2.pkl")  # columnas del modelo
 
-drop_cols = ['id', 'titulo', 'calle', 'fecha_publicacion', 'zona']
-df = pd.read_csv("data/idealista_procesado.csv")
+drop_cols = ['url_id','id','titulo','descripcion','calle','fecha_publicacion', 'zona', 'url','anunciante']
+df = pd.read_csv("data/processedFiles/blanes_data_20250417_151255.csv")
+# Now add the simple_id after predictions are done
 df.reset_index(inplace=True)
 df.rename(columns={"index": "id"}, inplace=True)
-
 X = df.drop(columns=drop_cols + ['precio'])
 features_precio = list(X.columns)  # columnas del modelo principal
 
@@ -58,18 +60,17 @@ zona_coords = {
 
 @app.get("/pisos")
 def get_pisos():
-    resultado = df.head(300)
+    resultado = df.head(350)
     return resultado[[
         'id', 'latitud', 'longitud', 'metros', 'precio', 'zona',
         'categoria_valor', 'precio_estimado', 'tipo',
-        'valoracion_score', 'habitaciones', 'baños', 'antiguedad_dias'
+        'valoracion_score', 'habitaciones', 'baños', 'antiguedad_dias', 'anunciante', 'url'
     ]].to_dict(orient="records")
 
 
 @app.post("/estimar_precio")
 async def estimar_precio(data: Request):
     input_data = await data.json()
-    print(input_data)
     df_input = pd.DataFrame([input_data])
 
     # Conversión segura de tipos
@@ -236,7 +237,6 @@ def get_zona_stats(id: str = Query(..., description="Nombre de la zona")):
             "estable"
         )
 
-    print(variacion_pct)
     return {
         "zona": id,
         "total_propiedades": total_propiedades,
@@ -378,6 +378,163 @@ def comparar_pisos(ids: list[int] = Query(..., description="Lista de IDs de piso
 
     return pisos[columnas_interes].to_dict(orient="records")
 
+
+@app.get("/analisisLink")
+def analisisLink(id: int):
+    piso_df = df[df["id"] == id]
+    
+    if piso_df.empty:
+        return JSONResponse(content={"error": "No se encontró el piso con ese ID"}, status_code=404)
+    
+    piso = piso_df.iloc[0]
+    
+    # Drop simple_id and ensure features match exactly
+    features_data = piso[features_precio].copy()
+    if 'simple_id' in features_data:
+        features_data = features_data.drop('simple_id')
+    
+    # Ensure all required features are present
+    if 'precio_m2' not in features_data:
+        features_data['precio_m2'] = piso['precio'] / piso['metros']
+    
+    # Reorder columns to match the model's expected order
+    features_data = features_data[model_precio.feature_names_in_]
+    
+    precio_estimado = model_precio.predict(features_data.to_frame().T)[0]
+    
+    return {
+        "precio_estimado": int(precio_estimado)
+    }
+
+@app.get("/vendedores")
+def get_vendedores():
+    # Calculate dominant agency and particulars
+    anunciantes_count = df["anunciante"].value_counts()
+    particulares = df[df["anunciante"].str.contains("particular_", na=False)]["anunciante"].nunique()
+    agencia_dominante = anunciantes_count[~anunciantes_count.index.str.contains("particular_", na=False)].index[0]
+    propiedades_dominante = anunciantes_count[agencia_dominante]
+
+    # Group data by vendor
+    vendedores = df.groupby("anunciante").agg({
+        "id": "count",
+        "precio": ["mean", "min", "max"],
+        "metros": "mean",
+        "tipo": lambda x: x.value_counts().to_dict(),
+        "zona": lambda x: x.value_counts().to_dict(),
+    }).reset_index()
+
+    # Calculate general stats
+    stats = {
+        "total_agencias": len(vendedores),
+        "total_propiedades": len(df),
+        "particulares": int(particulares),
+        "agencia_dominante": {
+            "nombre": agencia_dominante,
+            "propiedades": int(propiedades_dominante)
+        },
+        "precio_medio": round(df["precio"].mean(), 2),
+        "metros_medio": round(df["metros"].mean(), 1)
+    }
+
+    # Rename columns for clarity
+    vendedores.columns = [
+        "nombre", "total_propiedades", "precio_medio", 
+        "precio_min", "precio_max", "metros_medio",
+        "tipos", "zonas"
+    ]
+
+    # Round numeric values
+    vendedores["precio_medio"] = vendedores["precio_medio"].round(2)
+    vendedores["precio_min"] = vendedores["precio_min"].round(2)
+    vendedores["precio_max"] = vendedores["precio_max"].round(2)
+    vendedores["metros_medio"] = vendedores["metros_medio"].round(1)
+
+    return {
+        "stats": stats,
+        "vendedores": vendedores.to_dict(orient="records")
+    }
+
+@app.get("/vendedor/{nombre}")
+def get_vendedor(nombre: str):
+    vendedor_df = df[df["anunciante"] == nombre].copy()
+    
+    if vendedor_df.empty:
+        return JSONResponse(
+            content={"error": "Vendedor no encontrado"},
+            status_code=404
+        )
+
+    # Calculate statistics
+    stats = {
+        "nombre": nombre,
+        "total_propiedades": len(vendedor_df),
+        "precio_medio": round(vendedor_df["precio"].mean(), 2),
+        "precio_min": round(vendedor_df["precio"].min(), 2),
+        "precio_max": round(vendedor_df["precio"].max(), 2),
+        "metros_medio": round(vendedor_df["metros"].mean(), 1),
+        "tipos": vendedor_df["tipo"].value_counts().to_dict(),
+        "zonas": vendedor_df["zona"].value_counts().to_dict(),
+        "propiedades": vendedor_df[[
+            'id', 'tipo', 'zona', 'precio', 'metros',
+            'habitaciones', 'baños', 'categoria_valor'
+        ]].to_dict(orient="records")
+    }
+
+    return stats
+
+
+@app.get("/comparar")
+def comparar_pisos(ids: list[int] = Query(..., description="Lista de IDs de pisos a comparar")):
+    pisos = df[df["id"].isin(ids)].copy()
+
+    if pisos.empty:
+        return JSONResponse(content={"error": "No se encontraron pisos con esos IDs"}, status_code=404)
+
+    # Asegurar que todos los IDs existen
+    encontrados = set(pisos["id"].tolist())
+    no_encontrados = [i for i in ids if i not in encontrados]
+    if no_encontrados:
+        return JSONResponse(content={"error": f"No se encontraron los siguientes IDs: {no_encontrados}"}, status_code=404)
+
+    # Formatear campos extra para comparativa
+    pisos["precio_m2"] = (pisos["precio"] / pisos["metros"]).round(2)
+    pisos["extras"] = pisos[["terraza", "garaje", "ascensor"]].astype(bool).apply(lambda row: [k for k, v in row.items() if v], axis=1)
+
+    columnas_interes = [
+        "id", "titulo", "zona", "tipo", "precio", "metros", "precio_m2",
+        "habitaciones", "baños", "valoracion_score", "categoria_valor",
+        "extras"
+    ]
+
+    return pisos[columnas_interes].to_dict(orient="records")
+
+
+@app.get("/analisisLink")
+def analisisLink(id: int):
+    piso_df = df[df["id"] == id]
+    
+    if piso_df.empty:
+        return JSONResponse(content={"error": "No se encontró el piso con ese ID"}, status_code=404)
+    
+    piso = piso_df.iloc[0]
+    
+    # Drop simple_id and ensure features match exactly
+    features_data = piso[features_precio].copy()
+    if 'simple_id' in features_data:
+        features_data = features_data.drop('simple_id')
+    
+    # Ensure all required features are present
+    if 'precio_m2' not in features_data:
+        features_data['precio_m2'] = piso['precio'] / piso['metros']
+    
+    # Reorder columns to match the model's expected order
+    features_data = features_data[model_precio.feature_names_in_]
+    
+    precio_estimado = model_precio.predict(features_data.to_frame().T)[0]
+    
+    return {
+        "precio_estimado": int(precio_estimado)
+    }
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

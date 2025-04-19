@@ -1,6 +1,7 @@
 import React from 'react';
 import './FilterBlock.css';
 
+
 const FilterBlock = ({ filters, onChange, onApply, onReset }) => {
   const criteria = [
     {
@@ -34,6 +35,7 @@ const FilterBlock = ({ filters, onChange, onApply, onReset }) => {
           <div className="price-range-slider-container">
                 <input
                     type="range"
+                    step={10000}
                     min={filters.minPrice}
                     max={filters.maxPrice}
                     value={filters.priceRange[0]}
@@ -44,6 +46,7 @@ const FilterBlock = ({ filters, onChange, onApply, onReset }) => {
                 />
                 <input
                     type="range"
+                    step={10000}
                     min={filters.minPrice}
                     max={filters.maxPrice}
                     value={filters.priceRange[1]}

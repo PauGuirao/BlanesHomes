@@ -20,7 +20,6 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
 
   return (
     <div className="sidebar">
-      <button className="close-button" onClick={onClose}>✕</button>
       <h2> {piso.tipo}</h2>
       <div className="sidebar-section-2">
         <div className="sidebar-attribute">
@@ -101,12 +100,5 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
     </div>
   );
 };
-
-// 💸 Hipoteca mensual estimada
-function calcularCuota(prestamo, interesAnual, años) {
-  const mensual = interesAnual / 100 / 12;
-  const n = años * 12;
-  return (prestamo * mensual) / (1 - Math.pow(1 + mensual, -n));
-}
 
 export default Sidebar;

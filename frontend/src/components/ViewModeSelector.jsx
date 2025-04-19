@@ -14,6 +14,7 @@ function ViewModeSelector({ viewMode, setViewMode }) {
         <option value="zona">Zona</option>
         <option value="precio">Precio</option>
         <option value="valoracion">Valoración</option>
+        <option value="vendedor">Vendedor</option>
       </select>
     </div>
   );

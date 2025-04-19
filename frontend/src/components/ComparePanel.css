@@ -1,14 +1,5 @@
 .compare-panel {
-  position: fixed;
-  right: 0;
-  top: 60px;
-  bottom: 0;
   width: 600px;
-  background: #1c1c1c;
-  padding: 20px;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.3);
-  z-index: 1000;
-  overflow-y: auto;
 }
 
 .compare-panel h2 {

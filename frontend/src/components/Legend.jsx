@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
-import { getColorScale, getValoracionScale } from "../utils/colorUtils";
 
-const Legend = ({ viewMode, color_por_zona, min, max }) => {
+const Legend = ({ viewMode, color_por_zona, min, max, colorScale }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const Legend = ({ viewMode, color_por_zona, min, max }) => {
           const canvas = document.getElementById("legend-canvas");
           if (canvas) {
             const ctx = canvas.getContext("2d");
-            const scale = getColorScale(min, max);
+            const scale = colorScale;
             for (let i = 0; i <= canvas.width; i++) {
               const t = i / canvas.width;
               ctx.fillStyle = scale(t * (max - min) + min).hex();
@@ -55,7 +54,7 @@ const Legend = ({ viewMode, color_por_zona, min, max }) => {
           const canvas = document.getElementById("valoracion-legend");
           if (canvas) {
             const ctx = canvas.getContext("2d");
-            const scale = getValoracionScale(min, max);
+            const scale = colorScale;
             for (let i = 0; i <= canvas.width; i++) {
               const t = i / canvas.width;
               ctx.fillStyle = scale(t * (max - min) + min).hex();

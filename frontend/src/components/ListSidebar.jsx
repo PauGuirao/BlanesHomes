@@ -4,7 +4,7 @@ import "./ListSidebar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
-const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 5000000, onClose, onPisoClick }) => {
+const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 5000000, onClose, onPisoClick, filteredPisos, onFilterChange }) => {
   const [showFilters, setShowFilters] = useState(false);
 
   const initialFilters = {
@@ -27,8 +27,18 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
   };
 
   const handleApplyFilters = () => {
+    const nuevaLista = pisos.filter(piso => {
+      const [minP, maxP] = filters.priceRange;
+      if (piso.precio < minP || piso.precio > maxP) return false;
+      if (filters.habitaciones && piso.habitaciones < Number(filters.habitaciones)) return false;
+      if (filters.banos && piso.baños < Number(filters.banos)) return false;
+      if (filters.metros && piso.metros < Number(filters.metros)) return false;
+      return true;
+    });
+  
     setActiveFilters(filters);
-    setShowFilters(false); // Close filter block after applying filters
+    setShowFilters(false);
+    onFilterChange(nuevaLista); // ← lo manda a App.jsx
   };
 
   // 🔍 Criterios generalizados para aplicar filtros
@@ -37,34 +47,6 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
     { key: "banos", compare: (piso, val) => piso.baños >= Number(val) },
     { key: "metros", compare: (piso, val) => piso.metros >= Number(val) }
   ];
-
-  // 🧠 Filtrado optimizado con useMemo
-  const filteredPisos = useMemo(() => {
-    const filtered = pisos.filter(piso => {
-      const inPriceRange =
-        piso.precio >= activeFilters.priceRange[0] &&
-        piso.precio <= activeFilters.priceRange[1];
-
-      const matchesAll = filterCriteria.every(({ key, compare }) => {
-        const val = activeFilters[key];
-        return !val || compare(piso, val);
-      });
-
-      return inPriceRange && matchesAll;
-    });
-
-    // Sort the filtered results
-    return filtered.sort((a, b) => {
-      if (viewMode === "zona") {
-        return a.zona.localeCompare(b.zona);
-      } else if (viewMode === "precio") {
-        return a.precio - b.precio;
-      } else if (viewMode === "valoracion") {
-        return (b.valoracion_score || 0) - (a.valoracion_score || 0);
-      }
-      return 0;
-    });
-  }, [pisos, activeFilters, viewMode]); // Add viewMode to dependencies
 
   const hasActiveFilters = useMemo(() => {
     return activeFilters.habitaciones !== "" ||

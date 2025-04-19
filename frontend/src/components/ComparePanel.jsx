@@ -9,7 +9,6 @@ function ComparePanel({ pisos, onRemove, onClose, visible }) {
       <div className="compare-panel">
         <h2>
           Comparador
-          <button className="close-button" onClick={onClose}>✕</button>
         </h2>
         <div className="empty-compare">
           <p>No hay pisos para comparar</p>
@@ -29,7 +28,6 @@ function ComparePanel({ pisos, onRemove, onClose, visible }) {
     <div className="compare-panel">
       <h2>
         Comparador
-        <button className="close-button" onClick={onClose}>✕</button>
       </h2>
 
       <div className="compare-table">

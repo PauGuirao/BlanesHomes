@@ -1,18 +1,6 @@
-.zona-sidebar {
-  position: absolute;
-  right: 0;
-  top: 50px;
+.zona-sidebar{
   width: 350px;
-  height: calc(100vh - 50px);
-  background-color: #333;
-  color: #f1f1f1;
-  padding: 24px;
-  padding-top: 16px;  /* Reduced top padding */
-  overflow-y: auto;
-  box-shadow: -2px 0 8px rgba(0,0,0,0.3);
-  z-index: 1001;
 }
-
 .close-button {
   position: absolute;
   top: 16px;  /* Match the top padding */

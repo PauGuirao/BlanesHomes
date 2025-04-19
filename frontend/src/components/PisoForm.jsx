@@ -21,6 +21,7 @@ function PisoForm({ onClose, onSugerenciaClick }) {  // Add onSugerenciaClick pr
   const [precioEstimado, setPrecioEstimado] = useState(null);
   const [sugerencias, setSugerencias] = useState([]);
 
+
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -11,12 +11,22 @@ import undetected_chromedriver as uc
 import time
 import re
 import datetime
+import os
 año_actual = datetime.datetime.now().year
 
 def main():
     x = 1
     ids = []
+    current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # Create directory if it doesn't exist
+    save_dir = '../data/idFiles'
+    os.makedirs(save_dir, exist_ok=True)
+    
+    filename = os.path.join(save_dir, f'ids_{current_datetime}.txt')
+    
     while True:
+        start_time = time.time()
         proxy = '49.51.49.70:13001'
         options = uc.ChromeOptions()
         options.add_argument(f" - proxy-server={proxy}")
@@ -53,10 +63,17 @@ def main():
                 print(id_pisos)
             time.sleep(random.randint(1, 3))
         ids = [pisos for pisos in ids if pisos != None]
-        #save the ids
-        with open('ids.txt', 'w') as f:
+        
+        with open(filename, 'w') as f:
             for piso in ids:
                 f.write(piso + '\n')
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f'Time taken to scrape page {x}: {elapsed_time:.2f} seconds')
+        
+        browser.close()
+        #close window
+        browser.quit()
 
 if __name__ == "__main__":
     main()

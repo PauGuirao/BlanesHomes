@@ -12,10 +12,11 @@ import time
 import re
 import datetime
 from sklearn.impute import SimpleImputer
+import os
 
 año_actual = datetime.datetime.now().year
 
-def procesar_csv_idealista(ruta_csv):
+def preprocess_real_estate_data_for_training(ruta_csv):
     # Leer CSV
     df = pd.read_csv(ruta_csv)
 
@@ -63,6 +64,7 @@ def procesar_csv_idealista(ruta_csv):
     zona_columns = [col for col in df.columns if col.startswith('zona_')]
     df['zona'] = df[zona_columns].idxmax(axis=1).str.replace('zona_', '')
 
+
     # Crear los centroides por zona (una vez)
     coordenadas_por_zona = df.groupby('zona')[['latitud', 'longitud']].mean().to_dict('index')
 
@@ -74,10 +76,54 @@ def procesar_csv_idealista(ruta_csv):
             df.at[i, 'longitud'] = coordenadas_por_zona[zona]['longitud']
 
 
-    # transformar a csv
-    df.to_csv('idealista_procesado.csv', index=False)
+    # Save to processedFiles directory
+    processed_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'backend/data', 'processedFiles')
+    os.makedirs(processed_dir, exist_ok=True)
+    current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = os.path.join(processed_dir, f'blanes_data_{current_datetime}.csv')
+    df.to_csv(output_file, index=False)
     return df
 
+def generate_description_training_data(input_file):
+    """Generate description training data directly from input CSV file"""
+    # Read CSV
+    df = pd.read_csv(input_file)
+    
+    def generate_property_description(row):
+        extras = []
+        for campo in ['terraza', 'garaje', 'ascensor', 'jardin', 'piscina', 'aire_acondicionado']:
+            if row[campo] == True:
+                extras.append(campo.replace('_', ' '))
+        extras_texto = ", " + ", ".join(extras) if extras else ""
+
+        return (
+            f"{row['tipo']} de {row['metros']} m² en {row['zona']} con "
+            f"{row['habitaciones']} habitaciones, {row['baños']} baños{extras_texto}"
+        )
+
+    # Generate input and target texts
+    df_descriptions = pd.DataFrame({
+        'input_text': df.apply(generate_property_description, axis=1),
+        'target_text': df['descripcion']
+    })
+
+    # Save to processedFiles_Descriptions directory
+    descriptions_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'backend/data', 'processedFiles_Descriptions')
+    os.makedirs(descriptions_dir, exist_ok=True)
+    current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = os.path.join(descriptions_dir, f'blanes_descriptions_{current_datetime}.csv')
+    df_descriptions.to_csv(output_file, index=False)
+    return df_descriptions
 
 if __name__ == "__main__":
-    procesar_csv_idealista('idealista.csv')
+    # Get the latest file from scrappedFiles directory
+    scrapped_dir = '../data/scrappedFiles'
+    files = [f for f in os.listdir(scrapped_dir) if f.endswith('.csv')]
+    latest_file = max(files, key=lambda x: os.path.getctime(os.path.join(scrapped_dir, x)))
+    input_file = os.path.join(scrapped_dir, latest_file)
+
+    # Crear archivo CSV procesado para entrenar el modelo  XGBoost (price predicting)
+    preprocess_real_estate_data_for_training(input_file)
+    
+    # Crear archivo CSV procesado para entrenar el modelo mt5-small (description generating)
+    generate_description_training_data(input_file)

@@ -13,6 +13,9 @@ import re
 import datetime
 from sklearn.impute import SimpleImputer
 import random
+from proxy_auth_plugin import create_proxy_auth_extension
+
+from fp.fp import FreeProxy
 
 año_actual = datetime.datetime.now().year
 
@@ -52,15 +55,18 @@ def main():
             print(f"[ID {id_piso}] ⚠️ No se guardó (vacío o error).")
 
 def scrap_inmueble(id_piso):
-    #random proxies and user agents
-    #proxy = random.choice(proxies)
-    proxy = '43.153.103.91:13001'
-    user_agent = random.choice(user_agents)
-
     options = uc.ChromeOptions()
-
-    options.add_argument(f"--proxy-server=http://{proxy}")
+    #Proxies
+    #proxy = '103.120.202.53:5678'
+    #proxy = FreeProxy(rand=True,https=True,url='https://www.idealista.com').get()
+    #options.add_argument(f"--proxy-server=http://{proxy}")
+    #proxy = "176.105.220.74:3129"
+    #options.add_argument(f"--proxy-server=http://{proxy}")
+    # User Agent
+    #user_agent = random.choice(user_agents)
     #options.add_argument(f"user-agent={user_agent}")
+
+
 
     browser = uc.Chrome(
         options=options,
@@ -69,7 +75,7 @@ def scrap_inmueble(id_piso):
     url = f'https://www.idealista.com/inmueble/{id_piso}/'
 
     browser.get(url)
-    browser.implicitly_wait(10)
+    browser.implicitly_wait(9)
     # Accept cookies
     try:
         accept_cookies = browser.find_element("xpath", '//*[@id="didomi-notice-agree-button"]')
