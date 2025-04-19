@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 
 from supabase import create_client, Client
+from dotenv import load_dotenv
 import os
 
 # ======== CONFIGURACIÓN ========
