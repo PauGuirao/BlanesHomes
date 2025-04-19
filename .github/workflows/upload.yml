@@ -1,9 +1,9 @@
 name: Upload data to Supabase
 
 on:
-  schedule:
-    - cron: '0 5 * * *'  # Todos los días a las 5:00 UTC
-  workflow_dispatch:     # También permite lanzarlo manualmente
+  #schedule:
+  #  - cron: '0 5 * * *'  # Todos los días a las 5:00 UTC
+  workflow_dispatch: false     # También permite lanzarlo manualmente
 
 jobs:
   upload:
