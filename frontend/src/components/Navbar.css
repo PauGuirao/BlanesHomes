@@ -58,6 +58,100 @@
   background-color: #c0392b;
 }
 
+.compare-button-action{
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  margin-right: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.compare-button-action:hover {
+  background: #cf711c;
+}
+
+.navbar-tools {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tools-button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.tools-button:hover {
+  background: #217dbb;
+}
+
+.tools-dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #fff;
+  color: #222;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-radius: 6px;
+  min-width: 180px;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  animation: fadeIn 0.18s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.tools-dropdown button {
+  background: none;
+  border: none;
+  color: #222;
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.18s;
+}
+
+.tools-dropdown button:hover {
+  background: #f3f3f3;
+  color: #3498db;
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .navbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
 .comparate-button {
   position: relative;
   background-color: #3498db;
@@ -81,4 +175,44 @@
   align-items: center;
   justify-content: center;
   animation: pulse 0.5s ease-out;
+}
+
+
+.navbar-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #e67e22; /* Different color for user block */
+  font-weight: bold;
+}
+
+.navbar-user span:hover {
+  text-decoration: underline;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 10px;
+}
+
+.user-dropdown button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.user-dropdown button:hover {
+  background: #444;
 }

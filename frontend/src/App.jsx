@@ -1,5 +1,7 @@
 import { useEffect, useState, Suspense, useCallback, useRef, useMemo } from "react";
 import React from "react";
+import { supabase } from '../src/supabase/supabaseClient';
+import LoginForm from './components/login/LoginForm';
 // Styles
 import "./App.css";
 
@@ -51,6 +53,19 @@ L.Icon.Default.mergeOptions({
 });
 
 function App() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) setUser(session.user);
+    };
+    getSession();
+  }, []);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null); // Clears user session from React state
+  };
+
   useEffect(() => {
     axios.get("http://localhost:8000/pisos").then((res) => {
       setPisos(res.data);
@@ -155,180 +170,191 @@ function App() {
 
   return (
     <>
-      {/* ----------- NAVBAR ------------- */}
-      <Navbar
-        onAbrirFormulario={() => {
-          setMostrarFormulario(true);
-          setMostrarUrlForm(false);
-        }}
-        onAbrirUrlForm={() => {
-          setMostrarUrlForm(true);
-          setMostrarFormulario(false);
-        }}
-        onAbrirComparator={() => {setActiveSidePanel("compare"); setPisoSeleccionado(null); setZonaSeleccionada(null); setCentroZona(null);}}
-        onAbrirVendor={() => setActiveSidePanel("vendor")}
-        comparateCount={comparePisos.length}
-      />
-      {/* ----------- VIEW SELECTOR ------------- */}
-      <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
-      <button
-        className="list-button"
-        onClick={() => setMostrarListado(!mostrarListado)}
-      >
-        <FontAwesomeIcon icon={faEye} />
-      </button>
-      {/* ---------------- MAPA ------------------ */}
-      <MapContainer
-        center={centro}
-        zoom={14}
-        ref={mapRef}
-        style={{ height: "calc(100vh - 50px)", width: "100vw" }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="&copy; OpenStreetMap contributors"
-        />
+      {!user ? (<LoginForm onLoginSuccess={setUser} />) : (
+        <>
+          {/* ----------- NAVBAR ------------- */}
+          <Navbar
+            onAbrirFormulario={() => {
+              setMostrarFormulario(true);
+              setMostrarUrlForm(false);
+            }}
+            onAbrirUrlForm={() => {
+              setMostrarUrlForm(true);
+              setMostrarFormulario(false);
+            }}
+            onAbrirComparator={() => {
+              setActiveSidePanel("compare");
+              setPisoSeleccionado(null);
+              setZonaSeleccionada(null);
+              setCentroZona(null);
+            }}
+            onAbrirVendor={() => setActiveSidePanel("vendor")}
+            comparateCount={comparePisos.length}
+            user={user}
+            onLogout={handleLogout}
+          />
+          {/* ----------- VIEW SELECTOR ------------- */}
+          <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
+          <button
+            className="list-button"
+            onClick={() => setMostrarListado(!mostrarListado)}
+          >
+            <FontAwesomeIcon icon={faEye} />
+          </button>
+          {/* ---------------- MAPA ------------------ */}
+          <MapContainer
+            center={centro}
+            zoom={14}
+            ref={mapRef}
+            style={{ height: "calc(100vh - 50px)", width: "100vw" }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
 
-        <Suspense fallback={null}>
-          {/* Dibujar polígonos de zonas */}
-          <ZonaPolygons
-            zonas={zonas}
-            selectedZona={zonaSeleccionada}
-            onZoneClick={handleZoneClick}
-          />
-          {/* Dibujar pisos */}
-          <PisoMarkers
-            pisos={filteredPisos}
-            viewMode={viewMode}
-            selected={pisoSeleccionado}
-            comparing={comparePisos}
-            onMarkerClick={handleMarkerClick}
-            showCompareTooltips={activeSidePanel === 'compare'}
-            priceScale={priceScale}
-            valorScale={valorScale}
-            selectedAgency={selectedAgency} 
-          />
-        </Suspense>
+            <Suspense fallback={null}>
+              {/* Dibujar polígonos de zonas */}
+              <ZonaPolygons
+                zonas={zonas}
+                selectedZona={zonaSeleccionada}
+                onZoneClick={handleZoneClick}
+              />
+              {/* Dibujar pisos */}
+              <PisoMarkers
+                pisos={filteredPisos}
+                viewMode={viewMode}
+                selected={pisoSeleccionado}
+                comparing={comparePisos}
+                onMarkerClick={handleMarkerClick}
+                showCompareTooltips={activeSidePanel === 'compare'}
+                priceScale={priceScale}
+                valorScale={valorScale}
+                selectedAgency={selectedAgency} 
+              />
+            </Suspense>
 
-        {/* Dibujar la leyenda */}
-        <Legend
-          viewMode={viewMode}
-          color_por_zona={color_por_zona}
-          min={viewMode === "valoracion" ? minValoracion : min}
-          max={viewMode === "valoracion" ? maxValoracion : max}
-          pisos={pisos}
-          colorScale={viewMode === "valoracion"? valorScale : priceScale}
-        />
+            {/* Dibujar la leyenda */}
+            <Legend
+              viewMode={viewMode}
+              color_por_zona={color_por_zona}
+              min={viewMode === "valoracion" ? minValoracion : min}
+              max={viewMode === "valoracion" ? maxValoracion : max}
+              pisos={pisos}
+              colorScale={viewMode === "valoracion"? valorScale : priceScale}
+            />
 
-        {/* Gestionar el reset del mapa */}
-        <MapClickReset
-          zonaSeleccionada={zonaSeleccionada}
-          onOutsideClick={() => {
-            setZonaSeleccionada(null);
-            setCentroZona(null);
-            mapRef.current?.flyTo(centro, 14);
-          }}
-        />
+            {/* Gestionar el reset del mapa */}
+            <MapClickReset
+              zonaSeleccionada={zonaSeleccionada}
+              onOutsideClick={() => {
+                setZonaSeleccionada(null);
+                setCentroZona(null);
+                mapRef.current?.flyTo(centro, 14);
+              }}
+            />
 
-        {/* 1) Zona panel: pan to the computed zone center */}
-        {activeSidePanel === "zona" && centroZona && (
-          <MapCenter center={centroZona} zoom={15} animate={true} />
-        )}
+            {/* 1) Zona panel: pan to the computed zone center */}
+            {activeSidePanel === "zona" && centroZona && (
+              <MapCenter center={centroZona} zoom={15} animate={true} />
+            )}
 
-        {/* 2) Piso panel: zoom in on the single piso */}
-        {activeSidePanel === "piso" && pisoSeleccionado && (
-          <MapCenter
-            center={[pisoSeleccionado.latitud, pisoSeleccionado.longitud]}
-            zoom={15}
-            offset={[150, 0]}
-            animate={true}
-          />
-        )}
+            {/* 2) Piso panel: zoom in on the single piso */}
+            {activeSidePanel === "piso" && pisoSeleccionado && (
+              <MapCenter
+                center={[pisoSeleccionado.latitud, pisoSeleccionado.longitud]}
+                zoom={15}
+                offset={[150, 0]}
+                animate={true}
+              />
+            )}
 
-        {/* 3) Compare panel: fit to all compare‐selected pisos */}
-        {activeSidePanel === "compare" && comparePisos.length > 0 && (
-          <MapCenter
-            bounds={comparePisos.map(p => [p.latitud, p.longitud])}
-            padding={[50, 50]}
-            animate={true}
-          />
-        )}
-      </MapContainer>
+            {/* 3) Compare panel: fit to all compare‐selected pisos */}
+            {activeSidePanel === "compare" && comparePisos.length > 0 && (
+              <MapCenter
+                bounds={comparePisos.map(p => [p.latitud, p.longitud])}
+                padding={[50, 50]}
+                animate={true}
+              />
+            )}
+          </MapContainer>
 
-      {/* ----------- SIDEBARS ------------- */}
-      <ActionPanel
-        visible={!!activeSidePanel}
-        onClose={() => {
-          // always close the panel
-          setActiveSidePanel(null);
-          // clear any lingering selection/tooltips
-          setPisoSeleccionado(null);
-          setZonaSeleccionada(null);
-          setCentroZona(null);
-        }}
-      >
-        {activeSidePanel === "zona" && (
-          <ZonaSidebar
-            zona={zonaSeleccionada}
-            pisos={pisos}
-          />
-        )}
-        {activeSidePanel === "piso" && (
-          <Sidebar
-            piso={pisoSeleccionado}
-            onCompare={handleAddToCompare}
-          />
-        )}
-        {activeSidePanel === "compare" && (
-          <ComparePanel
-            visible={true}
-            pisos={comparePisos}
-            onRemove={(id) =>
-              setComparePisos(comparePisos.filter((p) => p.id !== id))
-            }
-          />
-        )}
-        {activeSidePanel === "vendor" && (
-          <VendorView onSelectAgency={handleAgencyClick} />
-        )}
-      </ActionPanel>
-      <FormularioSidebar
-        visible={mostrarFormulario || mostrarUrlForm}
-        onClose={() => {
-          setMostrarFormulario(false);
-          setMostrarUrlForm(false);
-        }}
-      >
-        {mostrarFormulario && (
-          <PisoForm
-            onClose={() => setMostrarFormulario(false)}
-            onSugerenciaClick={handleSugerenciaClick}
-          />
-        )}
-        {mostrarUrlForm && (
-          <UrlForm
-            onClose={() => setMostrarUrlForm(false)}
-            onSugerenciaClick={handleSugerenciaClick}
-          />
-        )}
-      </FormularioSidebar>
-      {mostrarListado && (
-        <ListSidebar
-          pisos={pisos}
-          filteredPisos={filteredPisos}
-          onFilterChange={setFilteredPisos}
-          viewMode={viewMode}
-          color_por_zona={color_por_zona}
-          minPrice={20000}
-          maxPrice={5000000}
-          onClose={() => setMostrarListado(false)}
-          onPisoClick={(piso) => {
-            setPisoSeleccionado(piso);
-            if (mapRef.current) {
-              mapRef.current.setView([piso.latitud, piso.longitud], 16);
-            }
-          }}
-        />
+          {/* ----------- SIDEBARS ------------- */}
+          <ActionPanel
+            visible={!!activeSidePanel}
+            onClose={() => {
+              // always close the panel
+              setActiveSidePanel(null);
+              // clear any lingering selection/tooltips
+              setPisoSeleccionado(null);
+              setZonaSeleccionada(null);
+              setCentroZona(null);
+            }}
+          >
+            {activeSidePanel === "zona" && (
+              <ZonaSidebar
+                zona={zonaSeleccionada}
+                pisos={pisos}
+              />
+            )}
+            {activeSidePanel === "piso" && (
+              <Sidebar
+                piso={pisoSeleccionado}
+                onCompare={handleAddToCompare}
+              />
+            )}
+            {activeSidePanel === "compare" && (
+              <ComparePanel
+                visible={true}
+                pisos={comparePisos}
+                onRemove={(id) =>
+                  setComparePisos(comparePisos.filter((p) => p.id !== id))
+                }
+              />
+            )}
+            {activeSidePanel === "vendor" && (
+              <VendorView onSelectAgency={handleAgencyClick} />
+            )}
+          </ActionPanel>
+          <FormularioSidebar
+            visible={mostrarFormulario || mostrarUrlForm}
+            onClose={() => {
+              setMostrarFormulario(false);
+              setMostrarUrlForm(false);
+            }}
+          >
+            {mostrarFormulario && (
+              <PisoForm
+                onClose={() => setMostrarFormulario(false)}
+                onSugerenciaClick={handleSugerenciaClick}
+              />
+            )}
+            {mostrarUrlForm && (
+              <UrlForm
+                onClose={() => setMostrarUrlForm(false)}
+                onSugerenciaClick={handleSugerenciaClick}
+              />
+            )}
+          </FormularioSidebar>
+          {mostrarListado && (
+            <ListSidebar
+              pisos={pisos}
+              filteredPisos={filteredPisos}
+              onFilterChange={setFilteredPisos}
+              viewMode={viewMode}
+              color_por_zona={color_por_zona}
+              minPrice={20000}
+              maxPrice={5000000}
+              onClose={() => setMostrarListado(false)}
+              onPisoClick={(piso) => {
+                setPisoSeleccionado(piso);
+                if (mapRef.current) {
+                  mapRef.current.setView([piso.latitud, piso.longitud], 16);
+                }
+              }}
+            />
+          )}
+        </>
       )}
     </>
   );
