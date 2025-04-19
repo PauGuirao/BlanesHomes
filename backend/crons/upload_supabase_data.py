@@ -9,7 +9,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 # Load the CSV file into a DataFrame
-file_path = '/Users/paugc/Desktop/Pau/Personal/Projects/BlanesHomes/backend/data/processedFiles/blanes_data_20250417_151255.csv'
+file_path = 'backend/data/processedFiles/blanes_data_20250417_151255.csv'
 df = pd.read_csv(file_path)
 
 # Remove duplicate rows
