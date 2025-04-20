@@ -81,7 +81,9 @@ def main():
 
         proxy_extension = create_proxy_extension(OXYLABS_USER, OXYLABS_PASS, OXYLABS_HOST, OXYLABS_PORT)
         options = uc.ChromeOptions()
-        options.add_argument("--headless=new")  # Opcional si usas xvfb
+        # quiero ver el navegador
+
+        #options.add_argument("--headless=new")  # Opcional si usas xvfb
         options.add_extension(proxy_extension)
         options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
