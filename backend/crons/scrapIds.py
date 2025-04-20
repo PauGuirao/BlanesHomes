@@ -107,6 +107,7 @@ def main():
             current_page = int(selected_page.find('span').text.strip())
             print(f'Current page: {current_page}')
         else:
+            print(soup.prettify())
             print("❌ No se detectó la página actual. ¿Bloqueado?")
             break
 
