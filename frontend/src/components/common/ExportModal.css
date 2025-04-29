@@ -1,0 +1,79 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.export-modal {
+  background-color: #1c1c1c;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.export-modal h3 {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.export-option {
+  margin-bottom: 20px;
+}
+
+.export-option label {
+  display: flex;
+  align-items: center;
+  color: #e0e0e0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.export-option input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #e74c3c;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-button {
+  padding: 8px 16px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #444;
+}
+
+.confirm-button {
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirm-button:hover {
+  background-color: #c0392b;
+}

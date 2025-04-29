@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { CircleMarker, Popup, Tooltip } from 'react-leaflet';
 import { color_por_zona } from '../../data/zonas';
 import {
     getPriceColor,
     getValorColor,
-  getAgencyColor
+    getAgencyColor
 } from '../../utils/colorUtils';
 
 export default React.memo(function PisoMarkers({
@@ -12,8 +12,10 @@ export default React.memo(function PisoMarkers({
   viewMode,
   selected,
   comparing,
+  similar, // Receive similarPisos
   onMarkerClick,
   showCompareTooltips,
+  showSimilarTooltips,
   priceScale,
   valorScale,
   selectedAgency,
@@ -28,12 +30,54 @@ export default React.memo(function PisoMarkers({
   const maxVal = Math.max(...valores);
 
   const markerRef = useRef({});
+  
+  // Create a map of coordinates to count how many properties share the same location
+  const coordinateGroups = useMemo(() => {
+    const groups = {};
+    const offsetMap = {};
+    
+    // Group pisos by their coordinates
+    pisos.forEach(piso => {
+      const coordKey = `${piso.latitud},${piso.longitud}`;
+      if (!groups[coordKey]) {
+        groups[coordKey] = [];
+      }
+      groups[coordKey].push(piso.id);
+    });
+    
+    // Calculate offsets for each piso
+    Object.entries(groups).forEach(([coordKey, pisoIds]) => {
+      if (pisoIds.length > 1) {
+        // If multiple pisos share coordinates, create a random spread
+        pisoIds.forEach((id) => {
+          // Generate random offsets within a small area
+          // Using a consistent seed based on ID to ensure the same piso always gets the same offset
+          const seed = id.toString().split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+          const rng1 = Math.sin(seed) * 10000;
+          const rng2 = Math.cos(seed) * 10000;
+          
+          // Random offset between -0.0008 and 0.0008 (about 50-80 meters)
+          const maxRadius = 0.0009;
+          offsetMap[id] = {
+            lat: ((rng1 % 1) - 0.5) * maxRadius,
+            lng: ((rng2 % 1) - 0.5) * maxRadius
+          };
+        });
+      } else {
+        // Single piso at this location, no offset needed
+        offsetMap[pisoIds[0]] = { lat: 0, lng: 0 };
+      }
+    });
+    
+    return offsetMap;
+  }, [pisos]);
 
   return (
     <>
       {pisos.map(piso => {
         const isSelected = selected?.id === piso.id;
         const isComparing = comparing.some(p => p.id === piso.id);
+        const isSimilar = similar.some(p => p.id === piso.id); // Check if piso is similar
         let color;
 
         if (viewMode === 'zona') {
@@ -45,11 +89,18 @@ export default React.memo(function PisoMarkers({
         } else if (viewMode === 'vendedor') {
             color = getAgencyColor(piso.anunciante);
         }
+        
+        // Apply offset to coordinates if needed
+        const offset = coordinateGroups[piso.id] || { lat: 0, lng: 0 };
+        const adjustedPosition = [
+          piso.latitud + offset.lat,
+          piso.longitud + offset.lng
+        ];
 
         return (
           <React.Fragment key={piso.id}>
             <CircleMarker
-              center={[piso.latitud, piso.longitud]}
+              center={adjustedPosition}
               radius={isComparing && showCompareTooltips ? 8 : 5}
               ref={(el) => {
                 if (el) markerRef.current[piso.id] = el;
@@ -79,6 +130,11 @@ export default React.memo(function PisoMarkers({
                   {comparing.findIndex(p => p.id === piso.id) + 1}
                 </Tooltip>
               )}
+              {isSimilar && showSimilarTooltips &&  (
+                <Tooltip permanent direction="top" offset={[0, -10]} className="comparing-tooltip">
+                  {similar.findIndex(p => p.id === piso.id) + 1}
+                </Tooltip>
+              )}
               {selectedAgency && piso.anunciante === selectedAgency && (
                     <Tooltip
                         permanent
@@ -86,7 +142,6 @@ export default React.memo(function PisoMarkers({
                         offset={[0, -10]}
                         className="comparing-tooltip"
                     >
-                        {/* El índice dentro de los pisos filtrados por agencia */}
                         {
                         pisos
                             .filter(p => p.anunciante === selectedAgency)
@@ -98,7 +153,7 @@ export default React.memo(function PisoMarkers({
 
             {isSelected && (
               <CircleMarker
-                center={[piso.latitud, piso.longitud]}
+                center={adjustedPosition}
                 radius={20}
                 className="pulse-marker"
                 pathOptions={{

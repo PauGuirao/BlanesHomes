@@ -1,3 +1,5 @@
+# This script scrapes property IDs and prices from Idealista for Blanes, Girona, and saves them to a CSV file.
+
 import requests
 from bs4 import BeautifulSoup as bs
 import random
@@ -17,13 +19,13 @@ año_actual = datetime.datetime.now().year
 def main():
     x = 1
     ids = []
-    current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    current_datetime = datetime.datetime.now().strftime("%Y%m%d")
     
     # Create directory if it doesn't exist
     save_dir = '../data/idFiles'
     os.makedirs(save_dir, exist_ok=True)
     
-    filename = os.path.join(save_dir, f'ids_{current_datetime}.txt')
+    filename = os.path.join(save_dir, f'ids_{current_datetime}.csv')
     
     while True:
         start_time = time.time()
@@ -35,7 +37,7 @@ def main():
             use_subprocess=False,)
         url = f'https://www.idealista.com/venta-viviendas/blanes-girona/pagina-{x}.htm'
         browser.get(url);
-        time.sleep(random.randint(10, 12))
+        time.sleep(random.randint(8, 10))
 
         try:
             accept_cookies = browser.find_element("xpath", '//*[@id="didomi-notice-agree-button"]')
@@ -67,7 +69,7 @@ def main():
                     "precio": int(precio) if precio else None
                 })
                 print(id_pisos)
-            time.sleep(random.randint(1, 3))
+            time.sleep(random.randint(1, 2))
     
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -79,7 +81,7 @@ def main():
 
     # Guardar a CSV
     if ids:
-        df = pd.DataFrame(pisos)
+        df = pd.DataFrame(ids)
         df.to_csv(filename, index=False)
         print(f"\n💾 Guardados {len(df)} pisos en {filename}")
     else:

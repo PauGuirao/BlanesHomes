@@ -7,8 +7,14 @@ const Navbar = ({
   onAbrirVendor,
   onAbrirComparator,
   comparateCount,
+  onAnalizaMiAgencia,
+  onAbrirParticulares,
   user,
+  agencia,
   onLogout, // Add onLogout prop
+  selectedCity,
+  availableCities,
+  onCityChange
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false); // State for user dropdown
@@ -31,6 +37,20 @@ const Navbar = ({
   return (
     <nav className="navbar">
       <div className="navbar-actions">
+        {/* City Selector */}
+      <div className="navbar-city-selector">
+          <select 
+            value={selectedCity} 
+            onChange={(e) => onCityChange(e.target.value)}
+            className="city-select"
+          >
+            {availableCities.map(city => (
+              <option key={city.id} value={city.id}>
+                {city.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <button
           className="compare-button-action"
           onClick={onAbrirComparator}
@@ -60,7 +80,7 @@ const Navbar = ({
                   onAbrirUrlForm();
                 }}
               >
-                Buscar desde URL
+                Analiza un anuncio
               </button>
               <button
                 onClick={() => {
@@ -70,13 +90,31 @@ const Navbar = ({
               >
                 Las Agencias
               </button>
+              <button
+                onClick={() => {
+                  setShowDropdown(false);
+                  onAnalizaMiAgencia(); // New function to open the analysis
+                }}
+              >
+                Analiza mi agencia
+              </button>
+              <button
+                onClick={() => {
+                  setShowDropdown(false);
+                  onAbrirParticulares();
+                }}
+              >
+                Ver particulares
+              </button>
             </div>
           )}
         </div>
       </div>
       <div className="navbar-title">Blanes Homes</div>
       <div className="navbar-user" ref={userDropdownRef}>
-        <span onClick={() => setShowUserDropdown((v) => !v)}>{user.email}</span>
+      <span onClick={() => setShowUserDropdown((v) => !v)}>
+        {agencia?.nombre ?? "Cargando..."}
+      </span>
         {showUserDropdown && (
           <div className="user-dropdown">
             <button onClick={onLogout}>Cerrar sesión</button>

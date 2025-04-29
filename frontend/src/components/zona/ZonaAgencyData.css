@@ -1,0 +1,139 @@
+.zona-agency-data {
+  padding: 10px 0;
+}
+
+.agency-header {
+  margin-bottom: 20px;
+}
+
+.agency-header h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #fff;
+}
+
+.agency-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.agency-stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.stat-value.higher {
+  color: #4cd137;
+}
+
+.stat-value.lower {
+  color: #e84118;
+}
+
+.price-diff {
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.agency-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.market-share-chart,
+.type-comparison-chart {
+  flex: 1;
+  min-width: 300px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.market-share-chart h4,
+.type-comparison-chart h4,
+.agency-properties h4 {
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  color: #ddd;
+}
+
+.agency-properties {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.agency-properties-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.agency-property-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.agency-property-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.property-info {
+  flex: 1;
+}
+
+.property-type {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.property-details {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.property-price {
+  font-weight: bold;
+  color: #4cd137;
+}
+
+.no-properties {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+}
+
+.no-properties p:first-child {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.no-properties p:last-child {
+  color: #aaa;
+  font-size: 14px;
+}

@@ -16,8 +16,22 @@ const LoginForm = ({ onLoginSuccess }) => {
       password,
     });
 
-    if (error) setErrorMsg(error.message);
-    else onLoginSuccess(data.user);
+    if (error){
+      setErrorMsg(error.message);
+    } else{
+      const { data: agenciaData, error: agenciaError } = await supabase
+      .from('agencias')
+      .select('*')
+      .eq('user_id', data.user.id)
+      .single();
+
+      if (agenciaError) {
+        setErrorMsg('No se encontró la agencia vinculada');
+      } else {
+        // ✅ Pasamos la agencia y el usuario al padre
+        onLoginSuccess({ user: data.user, agencia: agenciaData });
+      }
+    } 
   };
 
   return (

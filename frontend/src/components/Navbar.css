@@ -216,3 +216,28 @@
 .user-dropdown button:hover {
   background: #444;
 }
+
+
+/* Add these styles to your existing Navbar.css */
+
+.navbar-city-selector {
+  margin: 0 20px;
+}
+
+.city-select {
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #444;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.city-select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* You may need to adjust these styles to match your existing navbar design */
