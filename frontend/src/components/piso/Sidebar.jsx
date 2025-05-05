@@ -31,6 +31,7 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
   }, [piso]);
 
   // Capitalize first letter of property type
+  console.log("Tipo de piso:", piso);
   const capitalizedType = piso.tipo.charAt(0).toUpperCase() + piso.tipo.slice(1).toLowerCase();
   const formattedTitle = capitalizedType;
 

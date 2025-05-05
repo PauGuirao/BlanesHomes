@@ -76,11 +76,11 @@ async def extraer_fecha_anuncio(tab):
         print(f"⚠️ Error extrayendo la fecha de anuncio: {e}")
         return None
 
-def get_lat_lon(address):
+def get_lat_lon(address,city):
     url = 'https://nominatim.openstreetmap.org/search'
 
     params = {
-        'q': address+', Blanes, Girona',
+        'q': address+', '+city+', Girona',
         'format': 'json',
         'limit': 1
     }
@@ -156,7 +156,7 @@ def procesar_calle(nombre_calle):
 # ==============================================================================
 # --- FUNCIÓN DE SCRAPING REFACTORIZADA ---
 # ==============================================================================
-async def scrap_idealista_property_nodriver(tab: uc.Tab, url: str, listing_id: str) -> dict:
+async def scrap_idealista_property_nodriver(tab: uc.Tab, url: str, listing_id: str, city: str) -> dict:
     """
     Refactorización de scrap_idealista_property usando nodriver.
     Extrae detalles de una propiedad de Idealista.
@@ -287,7 +287,7 @@ async def scrap_idealista_property_nodriver(tab: uc.Tab, url: str, listing_id: s
                 else:
                     ubicacion_items = []
 
-            lat, lon = get_lat_lon(calle if calle else zona)
+            lat, lon = get_lat_lon(calle if calle else zona, city)
 
         except ProtocolException:
             logging.warning(f"ID {listing_id}: No se encontró la sección de zona/mapa.")
@@ -431,12 +431,13 @@ async def scrap_idealista_property_nodriver(tab: uc.Tab, url: str, listing_id: s
 # ==============================================================================
 # --- FUNCIÓN PRINCIPAL (main) ---
 # ==============================================================================
-async def main():
+async def main(city="lloret-de-mar-girona"):
     """
     Función principal que orquesta el proceso de scraping.
     """
+    city_short = city.split("-")[0].capitalize()
     # 1. Leer IDs de pisos de la base de datos
-    response = supabase.table("pisos").select("*").eq("activo", True).execute()
+    response = supabase.table("pisos").select("*").eq("activo", True).eq("city", city_short).execute()
     df = pd.DataFrame(response.data)
 
     # 2. Filtrar por pisos con datos faltantes en los campos críticos
@@ -459,11 +460,11 @@ async def main():
         logging.info("Navegador iniciado correctamente.")
 
         # 3. Iterar sobre los IDs y scrapear cada uno usando la nueva función
-        current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        current_datetime = datetime.datetime.now().strftime("%Y%m%d")
         for i, listing_id in enumerate(listing_ids):
             url = f"https://www.idealista.com/inmueble/{listing_id}/"
             # *** LLAMADA A LA FUNCIÓN REFACTORIZADA ***
-            scraped_data = await scrap_idealista_property_nodriver(tab, url, listing_id)
+            scraped_data = await scrap_idealista_property_nodriver(tab, url, listing_id, city_short)
             #scraped_data_list.append(scraped_data)
 
             if scraped_data is not None and not scraped_data.empty:
@@ -471,9 +472,10 @@ async def main():
                     scraped_data['descripcion'] = scraped_data['descripcion'].apply(lambda x: x.replace('\n', ' ') if isinstance(x, str) else x)
                 scraped_data['id'] = listing_id
                 scraped_data['url'] = url
+                scraped_data['city'] = city_short
 
                 # save the dataframe to a csv file with current date and time
-                csv_path = f'../data/scrappedFiles/blanes_scrapped_{current_datetime}.csv'
+                csv_path = f'../data/scrappedFiles/{city}_scrapped_{current_datetime}.csv'
                 write_header = not os.path.exists(csv_path)
                 scraped_data.to_csv(csv_path, mode='a', header=write_header, index=False)
                 time.sleep(random.randint(1, 3))

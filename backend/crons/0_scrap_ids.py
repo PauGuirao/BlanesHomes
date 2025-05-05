@@ -16,8 +16,8 @@ import datetime
 import os
 año_actual = datetime.datetime.now().year
 
-def main():
-    x = 1
+def main(city="lloret-de-mar-girona"):
+    x = 2
     ids = []
     current_datetime = datetime.datetime.now().strftime("%Y%m%d")
     
@@ -25,7 +25,7 @@ def main():
     save_dir = '../data/idFiles'
     os.makedirs(save_dir, exist_ok=True)
     
-    filename = os.path.join(save_dir, f'ids_{current_datetime}.csv')
+    filename = os.path.join(save_dir, f'ids_{city}_{current_datetime}.csv')
     
     while True:
         start_time = time.time()
@@ -35,7 +35,7 @@ def main():
         browser = uc.Chrome(
             options=options,
             use_subprocess=False,)
-        url = f'https://www.idealista.com/venta-viviendas/blanes-girona/pagina-{x}.htm'
+        url = f'https://www.idealista.com/venta-viviendas/{city}/pagina-{x}.htm'
         browser.get(url);
         time.sleep(random.randint(8, 10))
 
@@ -56,34 +56,42 @@ def main():
         else:
             break
 
-        x += 1
-
+        page_ids = []  # Store IDs from this page
+        
         for article in articles:
             id_pisos = article.get('data-element-id')
             precio_elem = article.select_one(".item-price") 
             if id_pisos != None and precio_elem!= None:
                 precio_texto = precio_elem.get_text(strip=True)
                 precio = re.sub(r'[^\d]', '', precio_texto) 
-                ids.append({
+                page_ids.append({
                     "id": id_pisos,
                     "precio": int(precio) if precio else None
                 })
                 print(id_pisos)
             time.sleep(random.randint(1, 2))
+        
+        # Add page IDs to the total list
+        ids.extend(page_ids)
+        
+        # Save the CSV after each page
+        if ids:
+            df = pd.DataFrame(ids)
+            df.to_csv(filename, index=False)
+            print(f"💾 Guardados {len(ids)} pisos en {filename} (página {x})")
     
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f'Time taken to scrape page {x}: {elapsed_time:.2f} seconds')
         
         browser.close()
-        #close window
         browser.quit()
+        
+        x += 1  # Move page increment here
 
-    # Guardar a CSV
+    # Final summary
     if ids:
-        df = pd.DataFrame(ids)
-        df.to_csv(filename, index=False)
-        print(f"\n💾 Guardados {len(df)} pisos en {filename}")
+        print(f"\n✅ Proceso completado. Total: {len(ids)} pisos guardados en {filename}")
     else:
         print("⚠️ No se encontraron pisos.")
 

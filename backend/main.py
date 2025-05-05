@@ -44,29 +44,56 @@ model_precio_m2 = joblib.load("models/modelo_precio_m2.pkl")
 features_precio_m2 = joblib.load("models/features_precio_m2.pkl")  # columnas del modelo
 
 # ========== CARGA DE DATOS DESDE SUPABASE ==========
-response = supabase.table("pisos").select("*").not_.is_("descripcion", None).execute()
-records = response.data
-df = pd.DataFrame(records)
+response = supabase.table("pisos").select("*", "tipos(nombre)", "zonas(nombre)").not_.is_("descripcion", None).execute()
+response_zona = supabase.table("zonas").select("*").not_.is_("poligon", None).execute()
 
-drop_cols = ['url_id','id','titulo','descripcion','calle','fecha_publicacion', 'zona', 'url','anunciante', 'city', 'agencia_id', 'activo']
-# Now add the simple_id after predictions are done
+records = response.data
+records_zona = response_zona.data
+
+df = pd.DataFrame(records)
+df_zonas = pd.DataFrame(records_zona)
+
+# Extraer nombre del tipo y zona
+df["tipo"] = df["tipos"].apply(lambda x: x["nombre"] if isinstance(x, dict) else None)
+df["zona"] = df["zonas"].apply(lambda x: x["nombre"] if isinstance(x, dict) else None)
+df.drop(columns=["tipos", "zonas"], inplace=True)
+
+
+
+# ========== PREPARACIÓN DEL DATAFRAME ==========
+drop_cols = [
+    'url_id', 'id', 'titulo', 'descripcion', 'calle', 'fecha_publicacion',
+    'url', 'anunciante', 'city', 'agencia_id', 'activo', 'tipo_id', 'zona_id'
+]
+
 df.reset_index(inplace=True)
 df.rename(columns={"index": "id"}, inplace=True)
-X = df.drop(columns=drop_cols + ['precio'])
-features_precio = list(X.columns)  # columnas del modelo principal
 
-# Agregar columna tipo
-tipo_cols = [col for col in df.columns if col.startswith("tipo_")]
-df["tipo"] = df[tipo_cols].idxmax(axis=1).str.replace("tipo_", "")
+# Crear dummies sin eliminar 'tipo'
+tipo_dummies = pd.get_dummies(df['tipo'], prefix='tipo')
+df = pd.concat([df, tipo_dummies], axis=1)
 
-# Predicción inicial y categorización
-df['precio_estimado'] = model_precio.predict(df[features_precio])
+# ========== AJUSTE DE COLUMNAS PARA EL MODELO ==========
+# Esta lista deberías guardarla en disco cuando entrenes el modelo (como .pkl o .json)
+expected_model_columns = model_precio.feature_names_in_.tolist()  # si usaste sklearn 1.0+
+
+# Agrega columnas faltantes (esperadas por el modelo pero ausentes en este df)
+for col in expected_model_columns:
+    if col not in df.columns:
+        df[col] = 0  # rellena con ceros
+
+# Asegura el orden correcto
+X = df[expected_model_columns]
+
+# ========== PREDICCIÓN Y CATEGORIZACIÓN ==========
+df['precio_estimado'] = model_precio.predict(X)
 df['categoria_valor'] = df.apply(lambda row: (
     'ganga' if row['precio'] < row['precio_estimado'] * 0.9 else
     'caro' if row['precio'] > row['precio_estimado'] * 1.1 else
     'justo'
 ), axis=1)
 df['valoracion_score'] = (df['precio'] - df['precio_estimado']) / df['precio_estimado']
+
 
 # Coordenadas por zona
 zona_coords = {
@@ -81,9 +108,20 @@ zona_coords = {
 
 # ========== ENDPOINTS ==========
 
+#Endpoint para obtener las zonas de la base de datos
+@app.get("/zonas")
+def get_zonas(ciudad: str = Query(..., description="Nombre de la ciudad")):
+    df_zona = df_zonas[df_zonas["ciudad"].str.strip().str.lower() == ciudad.strip().lower()]
+    if df_zona.empty:
+        print("No se encontraron zonas para la ciudad especificada")
+    return df_zona[["id", "nombre", "ciudad", "poligon"]].to_dict(orient="records")
+
 @app.get("/pisos")
-def get_pisos():
-    resultado = df
+def get_pisos(ciudad: str = Query(..., description="Nombre de la ciudad")):
+    resultado = df[df["city"].str.strip().str.lower() == ciudad.strip().lower()]
+    if resultado.empty:
+        print("No se encontraron pisos para la ciudad especificada")
+
     return resultado[[
         'id', 'latitud', 'longitud', 'metros', 'precio', 'zona',
         'categoria_valor', 'precio_estimado', 'tipo',

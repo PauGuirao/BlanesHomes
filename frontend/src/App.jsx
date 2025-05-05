@@ -52,8 +52,8 @@ function App() {
   //----------------------------- CITY SELECTION --------------------------- //
   const [selectedCity, setSelectedCity] = useState("blanes");
   const [availableCities, setAvailableCities] = useState([
-    { id: "blanes", name: "Blanes", center: [41.672, 2.805] },
-    { id: "lloret", name: "Lloret de Mar", center: [41.700, 2.847] },
+    { id: "Blanes", name: "Blanes", center: [41.672, 2.805] },
+    { id: "Lloret", name: "Lloret de Mar", center: [41.700, 2.847] },
   ]);
   
   const cityCenter = useMemo(() => {
@@ -111,6 +111,7 @@ function App() {
   const mapRef = useRef(null);
 
   //----------------------------- ZONA ACTIONS ------------------------- //
+  const [cityZonas,setCityZonas] = useState(null);
   const [zonaSeleccionada, setZonaSeleccionada] = useState(null);
   const [centroZona, setCentroZona] = useState(null);
 
@@ -129,6 +130,20 @@ function App() {
     setActiveSidePanel("zona"); // Show the ZonaSidebar
   }, []);
 
+  // get the zones from the backend for the selected city
+  useEffect(() => {
+    const fetchZonas = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/zonas?ciudad=${selectedCity}`);
+        setCityZonas(res.data);
+      } catch (err) {
+        console.error("Error fetching zonas:", err);
+        setCityZonas([]);
+      }
+    }
+    fetchZonas();
+  } , [selectedCity]);
+
   // --------------------------- PISO ACTIONS -------------------------- //
   const [pisos, setPisos] = useState([]);
   const [filteredPisos, setFilteredPisos] = useState([]);
@@ -142,11 +157,20 @@ function App() {
   }, [filteredPisos, agencyFilter]);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/pisos").then((res) => {
-      setPisos(res.data);
-      setFilteredPisos(res.data);
-    });
-  }, []);
+    const fetchPisos = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/pisos?ciudad=${selectedCity}`);
+        setPisos(res.data);
+        setFilteredPisos(res.data);
+      } catch (err) {
+        console.error("Error fetching pisos:", err);
+        setPisos([]);
+        setFilteredPisos([]);
+      }
+    };
+  
+    fetchPisos();
+  }, [selectedCity]);
 
   const handleMarkerClick = (p) => {
     setPisoSeleccionado(p);
@@ -270,7 +294,7 @@ function App() {
             <Suspense fallback={null}>
               {/* Dibujar polígonos de zonas */}
               <ZonaPolygons
-                zonas={zonas}
+                zonas={cityZonas}
                 selectedZona={zonaSeleccionada}
                 onZoneClick={handleZoneClick}
               />
