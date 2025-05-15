@@ -119,3 +119,45 @@ export function getAgencyColor(agency) {
   const idx = _stringHash(agency) % agencyPalette.length;
   return agencyPalette[idx];
 }
+
+export const getOcupacionColor = (ocupado) => {
+  // Simple binary color scheme for occupied vs. available
+  return ocupado ? "#e74c3c" : "#2ecc71"; // Red for occupied, green for available
+};
+
+export const getOcupacionLegendItems = () => {
+  return [
+    { color: "#e74c3c", label: "Ocupado" },
+    { color: "#2ecc71", label: "Disponible" }
+  ];
+};
+
+
+// Add this function to your colorUtils.js file
+
+export const getDensityColor = (count, maxCount) => {
+  // Create a heat scale from green (low) to red (high)
+  const intensity = Math.min(1, count / (maxCount * 0.7)); // Cap at 70% of max for better color distribution
+  
+  // RGB values for the gradient from green to yellow to red
+  const r = Math.round(intensity < 0.5 ? 255 * (2 * intensity) : 255);
+  const g = Math.round(intensity < 0.5 ? 255 : 255 * (2 - 2 * intensity));
+  const b = 0;
+  
+  return `rgb(${r}, ${g}, ${b})`;
+};
+
+export const getDensityLegendItems = (maxCount) => {
+  const steps = 5;
+  const items = [];
+  
+  for (let i = 0; i < steps; i++) {
+    const count = Math.round((maxCount * i) / (steps - 1));
+    items.push({
+      color: getDensityColor(count, maxCount),
+      label: `${count} propiedades`
+    });
+  }
+  
+  return items;
+};

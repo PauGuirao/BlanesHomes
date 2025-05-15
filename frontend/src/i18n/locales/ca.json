@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Carregant...",
+    "error": "Error",
+    "save": "Desar",
+    "cancel": "Cancel·lar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Tornar"
+  },
+  "navbar": {
+    "tools": "Eines",
+    "compare": "Comparar",
+    "searchProperty": "Cercar propietat",
+    "analyzeAd": "Analitza un anunci",
+    "agencies": "Les Agències",
+    "analyzeMyAgency": "Analitza la meva agència",
+    "viewPrivate": "Veure particulars",
+    "profile": "El meu Perfil",
+    "logout": "Tancar sessió"
+  },
+  "profile": {
+    "language": "Idioma",
+    "title": "El meu Perfil",
+    "editProfile": "Editar Perfil",
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Telèfon",
+    "agency": "Agència",
+    "currentPlan": "Pla Actual",
+    "accountStatus": "Estat del compte",
+    "active": "Activa",
+    "pending": "Pendent d'activació",
+    "changePlan": "Canviar Pla",
+    "saveChanges": "Desar Canvis",
+    "emailCannotBeChanged": "L'email no es pot canviar"
+  },
+  "payment": {
+    "success": "Pagament completat!",
+    "thankYou": "Gràcies per subscriure't. Ja pots utilitzar totes les funcionalitats premium.",
+    "goToDashboard": "Anar al panell de control",
+    "goToProfile": "Veure el meu perfil",
+    "goToHome": "Tornar a l'inici"
+  }
+}

@@ -1,9 +1,9 @@
 .list-sidebar {
   position: absolute;
   right: 0;
-  top: 50px; /* Below navbar */
-  width: 350px;
-  height: calc(100vh - 50px);
+  top: 60px; /* Below navbar */
+  width: 400px;
+  height: calc(100vh - 108px);
   background-color: #333;
   color: #f1f1f1;
   box-shadow: -2px 0 8px rgba(0,0,0,0.3);
@@ -13,6 +13,7 @@
 }
 
 .list-sidebar h2 {
+  text-align: left;
   font-size: 1.4rem;
   font-weight: 700;
   margin-top: 0;
@@ -373,4 +374,43 @@
 .results-number {
   color: #e74c3c;
   font-weight: 600;
+}
+
+
+/* Add these styles to your existing ListSidebar.css */
+
+.piso-group {
+  margin-bottom: 15px;
+}
+
+.group-header {
+  padding: 8px 12px;
+  font-weight: 600;
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.group-count {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.piso-agencia {
+  font-size: 0.85em;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.piso-valoracion {
+  margin-top: 4px;
+  font-size: 0.9em;
+}
+
+.piso-valoracion span {
+  font-weight: 600;
+  color: #e74c3c;
 }

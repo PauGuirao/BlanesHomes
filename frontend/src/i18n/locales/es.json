@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver"
+  },
+  "navbar": {
+    "tools": "Herramientas",
+    "compare": "Comparar",
+    "searchProperty": "Buscar propiedad",
+    "analyzeAd": "Analiza un anuncio",
+    "agencies": "Las Agencias",
+    "analyzeMyAgency": "Analiza mi agencia",
+    "viewPrivate": "Ver particulares",
+    "profile": "Mi Perfil",
+    "logout": "Cerrar sesión"
+  },
+  "profile": {
+    "language": "Idioma",
+    "title": "Mi Perfil",
+    "editProfile": "Editar Perfil",
+    "name": "Nombre",
+    "email": "Email",
+    "phone": "Teléfono",
+    "agency": "Agencia",
+    "currentPlan": "Plan Actual",
+    "accountStatus": "Estado de la cuenta",
+    "active": "Activa",
+    "pending": "Pendiente de activación",
+    "changePlan": "Cambiar Plan",
+    "saveChanges": "Guardar Cambios",
+    "emailCannotBeChanged": "El email no se puede cambiar"
+  },
+  "payment": {
+    "success": "¡Pago completado!",
+    "thankYou": "Gracias por suscribirte. Ya puedes usar todas las funcionalidades premium.",
+    "goToDashboard": "Ir al panel de control",
+    "goToProfile": "Ver mi perfil",
+    "goToHome": "Volver al inicio"
+  }
+}

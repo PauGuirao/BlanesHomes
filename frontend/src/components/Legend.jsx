@@ -62,6 +62,8 @@ const Legend = ({ viewMode, color_por_zona, min, max, colorScale }) => {
             }
           }
         }, 0);
+      } else if (viewMode === "ocupacion") {
+        
       }
 
       return div;

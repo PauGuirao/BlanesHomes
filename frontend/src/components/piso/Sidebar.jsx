@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HipotecaTab from "../HipotecaTab"; // Asegúrate de que la ruta sea correcta
 import RecomendadosTab from "../RecomendadosTab";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = ({ piso, onClose, onCompare }) => {
   if (!piso) return null;
@@ -39,6 +41,17 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
     <div className="sidebar">
       <h2>
         {formattedTitle} <span className="zona-subtitle">en {piso.zona}</span>
+        {piso.url && (
+          <a 
+            href={piso.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="idealista-link"
+            title="Ver en Idealista"
+          >
+            <FontAwesomeIcon icon={faExternalLinkAlt} />
+          </a>
+        )}
       </h2>
       <div className="sidebar-section-2">
         <div className="sidebar-attribute">

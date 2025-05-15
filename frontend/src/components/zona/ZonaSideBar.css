@@ -1,5 +1,5 @@
 .zona-sidebar{
-  width: 350px;
+  width: 400px;
 }
 .close-button {
   position: absolute;
@@ -19,6 +19,7 @@
 }
 
 .zona-sidebar h2 {
+  text-align: left;
   font-size: 1.4rem;
   font-weight: 700;
   margin-top: 0;

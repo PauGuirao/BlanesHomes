@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "navbar": {
+    "tools": "Tools",
+    "compare": "Compare",
+    "searchProperty": "Search property",
+    "analyzeAd": "Analyze an ad",
+    "agencies": "Agencies",
+    "analyzeMyAgency": "Analyze my agency",
+    "viewPrivate": "View private listings",
+    "profile": "My Profile",
+    "logout": "Log out"
+  },
+  "profile": {
+    "language": "Language",
+    "title": "My Profile",
+    "editProfile": "Edit Profile",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "agency": "Agency",
+    "currentPlan": "Current Plan",
+    "accountStatus": "Account Status",
+    "active": "Active",
+    "pending": "Pending activation",
+    "changePlan": "Change Plan",
+    "saveChanges": "Save Changes",
+    "emailCannotBeChanged": "Email cannot be changed"
+  },
+  "payment": {
+    "success": "Payment Completed!",
+    "thankYou": "Thank you for subscribing. You can now use all premium features.",
+    "goToDashboard": "Go to dashboard",
+    "goToProfile": "View my profile",
+    "goToHome": "Back to home"
+  }
+}

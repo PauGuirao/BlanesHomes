@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { supabase } from '../../supabase/supabaseClient';
 import './UrlForm.css';
 
 function UrlForm({ onClose, onSugerenciaClick }) {
@@ -23,16 +24,27 @@ function UrlForm({ onClose, onSugerenciaClick }) {
         setLoading(false);
         return;
       }
-
-      const response = await axios.get(`http://localhost:8000/analisisLink?id=${id}`);
-      const { price_difference, precio_estimado, piso, valoracion, dias_activo } = response.data;
+      const {data: { session }} = await supabase.auth.getSession();
+      if (!session) {
+        setError('No estás autenticado');
+        setLoading(false);
+        return;
+      }
+      const response = await axios.get(`http://localhost:8000/analisisLink`, {
+        params: { id },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
+      });
+      const { price_difference, precio_estimado, piso, valoracion, dias_activo, mejoras } = response.data;
 
       setPropertyDetails({
         piso,
         precio_estimado,
         price_difference,
         valoracion,
-        dias_activo
+        dias_activo,
+        mejoras
       });
       
       // Send the valoracion data to the backend to save
@@ -84,21 +96,14 @@ function UrlForm({ onClose, onSugerenciaClick }) {
           {loading ? 'Loading...' : 'ANALIZA'}
         </button>
       </form>
-      
-      {saveStatus && (
-        <div className={`save-status ${saveStatus.includes('Error') ? 'error' : 'success'}`}>
-          {saveStatus}
-        </div>
-      )}
-      
       {propertyDetails && (
         <>
           <div className="valoration-section">
             <div className="valoration-container">
-              <h3>Nota del anuncio</h3>
+              <h3>Nota</h3>
               <div className="valoration-score">
                 <span className="score">{propertyDetails.valoracion.overall_score}</span>
-                <span className="max-score">/100</span>
+                <span className="max-score">/10</span>
               </div>
             </div>
             
@@ -155,6 +160,34 @@ function UrlForm({ onClose, onSugerenciaClick }) {
                 <span><strong>Bathrooms:</strong> {propertyDetails.piso.baños}</span>
                 <span><strong>Category:</strong> {propertyDetails.piso.categoria_valor}</span>
               </div>
+              <div className='top-group-right'>           
+                {/* Add extras block */}
+                <div className="property-extras-block">
+                  <h3>Extras</h3>
+                  <div className="extras-list">
+                    {propertyDetails.piso.garaje === 1 && <span>🚗 Garaje</span>}
+                    {propertyDetails.piso.piscina === 1 && <span>🏊 Piscina</span>}
+                    {propertyDetails.piso.terraza === 1 && <span>🏞️ Terraza</span>}
+                    {propertyDetails.piso.ascensor === 1 && <span>🔼 Ascensor</span>}
+                    {propertyDetails.piso.balcon === 1 && <span>🏙️ Balcón</span>}
+                    {propertyDetails.piso.aire_acondicionado === 1 && <span>❄️ A/C</span>}
+                    {propertyDetails.piso.jardin === 1 && <span>🌳 Jardín</span>}
+                    {!propertyDetails.piso.garaje && 
+                    !propertyDetails.piso.piscina && 
+                    !propertyDetails.piso.terraza && 
+                    !propertyDetails.piso.ascensor && 
+                    !propertyDetails.piso.balcon && 
+                    !propertyDetails.piso.aire_acondicionado && 
+                    !propertyDetails.piso.jardin && 
+                    <span>No hay extras disponibles</span>}
+                  </div>
+                </div> 
+                {/* Add agency block */}
+                <div className="property-agency-block">
+                  <h3>Agencia</h3>
+                  <span>{propertyDetails.piso.anunciante || "No disponible"}</span>
+                </div>
+              </div>
             </div>
             <div className="price-comparison">
               <div className=" price-block real-price">
@@ -162,14 +195,94 @@ function UrlForm({ onClose, onSugerenciaClick }) {
                 <span>{propertyDetails.piso.precio.toLocaleString()} €</span>
               </div>
               <div className="price-block estimated-price">
-                <h3>Precio de la IA y diferencia</h3>
-                <span className="price"><strong>Estimated Price:</strong> {propertyDetails.precio_estimado.toLocaleString()} €</span>
-                <span className="difference"><strong>Price Difference:</strong> {propertyDetails.price_difference}%</span>
+                <h3>Nuestra IA predice</h3>
+                <div className='predicted-price'>
+                  <span className="price">{propertyDetails.precio_estimado.toLocaleString()} €</span>
+                  <span className="difference">{propertyDetails.price_difference}%</span>
+                </div>
               </div>
             </div>
-            <div className="description-block">
-              <h3>Descripcion</h3>
-              <p>{propertyDetails.piso.descripcion}</p>
+            
+            {/* Replace description block with improvement suggestions */}
+            <div className="improvement-suggestions-block">
+              <h3>Mejora tu anuncio</h3>
+              
+              <div className="improvement-section">
+                <h4>Título ({propertyDetails.valoracion.titulo}/100)</h4>
+                <p className="current-value">Actual: <span>{propertyDetails.piso.titulo || "No disponible"}</span></p>
+                {propertyDetails.valoracion.titulo < 80 && (
+                  <div className="suggestion">
+                    <p className="suggestion-title">Sugerencia:</p>
+                    <p className="suggestion-content">
+                      {propertyDetails.mejoras.titulo}
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="improvement-section">
+                <h4>Descripción ({propertyDetails.valoracion.descripcion}/100)</h4>
+                <p className="current-value">Longitud actual: <span>{propertyDetails.piso.descripcion ? propertyDetails.piso.descripcion.length : 0} caracteres</span></p>
+                {propertyDetails.valoracion.descripcion < 80 && (
+                  <div className="suggestion">
+                    <p className="suggestion-title">Mejoras:</p>
+                    <ul className="suggestion-list">
+                      <li>Incluye más detalles sobre la distribución del inmueble</li>
+                      <li>Menciona la orientación y luminosidad</li>
+                      <li>Describe el entorno y servicios cercanos</li>
+                      <li>Destaca características únicas del inmueble</li>
+                      <li>Usa párrafos cortos para mejor legibilidad</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+              
+              <div className="improvement-section">
+                <h4>Precio ({propertyDetails.valoracion.precio}/100)</h4>
+                <p className="current-value">Actual: <span>{propertyDetails.piso.precio.toLocaleString()} €</span></p>
+                {propertyDetails.valoracion.precio < 80 && (
+                  <div className="suggestion">
+                    <p className="suggestion-title">Sugerencia:</p>
+                    <p className="suggestion-content">
+                      {propertyDetails.price_difference > 5 
+                        ? `Considera ajustar el precio más cerca de ${propertyDetails.precio_estimado.toLocaleString()} € para atraer más interesados.` 
+                        : "El precio está bien ajustado al mercado."}
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="improvement-section">
+                <h4>Completitud ({propertyDetails.valoracion.completitud}/100)</h4>
+                {propertyDetails.valoracion.completitud < 80 && (
+                  <div className="suggestion">
+                    <p className="suggestion-title">Añade más información:</p>
+                    <ul className="suggestion-list">
+                      {!propertyDetails.piso.garaje && <li>Especifica si incluye garaje</li>}
+                      {!propertyDetails.piso.terraza && !propertyDetails.piso.balcon && <li>Menciona si tiene terraza o balcón</li>}
+                      {!propertyDetails.piso.aire_acondicionado && <li>Indica si dispone de aire acondicionado</li>}
+                      <li>Añade información sobre el estado de conservación</li>
+                      <li>Incluye datos sobre la antigüedad del inmueble</li>
+                      <li>Especifica gastos de comunidad si los hay</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+              
+              <div className="improvement-section">
+                <h4>Frescura ({propertyDetails.valoracion.frescura}/100)</h4>
+                <p className="current-value">Días activo: <span>{propertyDetails.dias_activo}</span></p>
+                {propertyDetails.valoracion.frescura < 80 && (
+                  <div className="suggestion">
+                    <p className="suggestion-title">Recomendación:</p>
+                    <p className="suggestion-content">
+                      {propertyDetails.dias_activo > 60 
+                        ? "Considera renovar el anuncio o ajustar el precio para generar nuevo interés." 
+                        : "El anuncio es relativamente reciente."}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </>

@@ -1,0 +1,180 @@
+.register-step2-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.register-title {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.setup-steps {
+  margin-bottom: 24px;
+}
+
+.setup-step {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #f5f5f5;
+}
+
+.setup-step.active {
+  border-color: #ff9800;
+  background-color: #fff3e0;
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #bdbdbd;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.setup-step.active .step-number {
+  background-color: #ff5722;
+}
+
+.step-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #424242;
+}
+
+.setup-step.active .step-content h4 {
+  color: #e64a19;
+}
+
+.step-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #757575;
+}
+
+.user-email-block {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #2a2a2a;
+}
+
+.email-icon {
+  color: #757575;
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.email-info {
+  flex: 1;
+}
+
+.email-label {
+  font-size: 14px;
+  color: #757575;
+  margin-bottom: 4px;
+}
+
+.email-value {
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.register-form-wrapper {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.agency-instruction {
+  margin-bottom: 16px;
+  color: #555;
+}
+
+.agency-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  background-color: #2a2a2a;
+}
+
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background-color 0.2s;
+}
+
+.register-button:hover {
+  background-color: #e64a19;
+}
+
+.register-button:disabled {
+  background-color: #ffccbc;
+  cursor: not-allowed;
+}
+
+.back-button {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #757575;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #f5f5f5;
+}
+
+.register-error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}

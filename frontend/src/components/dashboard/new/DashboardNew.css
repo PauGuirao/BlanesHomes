@@ -1,0 +1,85 @@
+.dashboard-new-container {
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dashboard-new-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-new-header h1 {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-new-header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.dashboard-new-steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-new-content {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Reuse the step styles from Register.css */
+.step-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.step-number-inline {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.step-label-inline {
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+}
+
+.step-inline.active .step-number-inline {
+  background-color: #ff5722;
+  color: white;
+}
+
+.step-inline.active .step-label-inline {
+  color: #ff5722;
+  font-weight: 600;
+}
+
+.step-inline.completed .step-number-inline {
+  background-color: #4caf50;
+  color: white;
+}
+
+.step-connector {
+  width: 60px;
+  height: 2px;
+  background-color: #e0e0e0;
+  margin: 0 10px;
+  margin-top: -15px;
+}
+
+.step-connector.completed {
+  background-color: #4caf50;
+}

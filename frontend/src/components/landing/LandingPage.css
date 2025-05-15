@@ -1,0 +1,865 @@
+/* Main container */
+.landing-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #fff;
+  background-color: #121212;
+  line-height: 1.6;
+}
+
+/* Common styles */
+section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.landing-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #e64a19;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid #ff5722;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 87, 34, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Hero section */
+/* Hero section with SVG wave */
+.hero {
+  display: flex;
+  align-items: center;
+  min-height: 75vh;
+  padding: 2rem;
+  overflow: hidden;
+  margin-bottom: -1px; /* Prevent gap between sections */
+}
+
+.wave-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  z-index: 1;
+  transform: rotate(180deg); /* This inverts the wave */
+}
+
+.wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 70px;
+}
+
+.wave-divider .shape-fill {
+  fill: #1A1A1A;
+}
+
+/* Add this for the moving background */
+/* Hero section background modification */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/bg-pattern-1.png'), url('/images/bg-pattern-2.png');
+  background-size: 400px, 400px; /* Even smaller background images */
+  background-repeat: repeat, repeat; /* Use 'space' to create even spacing between images */
+  background-position: 0% 0%, 100% 100%; /* Position images at opposite corners */
+  opacity: 0.1;
+  z-index: 0;
+  animation: moveBackground 60s linear infinite;
+  max-height: 95vh ;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%, 100% 100%;
+  }
+  100% {
+    background-position: 100% 100%, 0% 0%;
+  }
+}
+
+.hero-content {
+  flex: 3;
+  max-width: 640px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-image {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Rest of the hero styles remain the same */
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  background: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #aaa;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Features section */
+.features {
+  background-color: #1a1a1a00;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background-color: #242424;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ff5722;
+}
+
+.feature-card p {
+  color: #bbb;
+}
+
+/* How it works section */
+.how-it-works {
+  background-color: #121212;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.step {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #1e1e1e;
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ff5722;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto 1.5rem;
+}
+
+.step h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.step p {
+  color: #bbb;
+}
+
+/* Pricing section */
+.pricing {
+  background-color: #1a1a1a00;
+}
+
+.pricing-subtitle {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 3rem;
+  font-size: 1.2rem;
+}
+
+.pricing-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.pricing-card {
+  background-color: #242424;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 350px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  border: 2px solid #333;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.pricing-card.premium {
+  border-color: #ff5722;
+}
+
+.most-popular {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #ff5722;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pricing-header {
+  padding: 2rem;
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #333;
+}
+
+.pricing-header h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+
+.period {
+  font-size: 1rem;
+  color: #aaa;
+  margin-left: 0.5rem;
+}
+
+.pricing-billing {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.pricing-features {
+  padding: 2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pricing-features .feature {
+  display: flex;
+  align-items: flex-start;
+  color: #ddd;
+  font-size: 1rem;
+}
+
+.check {
+  margin-right: 0.5rem;
+  color: #ff5722;
+  font-weight: bold;
+}
+
+.subscribe-button {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+.subscribe-button:hover {
+  background-color: #e64a19;
+}
+
+/* Testimonials section */
+.testimonials {
+  background-color: #121212;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.testimonial-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial-content {
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  color: #ddd;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-author img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  object-fit: cover;
+}
+
+.testimonial-author h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.testimonial-author p {
+  margin: 0;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+/* FAQ section */
+.faq {
+  background-color: #1a1a1a;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.faq-item {
+  background-color: #242424;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-5px);
+}
+
+.faq-item h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #ff5722;
+}
+
+.faq-item p {
+  color: #bbb;
+}
+
+/* CTA section */
+.cta {
+  text-align: center;
+  background-color: #121212;
+  padding: 5rem 2rem;
+}
+
+.cta h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.cta p {
+  font-size: 1.2rem;
+  color: #aaa;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta .btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+/* Footer */
+.landing-footer {
+  background-color: #1a1a1a;
+  padding: 4rem 2rem 2rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+.footer-logo h3 {
+  font-size: 1.8rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #ff5722, #ff9800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-logo p {
+  color: #aaa;
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.footer-column h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 0.8rem;
+}
+
+.footer-column a {
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-column a:hover {
+  color: #ff5722;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 3rem;
+  margin-top: 3rem;
+  border-top: 1px solid #333;
+}
+
+.footer-bottom p {
+  color: #777;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+  }
+  
+  .hero h2 {
+    text-align: center;
+  }
+  
+  .hero-buttons {
+    justify-content: center;
+  }
+  
+  .pricing-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+  }
+  
+  .footer-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+  
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+/* Add this at the top of your CSS file, before the existing styles */
+
+/* Navbar */
+.landing-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: rgba(18, 18, 18, 0.95);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-logo a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(90deg, #ff5722, #ff9800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: opacity 0.2s;
+}
+
+.navbar-logo a:hover {
+  opacity: 0.9;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-links a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.navbar-links a:hover {
+  color: #ff5722;
+}
+
+.navbar-login {
+  color: #ff5722 !important;
+  font-weight: 500;
+}
+
+.navbar-register {
+  background-color: #ff5722;
+  color: white !important;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s !important;
+}
+
+.navbar-register:hover {
+  background-color: #e64a19 !important;
+  color: white !important;
+}
+
+/* Mobile menu button - will be shown on smaller screens */
+.mobile-menu-button {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Responsive adjustments for navbar */
+@media (max-width: 900px) {
+  .navbar-links {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-button {
+    display: block;
+  }
+  
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .navbar-links.active {
+    display: flex;
+  }
+}
+
+.hero-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.hero-features li {
+  font-size: 1.1rem;
+  color: #ddd;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.hero-features li::before {
+  content: "✓";
+  color: #ff5722;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .hero-features {
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+  
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+/* 3D perspective for hero image */
+.hero-image {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.hero-image-3d {
+  transform: rotateY(-15deg) rotateX(5deg);
+  transition: transform 0.5s ease;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    20px 0 40px rgba(255, 87, 34, 0.1);
+}
+
+.hero-image:hover .hero-image-3d {
+  transform: rotateY(-10deg) rotateX(3deg) scale(1.02);
+}
+
+.hero-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.hero-features li {
+  font-size: 1.1rem;
+  color: #ddd;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.hero-features li::before {
+  content: "✓";
+  color: #ff5722;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .hero-features {
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+  
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+/* Your existing CSS styles continue below */

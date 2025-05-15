@@ -432,3 +432,68 @@
   border-radius: 4px;
   text-transform: uppercase;
 }
+
+/* Add these styles to your PisoForm.css file */
+
+.piso-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+
+.lock-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-right: auto;
+  margin-left: 10px;
+}
+
+.lock-button.locked {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.lock-button.unlocked {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.lock-button:hover {
+  transform: scale(1.1);
+}
+
+/* Add styles for disabled form elements */
+.piso-form input:disabled,
+.piso-form select:disabled,
+.piso-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Add a visual indicator for the locked form */
+.piso-form.locked {
+  position: relative;
+}
+
+.piso-form.locked::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+  z-index: 1;
+}

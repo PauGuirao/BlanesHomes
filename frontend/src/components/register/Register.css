@@ -1,0 +1,252 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Step indicator styles */
+.register-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  position: relative;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.register-steps::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: #333;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.step-label {
+  font-size: 12px;
+  color: #aaa;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+  background-color: #ff5722;
+  color: white;
+}
+
+.step.active .step-label {
+  color: #ff5722;
+  font-weight: 500;
+}
+
+.step.completed .step-number {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.register-form-container {
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  /* Center in the middle of the screen */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.register-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  font-size: 1.9rem;
+}
+
+.register-error {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(24, 24, 24);
+}
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.login-link a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+
+/* Add these styles to your existing Register.css */
+
+.back-button {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+
+/* Inline step indicator styles */
+.register-steps-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.step-inline {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.step-number-inline {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+}
+
+.step-label-inline {
+  font-size: 13px;
+  color: #aaa;
+  transition: all 0.3s ease;
+}
+
+.step-inline.active .step-number-inline {
+  background-color: #ff5722;
+  color: white;
+}
+
+.step-inline.active .step-label-inline {
+  color: #ff5722;
+  font-weight: 500;
+}
+
+.step-inline.completed .step-number-inline {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.step-connector {
+  width: 50px;
+  height: 1px;
+  background-color: #333;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.step-connector.completed {
+  background-color: #4CAF50;
+}
+
+@media (max-width: 600px) {
+  .register-steps-inline {
+    width: 90%;
+    padding: 0.5rem;
+  }
+  
+  .step-label-inline {
+    font-size: 11px;
+  }
+  
+  .step-number-inline {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    margin-right: 4px;
+  }
+  
+  .step-connector {
+    width: 15px;
+    margin: 0 4px;
+  }
+}

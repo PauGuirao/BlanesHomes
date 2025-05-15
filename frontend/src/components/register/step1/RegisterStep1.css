@@ -1,0 +1,303 @@
+.register-step1-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.register-form-data-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.app-title {
+  color: #ff5722;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.app-tagline {
+  color: #aaa;
+  font-size: 14px;
+  margin: 0;
+}
+
+.register-form-title {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.register-subtitle {
+  color: #aaa;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.register-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  color: #ddd;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.register-form input {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #fff;
+  padding: 14px 16px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.register-form input:focus {
+  border-color: #ff5722;
+  box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.2);
+}
+
+.register-button {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.register-button:hover {
+  background-color: #e64a19;
+}
+
+.register-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.register-form-error {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.password-strength-container {
+  margin-top: 8px;
+}
+
+.password-strength {
+  height: 4px;
+  background-color: #333;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.password-strength-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.password-strength-bar.weak {
+  width: 33%;
+  background-color: #f44336;
+}
+
+.password-strength-bar.medium {
+  width: 66%;
+  background-color: #ff9800;
+}
+
+.password-strength-bar.strong {
+  width: 100%;
+  background-color: #4caf50;
+}
+
+.password-strength-text {
+  font-size: 12px;
+  text-align: right;
+  color: #aaa;
+}
+
+.register-footer {
+  margin-top: 30px;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.login-link {
+  color: #ff5722;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.login-link:hover {
+  color: #e64a19;
+  text-decoration: underline;
+}
+
+.register-features {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #333;
+}
+
+.feature-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 30%;
+}
+
+.feature-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.feature-text {
+  color: #aaa;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .register-form-data-container {
+    padding: 30px 20px;
+    width: 85%;
+  }
+  
+  .register-features {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .feature-register {
+    width: 100%;
+    flex-direction: row;
+    text-align: left;
+    gap: 10px;
+  }
+  
+  .feature-icon {
+    margin-bottom: 0;
+  }
+}
+
+/* Add these styles for the verification container */
+.verification-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.verification-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.verification-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.verification-title {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.verification-message {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.verification-message strong {
+  color: #ff5722;
+  font-weight: 600;
+}
+
+.verification-instructions {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.verification-actions {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.verification-help {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.resend-link {
+  color: #ff5722;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.resend-link:hover {
+  text-decoration: underline;
+}
+
+.verification-login-link {
+  display: inline-block;
+  background-color: #ff5722;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.verification-login-link:hover {
+  background-color: #e64a19;
+}

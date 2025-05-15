@@ -3,11 +3,16 @@ import axios from "axios";
 import { jsPDF } from 'jspdf';
 import { autoTable } from 'jspdf-autotable';
 import "./PisoForm.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 
 import ExportModal from "../common/ExportModal";
 
 
 function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId }) {  // Add currentAgencyId prop
+  // Add state for locking the form
+  const [isLocked, setIsLocked] = useState(false);
+  
   const [formData, setFormData] = useState({
     metros: "",
     habitaciones: "",
@@ -70,8 +75,47 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
   // Add state to track if user's agency properties are found
   const [hasAgencyProperties, setHasAgencyProperties] = useState(true);
 
+  // Add a function to handle the lock/unlock
+  const toggleLock = () => {
+    setIsLocked(!isLocked);
+    // If locking, save the current state to localStorage
+    if (!isLocked) {
+      localStorage.setItem('pisoFormState', JSON.stringify({
+        formData,
+        precioEstimado,
+        sugerencias,
+        searchAttempted
+      }));
+    } else {
+      // If unlocking, remove from localStorage
+      localStorage.removeItem('pisoFormState');
+    }
+  };
+
+  // Load saved state on component mount
+  useEffect(() => {
+    const savedState = localStorage.getItem('pisoFormState');
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      setFormData(parsedState.formData);
+      setPrecioEstimado(parsedState.precioEstimado);
+      setSugerencias(parsedState.sugerencias);
+      setSearchAttempted(parsedState.searchAttempted);
+      setSimilarPisos(parsedState.sugerencias);
+      setIsLocked(true);
+    }
+  }, [setSimilarPisos]);
+
+  // Modify handleSubmit to respect the lock
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // If the form is locked, show a message and don't proceed
+    if (isLocked) {
+      alert("El formulario está bloqueado. Desbloquéalo para realizar una nueva búsqueda.");
+      return;
+    }
+    
     setSearchAttempted(true);
     try {
       const res = await axios.post(
@@ -152,21 +196,72 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
     doc.setFontSize(14);
     doc.text(exportOnlyAgencyProps ? "Your Agency Properties:" : "Recommended Properties:", 10, 70);
     
-    autoTable(doc,{
-      startY: 75,
-      head: [['#', 'Type', 'Zone', 'Size (m²)', 'Rooms', 'Bathrooms', 'Price (€)', 'Similarity (%)']],
-      body: propertiesToExport.map((p, index) => [
-        index + 1,
-        p.tipo,
-        p.zona,
-        p.metros,
-        p.habitaciones,
-        p.baños,
-        p.precio.toLocaleString(),
-        p.puntuacion.toFixed(1)
-      ]),
-      theme: 'grid',
-      styles: { fontSize: 10 }
+    // Starting Y position for the first property
+    let yPosition = 80;
+    
+    // Loop through each property and create a block for it
+    propertiesToExport.forEach((property, index) => {
+      // Add a new page if there's not enough space
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      // Property number and title
+      doc.setFontSize(12);
+      doc.setFont(undefined, 'bold');
+      doc.text(`Property ${index + 1}: ${property.tipo.charAt(0).toUpperCase() + property.tipo.slice(1)} in ${property.zona}`, 10, yPosition);
+      yPosition += 8;
+      
+      // Property details
+      doc.setFont(undefined, 'normal');
+      doc.setFontSize(10);
+      doc.text(`Price: ${property.precio.toLocaleString()} €`, 15, yPosition);
+      yPosition += 6;
+      doc.text(`Size: ${property.metros} m² | Rooms: ${property.habitaciones} | Bathrooms: ${property.baños}`, 15, yPosition);
+      yPosition += 6;
+      doc.text(`Similarity: ${property.puntuacion.toFixed(1)}%`, 15, yPosition);
+      yPosition += 6;
+      doc.text(`Agency: ${property.anunciante || "Private Agency"}`, 15, yPosition);
+      yPosition += 6;
+      
+      // Property URL
+      if (property.url) {
+        doc.setTextColor(0, 0, 255);
+        doc.textWithLink('View Property Online', 15, yPosition, { url: property.url });
+        doc.setTextColor(0, 0, 0);
+      } else {
+        doc.text('URL: Not available', 15, yPosition);
+      }
+      yPosition += 8;
+      
+      // Extras section
+      doc.setFont(undefined, 'bold');
+      doc.text('Extras:', 15, yPosition);
+      doc.setFont(undefined, 'normal');
+      yPosition += 6;
+      
+      // List all extras
+      const extras = [];
+      if (property.garaje === 1) extras.push('Garage');
+      if (property.piscina === 1) extras.push('Pool');
+      if (property.terraza === 1) extras.push('Terrace');
+      if (property.balcon === 1) extras.push('Balcony');
+      if (property.ascensor === 1) extras.push('Elevator');
+      if (property.aire_acondicionado === 1) extras.push('Air Conditioning');
+      if (property.jardin === 1) extras.push('Garden');
+      
+      if (extras.length > 0) {
+        doc.text(extras.join(', '), 20, yPosition);
+      } else {
+        doc.text('No extras available', 20, yPosition);
+      }
+      
+      // Add separator line
+      yPosition += 10;
+      doc.setDrawColor(200, 200, 200);
+      doc.line(10, yPosition, 200, yPosition);
+      yPosition += 15;
     });
 
     // Save the PDF
@@ -175,16 +270,29 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
 
   return (
     <div className="piso-form">
-      <h2>Busca una vivienda</h2>
+      <div className="piso-form-header">
+        <h2>Busca una vivienda</h2>
+        <button 
+          type="button" 
+          className={`lock-button ${isLocked ? 'locked' : 'unlocked'}`}
+          onClick={toggleLock}
+          title={isLocked ? "Desbloquear formulario" : "Bloquear formulario"}
+        >
+          <FontAwesomeIcon icon={isLocked ? faLock : faLockOpen} />
+        </button>
+      </div>
+      
       <form onSubmit={handleSubmit}>
+        {/* Form fields should be disabled when locked */}
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="metros">Zona</label>
+            <label htmlFor="zona">Zona</label>
             <select
               name="zona"
               value={formData.zona}
               onChange={handleChange}
               required
+              disabled={isLocked}
             >
               <option value="Centre">Centre</option>
               <option value="La Plantera">La Plantera</option>
@@ -222,28 +330,37 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
               placeholder="Metros cuadrados"
               value={formData.metros}
               onChange={handleChange}
+              min="0"
+              onInvalid={(e) => e.target.setCustomValidity('Por favor, introduce un valor de 0 o superior')}
+              onInput={(e) => e.target.setCustomValidity('')}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="metros">Habitaciones</label>
+            <label htmlFor="habitaciones">Habitaciones</label>
             <input
               type="number"
               name="habitaciones"
               placeholder="Nº de habitaciones"
               value={formData.habitaciones}
               onChange={handleChange}
+              min="0"
+              onInvalid={(e) => e.target.setCustomValidity('Por favor, introduce un valor de 0 o superior')}
+              onInput={(e) => e.target.setCustomValidity('')}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="metros">Baños</label>
+            <label htmlFor="baños">Baños</label>
             <input
               type="number"
               name="baños"
               placeholder="Nº de baños"
               value={formData.baños}
               onChange={handleChange}
+              min="0"
+              onInvalid={(e) => e.target.setCustomValidity('Por favor, introduce un valor de 0 o superior')}
+              onInput={(e) => e.target.setCustomValidity('')}
               required
             />
           </div>
@@ -286,7 +403,9 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
             </div>
           </div>
         )}
-        <button type="submit" className="submit-button">Buscar</button>
+        <button type="submit" className="submit-button" disabled={isLocked}>
+          {isLocked ? "Formulario bloqueado" : "Buscar"}
+        </button>
       </form>
 
       {precioEstimado !== null && (

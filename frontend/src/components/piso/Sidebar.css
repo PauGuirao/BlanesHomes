@@ -2,6 +2,7 @@
   width: 350px;
 }
 .sidebar h2 {
+  text-align: left;
   font-size: 1.4rem;
   font-weight: 700;
   margin-top: 0px;
@@ -327,4 +328,16 @@
   font-size: 0.8em;
   color: #7f8c8d;
   font-weight: normal;
+}
+
+.idealista-link {
+  margin-left: 10px;
+  font-size: 0.8em;
+  color: #00a65a;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.idealista-link:hover {
+  color: #008d4c;
 }

@@ -4,7 +4,9 @@ import { color_por_zona } from '../../data/zonas';
 import {
     getPriceColor,
     getValorColor,
-    getAgencyColor
+    getAgencyColor,
+    getOcupacionColor,
+    getDensityColor
 } from '../../utils/colorUtils';
 
 export default React.memo(function PisoMarkers({
@@ -72,6 +74,22 @@ export default React.memo(function PisoMarkers({
     return offsetMap;
   }, [pisos]);
 
+  const zoneCounts = useMemo(() => {
+    const counts = {};
+    pisos.forEach(piso => {
+      if (!counts[piso.zona]) {
+        counts[piso.zona] = 0;
+      }
+      counts[piso.zona]++;
+    });
+    return counts;
+  }, [pisos]);
+  
+  // Calculate the maximum count for any zone
+  const maxZoneCount = useMemo(() => {
+    return Math.max(...Object.values(zoneCounts));
+  }, [zoneCounts]);
+
   return (
     <>
       {pisos.map(piso => {
@@ -88,6 +106,10 @@ export default React.memo(function PisoMarkers({
             color = getValorColor(piso.valoracion_score ?? 0, valorScale);
         } else if (viewMode === 'vendedor') {
             color = getAgencyColor(piso.anunciante);
+        } else if (viewMode ==='ocupacion') {
+            color = getOcupacionColor(piso.ocupado);
+        } else if (viewMode ==='densidad') {
+            color = getDensityColor(zoneCounts[piso.zona] || 0, maxZoneCount);
         }
         
         // Apply offset to coordinates if needed

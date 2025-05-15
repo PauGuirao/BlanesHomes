@@ -22,7 +22,6 @@ const VendorView = ({ onClose, onPisoClick, onSelectAgency }) => {
       .then(response => {
         setVendors(response.data.vendedores);
         setGeneralStats(response.data.stats);
-        calculateGeneralStats(response.data);
         setLoading(false);
       })
       .catch(error => {
@@ -46,7 +45,7 @@ const VendorView = ({ onClose, onPisoClick, onSelectAgency }) => {
 
   return (
     <div className="vendor-view">
-      <h2>Agency Overview</h2>
+      <h2>Agencias</h2>
       
       <div className="zona-stats">
         <div className="stat-group">

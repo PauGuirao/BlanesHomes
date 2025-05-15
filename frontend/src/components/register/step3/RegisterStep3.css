@@ -1,0 +1,216 @@
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.pricing-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 280px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  border: 2px solid #2a2a2a;
+}
+
+.pricing-card.selected {
+  border-color: #ff5722;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.pricing-card.premium {
+  border-color: #444;
+}
+
+.pricing-card.premium.selected {
+  border-color: #ff5722;
+}
+
+.most-popular {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pricing-header {
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.pricing-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.period {
+  font-size: 1rem;
+  color: #aaa;
+  margin-left: 0.5rem;
+}
+
+.pricing-billing {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.subscribe-button {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subscribe-button:hover {
+  background-color: #e64a19;
+}
+
+.pricing-features {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  color: #ddd;
+  font-size: 0.9rem;
+}
+
+.feature.highlight {
+  color: #ff5722;
+  font-weight: 500;
+}
+
+.check {
+  margin-right: 0.5rem;
+  color: #ff5722;
+  font-weight: bold;
+}
+
+.pricing-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: space-between;
+}
+
+.back-button {
+  background-color: transparent;
+  color: #ddd;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 1;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.register-button {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 2;
+}
+
+.register-button:hover {
+  background-color: #e64a19;
+}
+
+.register-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .pricing-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pricing-card {
+    max-width: 100%;
+  }
+}
+
+/* Make sure the register title is styled properly */
+.register-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.register-error {
+  background-color: rgba(255, 87, 34, 0.1);
+  color: #ff5722;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.plan-instruction {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
