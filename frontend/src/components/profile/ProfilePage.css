@@ -2,7 +2,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .profile-header {
@@ -88,7 +88,7 @@
 }
 
 .data-label {
-  color: #aaa;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -163,7 +163,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #ddd;
+  color: var(--text-secondary);
 }
 
 .form-group input {
@@ -171,15 +171,15 @@
   padding: 0.8rem;
   border-radius: 8px;
   border: 1px solid #333;
-  background-color: #2a2a2a;
-  color: white;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   font-size: 1rem;
 }
 
 .form-group small {
   display: block;
   margin-top: 0.5rem;
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 0.85rem;
 }
 
@@ -219,7 +219,7 @@
   text-align: center;
   padding: 3rem;
   font-size: 1.2rem;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 600px) {
@@ -332,13 +332,13 @@
 /* For dark mode if your app supports it */
 @media (prefers-color-scheme: dark) {
   .back-button {
-    color: #aaa;
+    color: var(--text-secondary);
     border-color: #444;
   }
   
   .back-button:hover {
     background-color: #333;
-    color: #fff;
+    color: var(--text-primary);
   }
   
   .profile-config-section {

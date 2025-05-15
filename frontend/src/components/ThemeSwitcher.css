@@ -1,0 +1,22 @@
+.theme-toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--button-bg, #333);
+  color: var(--button-text, #fff);
+  border: 1px solid var(--border-color, #444);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+  background: var(--button-hover-bg, #444);
+}
+
+.theme-toggle-button svg {
+  font-size: 16px;
+}
+
+/* Light theme specific styles will be applied via CSS variables */

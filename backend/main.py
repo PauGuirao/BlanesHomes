@@ -163,14 +163,36 @@ def get_vendedores():
     agencia_dominante = anunciantes_count[~anunciantes_count.index.str.contains("particular_", na=False)].index[0]
     propiedades_dominante = anunciantes_count[agencia_dominante]
 
-    # Group data by vendor
-    vendedores = df.groupby("anunciante").agg({
+    # Calculate time on market and new listings per month if date columns exist
+    has_dates = "fecha_publicacion" in df.columns
+    
+    if has_dates:
+        # Convert to datetime
+        df["fecha_publicacion"] = pd.to_datetime(df["fecha_publicacion"], errors='coerce')
+        
+        # Calculate days on market
+        df["dias_mercado"] = (datetime.now() - df["fecha_publicacion"]).dt.days
+        
+        # Calculate new listings per month (last 30 days)
+        current_date = datetime.now()
+        thirty_days_ago = current_date - pd.Timedelta(days=30)
+        df["es_nuevo"] = df["fecha_publicacion"] >= thirty_days_ago
+
+    # Group data by vendor with additional metrics
+    agg_dict = {
         "id": "count",
         "precio": ["mean", "min", "max"],
         "metros": "mean",
         "tipo": lambda x: x.value_counts().to_dict(),
         "zona": lambda x: x.value_counts().to_dict(),
-    }).reset_index()
+    }
+    
+    # Add time-based metrics if available
+    if has_dates:
+        agg_dict["dias_mercado"] = "mean"
+        agg_dict["es_nuevo"] = "sum"
+    
+    vendedores = df.groupby("anunciante").agg(agg_dict).reset_index()
 
     # Calculate general stats
     stats = {
@@ -186,17 +208,33 @@ def get_vendedores():
     }
 
     # Rename columns for clarity
-    vendedores.columns = [
-        "nombre", "total_propiedades", "precio_medio", 
-        "precio_min", "precio_max", "metros_medio",
-        "tipos", "zonas"
+    base_columns = [
+        "nombre",
+        "total_propiedades",
+        "precio_medio", 
+        "precio_min",
+        "precio_max",
+        "metros_medio",
+        "tipos",
+        "zonas"
     ]
+    
+    # Add time-based columns if available
+    if has_dates:
+        base_columns.extend(["tiempo_medio_mercado", "nuevos_al_mes"])
+    
+    vendedores.columns = base_columns
 
     # Round numeric values
     vendedores["precio_medio"] = vendedores["precio_medio"].round(2)
     vendedores["precio_min"] = vendedores["precio_min"].round(2)
     vendedores["precio_max"] = vendedores["precio_max"].round(2)
     vendedores["metros_medio"] = vendedores["metros_medio"].round(1)
+    
+    if has_dates:
+        vendedores["tiempo_medio_mercado"] = vendedores["tiempo_medio_mercado"].round(0)
+        # Ensure nuevos_al_mes is an integer
+        vendedores["nuevos_al_mes"] = vendedores["nuevos_al_mes"].fillna(0).astype(int)
 
     return {
         "stats": stats,
@@ -213,11 +251,47 @@ def get_vendedor(nombre: str):
             status_code=404
         )
 
-    # Convert .value_counts() dicts a tipos nativos
+    # Convert .value_counts() dicts to native types
     tipos = {str(k): int(v) for k, v in vendedor_df["tipo"].value_counts().to_dict().items()}
     zonas = {str(k): int(v) for k, v in vendedor_df["zona"].value_counts().to_dict().items()}
 
-    # Convertir propiedades a lista limpia
+    # Calculate time on market and new listings per month if date columns exist
+    tiempo_medio_mercado = None
+    nuevos_al_mes = 0
+    promedio_mensual_6meses = None
+    if "fecha_publicacion" in vendedor_df.columns:
+        # Convert to datetime
+        vendedor_df["fecha_publicacion"] = pd.to_datetime(vendedor_df["fecha_publicacion"], errors='coerce')
+        
+        # Filter out rows with invalid dates
+        valid_dates = vendedor_df[vendedor_df["fecha_publicacion"].notnull()]
+        
+        if not valid_dates.empty:
+            # Calculate days on market
+            valid_dates["dias_mercado"] = (datetime.now() - valid_dates["fecha_publicacion"]).dt.days
+            tiempo_medio_mercado = round(float(valid_dates["dias_mercado"].mean()), 0)
+            
+            # Calculate new listings per month (last 30 days)
+            current_date = datetime.now()
+            thirty_days_ago = current_date - pd.Timedelta(days=30)
+            nuevos_al_mes = int(sum(valid_dates["fecha_publicacion"] >= thirty_days_ago))
+            print(nuevos_al_mes)
+
+            # Calculate new listings per month (last 6 days)
+            six_months_ago = current_date - pd.Timedelta(days=180)
+            recent_properties = valid_dates[valid_dates["fecha_publicacion"] >= six_months_ago]
+            if not recent_properties.empty:
+                # Group by month and count
+                monthly_counts = recent_properties.groupby(recent_properties["fecha_publicacion"].dt.to_period("M")).size()
+                
+                # Calculate average (if we have data for at least one month)
+                if len(monthly_counts) > 0:
+                    promedio_mensual_6meses = round(float(monthly_counts.mean()), 1)
+
+    # Calculate price per m²
+    precio_m2_medio = round(float(vendedor_df["precio"].sum() / vendedor_df["metros"].sum()), 2)
+
+    # Convert properties to clean list
     propiedades = vendedor_df[[
         'id', 'tipo', 'zona', 'precio', 'metros',
         'habitaciones', 'baños', 'categoria_valor'
@@ -230,6 +304,10 @@ def get_vendedor(nombre: str):
         "precio_min": round(float(vendedor_df["precio"].min()), 2),
         "precio_max": round(float(vendedor_df["precio"].max()), 2),
         "metros_medio": round(float(vendedor_df["metros"].mean()), 1),
+        "precio_m2_medio": precio_m2_medio,
+        "tiempo_medio_mercado": tiempo_medio_mercado,
+        "nuevos_al_mes": nuevos_al_mes,
+        "promedio_mensual_6meses": promedio_mensual_6meses,
         "tipos": tipos,
         "zonas": zonas,
         "propiedades": propiedades

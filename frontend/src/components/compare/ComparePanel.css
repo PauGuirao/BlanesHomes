@@ -45,7 +45,7 @@
 
 .compare-value {
   font-size: 14px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .compare-price {
@@ -184,7 +184,7 @@
 .price-chart-container {
   margin: 20px 0;
   padding: 15px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   border: 1px solid #444;
 }
@@ -231,7 +231,7 @@
 .tooltip-label {
   margin: 0 0 5px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .tooltip-precio, .tooltip-estimado {
@@ -259,7 +259,7 @@
   flex: 1;
   padding: 10px;
   background-color: #2a2a2a;
-  color: #fff;
+  color: var(--text-primary);
   border: 1px solid #444;
   border-radius: 4px;
   cursor: pointer;
@@ -303,7 +303,7 @@
   flex: 1;
   min-width: 280px;
   padding: 15px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   border: 1px solid #444;
 }

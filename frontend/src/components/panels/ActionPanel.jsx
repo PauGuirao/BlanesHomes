@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import VendorView from '../views/VendorView';
 import './ActionPanel.css';
 
 const ActionPanel = ({ onClose, visible, children }) => {

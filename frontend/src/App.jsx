@@ -4,6 +4,8 @@ import axios from "axios";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import './styles/themes.css';
 
 // ----------------------- Styles ---------------------- //
 import "./App.css";
@@ -356,208 +358,210 @@ function App() {
     }
   };
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />}/>
-        <Route path="/register" element={<Register />}/>
-        <Route path="/dashboard/new" element={<DashboardNew />} />
-        <Route path="/forgot-password" element={<ForgotPassword/>} />
-        <Route path="/reset-password" element={<ResetPassword/>} />
-        <Route path="/complete-payment" element={<CompletePayment />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/success" element={<SuccessPage />} />
-        <Route path="/login" element={!session ? <LoginForm onLoginSuccess={setSession} /> : <Navigate to="/dashboard" />} />
-        <Route path="/dashboard" element={
-          !session ? <Navigate to="/login" /> : (
-            <>
-              <div>
-              {/* ----------- NAVBAR ------------- */}
-                <Navbar
-                  onAbrirFormulario={() => {
-                    resetAllStates();
-                    setActiveSidePanel("pisoform");
-                  }}
-                  onAbrirUrlForm={() => {
-                    resetAllStates();
-                    setActiveSidePanel("urlform");
-                  }}
-                  onAbrirComparator={() => {
-                    resetAllStates();
-                    setActiveSidePanel("compare");
-                  }}
-                  onAbrirVendor={() => {
-                    resetAllStates();
-                    setActiveSidePanel("vendor");
-                  }}
-                  onAnalizaMiAgencia={() => {
-                    resetAllStates();
-                    setActiveSidePanel("analisisAgencia");
-                  }}
-                  onAbrirParticulares={() => {
-                    resetAllStates();
-                    setActiveSidePanel("particulares");
-                  }}
-                  comparateCount={comparePisos.length}
-                  user={session.user}
-                  agencia={session.agencia}
-                  onLogout={handleLogout}
-                  selectedCity={selectedCity}
-                  availableCities={availableCities}
-                  onCityChange={setSelectedCity}
-                />
-              
-              {/* City Selector - Remove this section */}
-              
-              {/* ----------- VIEW SELECTOR ------------- */}
-              <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
-              <button
-                className="list-button"
-                onClick={() => setMostrarListado(!mostrarListado)}
-              >
-                <FontAwesomeIcon icon={faEye} />
-              </button>
-              {/* ---------------- MAPA ------------------ */}
-              <MapContainer
-                center={centro}
-                zoom={14}
-                ref={mapRef}
-                style={{ height: "calc(100vh - 60px)", width: "100vw" }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution="&copy; OpenStreetMap contributors"
-                />
-
-                <Suspense fallback={null}>
-                  {/* Dibujar polígonos de zonas */}
-                  <ZonaPolygons
-                    zonas={cityZonas}
-                    selectedZona={zonaSeleccionada}
-                    onZoneClick={handleZoneClick}
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />}/>
+          <Route path="/register" element={<Register />}/>
+          <Route path="/dashboard/new" element={<DashboardNew />} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path="/reset-password" element={<ResetPassword/>} />
+          <Route path="/complete-payment" element={<CompletePayment />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/login" element={!session ? <LoginForm onLoginSuccess={setSession} /> : <Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={
+            !session ? <Navigate to="/login" /> : (
+              <>
+                <div>
+                {/* ----------- NAVBAR ------------- */}
+                  <Navbar
+                    onAbrirFormulario={() => {
+                      resetAllStates();
+                      setActiveSidePanel("pisoform");
+                    }}
+                    onAbrirUrlForm={() => {
+                      resetAllStates();
+                      setActiveSidePanel("urlform");
+                    }}
+                    onAbrirComparator={() => {
+                      resetAllStates();
+                      setActiveSidePanel("compare");
+                    }}
+                    onAbrirVendor={() => {
+                      resetAllStates();
+                      setActiveSidePanel("vendor");
+                    }}
+                    onAnalizaMiAgencia={() => {
+                      resetAllStates();
+                      setActiveSidePanel("analisisAgencia");
+                    }}
+                    onAbrirParticulares={() => {
+                      resetAllStates();
+                      setActiveSidePanel("particulares");
+                    }}
+                    comparateCount={comparePisos.length}
+                    user={session.user}
+                    agencia={session.agencia}
+                    onLogout={handleLogout}
+                    selectedCity={selectedCity}
+                    availableCities={availableCities}
+                    onCityChange={setSelectedCity}
                   />
-                  {/* Dibujar pisos */}
-                  {viewMode === "densidad" ? (
-                      <HeatmapLayer 
-                      pisos={filteredPisos} 
-                      intensity={3}
-                      radius={25}
-                      blur={15}
+                
+                {/* City Selector - Remove this section */}
+                
+                {/* ----------- VIEW SELECTOR ------------- */}
+                <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
+                <button
+                  className="list-button"
+                  onClick={() => setMostrarListado(!mostrarListado)}
+                >
+                  <FontAwesomeIcon icon={faEye} />
+                </button>
+                {/* ---------------- MAPA ------------------ */}
+                <MapContainer
+                  center={centro}
+                  zoom={14}
+                  ref={mapRef}
+                  style={{ height: "calc(100vh - 60px)", width: "100vw" }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution="&copy; OpenStreetMap contributors"
+                  />
+
+                  <Suspense fallback={null}>
+                    {/* Dibujar polígonos de zonas */}
+                    <ZonaPolygons
+                      zonas={cityZonas}
+                      selectedZona={zonaSeleccionada}
+                      onZoneClick={handleZoneClick}
                     />
-                  ) : (
-                    <PisoMarkers
-                    pisos={mapPisos}
+                    {/* Dibujar pisos */}
+                    {viewMode === "densidad" ? (
+                        <HeatmapLayer 
+                        pisos={filteredPisos} 
+                        intensity={3}
+                        radius={25}
+                        blur={15}
+                      />
+                    ) : (
+                      <PisoMarkers
+                      pisos={mapPisos}
+                      viewMode={viewMode}
+                      selected={pisoSeleccionado}
+                      comparing={comparePisos}
+                      similar={similarPisos} // Pass similarPisos to PisoMarkers
+                      onMarkerClick={handleMarkerClick}
+                      showCompareTooltips={activeSidePanel === 'compare'}
+                      showSimilarTooltips={activeSidePanel === 'pisoform' || localStorage.getItem('pisoFormState') !== null}
+                      priceScale={priceScale}
+                      valorScale={valorScale}
+                      selectedAgency={selectedAgency} 
+                    />
+                    )}
+                  </Suspense>
+
+                  {/* Dibujar la leyenda */}
+                  <Legend
                     viewMode={viewMode}
-                    selected={pisoSeleccionado}
-                    comparing={comparePisos}
-                    similar={similarPisos} // Pass similarPisos to PisoMarkers
-                    onMarkerClick={handleMarkerClick}
-                    showCompareTooltips={activeSidePanel === 'compare'}
-                    showSimilarTooltips={activeSidePanel === 'pisoform' || localStorage.getItem('pisoFormState') !== null}
-                    priceScale={priceScale}
-                    valorScale={valorScale}
-                    selectedAgency={selectedAgency} 
+                    color_por_zona={color_por_zona}
+                    min={viewMode === "valoracion" ? minValoracion : min}
+                    max={viewMode === "valoracion" ? maxValoracion : max}
+                    pisos={pisos}
+                    colorScale={viewMode === "valoracion"? valorScale : priceScale}
                   />
+
+                  {/* Gestionar el reset del mapa */}
+                  <MapClickReset
+                    zonaSeleccionada={zonaSeleccionada}
+                    onOutsideClick={() => {
+                      setZonaSeleccionada(null);
+                      setCentroZona(null);
+                      mapRef.current?.flyTo(centro, 14);
+                    }}
+                  />
+
+                  {/* 1) Zona panel: pan to the computed zone center */}
+                  {activeSidePanel === "zona" && centroZona && (
+                    <MapCenter center={centroZona} zoom={15} animate={true} />
                   )}
-                </Suspense>
 
-                {/* Dibujar la leyenda */}
-                <Legend
-                  viewMode={viewMode}
-                  color_por_zona={color_por_zona}
-                  min={viewMode === "valoracion" ? minValoracion : min}
-                  max={viewMode === "valoracion" ? maxValoracion : max}
-                  pisos={pisos}
-                  colorScale={viewMode === "valoracion"? valorScale : priceScale}
-                />
+                  {/* 2) Piso panel: zoom in on the single piso */}
+                  {activeSidePanel === "piso" && pisoSeleccionado && (
+                    <MapCenter
+                      center={[pisoSeleccionado.latitud, pisoSeleccionado.longitud]}
+                      zoom={mapRef.current ? mapRef.current.getZoom() : 14}
+                      offset={[150, 0]}
+                      animate={true}
+                    />
+                  )}
 
-                {/* Gestionar el reset del mapa */}
-                <MapClickReset
-                  zonaSeleccionada={zonaSeleccionada}
-                  onOutsideClick={() => {
-                    setZonaSeleccionada(null);
-                    setCentroZona(null);
-                    mapRef.current?.flyTo(centro, 14);
-                  }}
-                />
+                  {/* 3) Compare panel: fit to all compare‐selected pisos */}
+                  {activeSidePanel === "compare" && comparePisos.length > 0 && (
+                    <MapCenter
+                      bounds={comparePisos.map(p => [p.latitud, p.longitud])}
+                      padding={[50, 50]}
+                      animate={true}
+                    />
+                  )}
+                </MapContainer>
 
-                {/* 1) Zona panel: pan to the computed zone center */}
-                {activeSidePanel === "zona" && centroZona && (
-                  <MapCenter center={centroZona} zoom={15} animate={true} />
-                )}
+                {/* ----------- SIDEBARS ------------- */}
+                <ActionPanel visible={!!activeSidePanel} onClose={() => {resetAllStates();}}> 
+                  {activeSidePanel === "zona" && (
+                    <ZonaSidebar zona={zonaSeleccionada} pisos={pisos} onSugerenciaClick={handleSugerenciaClick} session={session}/>
+                  )}
+                  {activeSidePanel === "piso" && (
+                    <Sidebar piso={pisoSeleccionado} onCompare={handleAddToCompare}/>
+                  )}
+                  {activeSidePanel === "compare" && (
+                    <ComparePanel visible={true} pisos={comparePisos} onRemove={(id) => setComparePisos(comparePisos.filter((p) => p.id !== id))}/>
+                  )}
+                  {activeSidePanel === "vendor" && (
+                    <VendorView onSelectAgency={handleAgencyClick} />
+                  )}
+                  {activeSidePanel === "pisoform" && (
+                    <PisoForm onSugerenciaClick={handleSugerenciaClick} setSimilarPisos={setSimilarPisos} currentAgencyId={session.agency.id} />
+                  )}
+                  {activeSidePanel === "urlform" && (
+                    <UrlForm onSugerenciaClick={handleSugerenciaClick}/>
+                  )}
+                  {activeSidePanel === "analisisAgencia" && (
+                    <AgencyAnalysis userId={session.user.id} setAgencyFilter={setAgencyFilter} />
+                  )}
+                  {activeSidePanel === "particulares" && (
+                    <ParticularesView session={session} pisos={pisos} setAgencyFilter={setAgencyFilter} />
+                  )}
+                </ActionPanel>
 
-                {/* 2) Piso panel: zoom in on the single piso */}
-                {activeSidePanel === "piso" && pisoSeleccionado && (
-                  <MapCenter
-                    center={[pisoSeleccionado.latitud, pisoSeleccionado.longitud]}
-                    zoom={mapRef.current ? mapRef.current.getZoom() : 14}
-                    offset={[150, 0]}
-                    animate={true}
+                {mostrarListado && (
+                  <ListSidebar
+                    pisos={pisos}
+                    filteredPisos={filteredPisos}
+                    onFilterChange={setFilteredPisos}
+                    viewMode={viewMode}
+                    color_por_zona={color_por_zona}
+                    minPrice={20000}
+                    maxPrice={5000000}
+                    onClose={() => setMostrarListado(false)}
+                    onPisoClick={(piso) => {
+                      setPisoSeleccionado(piso);
+                      setActiveSidePanel("piso"); // Set the active side panel to "piso"
+                      if (mapRef.current) {
+                        mapRef.current.setView([piso.latitud, piso.longitud], 16);
+                      }
+                    }}
                   />
                 )}
-
-                {/* 3) Compare panel: fit to all compare‐selected pisos */}
-                {activeSidePanel === "compare" && comparePisos.length > 0 && (
-                  <MapCenter
-                    bounds={comparePisos.map(p => [p.latitud, p.longitud])}
-                    padding={[50, 50]}
-                    animate={true}
-                  />
-                )}
-              </MapContainer>
-
-              {/* ----------- SIDEBARS ------------- */}
-              <ActionPanel visible={!!activeSidePanel} onClose={() => {resetAllStates();}}> 
-                {activeSidePanel === "zona" && (
-                  <ZonaSidebar zona={zonaSeleccionada} pisos={pisos} onSugerenciaClick={handleSugerenciaClick} session={session}/>
-                )}
-                {activeSidePanel === "piso" && (
-                  <Sidebar piso={pisoSeleccionado} onCompare={handleAddToCompare}/>
-                )}
-                {activeSidePanel === "compare" && (
-                  <ComparePanel visible={true} pisos={comparePisos} onRemove={(id) => setComparePisos(comparePisos.filter((p) => p.id !== id))}/>
-                )}
-                {activeSidePanel === "vendor" && (
-                  <VendorView onSelectAgency={handleAgencyClick} />
-                )}
-                {activeSidePanel === "pisoform" && (
-                  <PisoForm onSugerenciaClick={handleSugerenciaClick} setSimilarPisos={setSimilarPisos} currentAgencyId={session.agency.id} />
-                )}
-                {activeSidePanel === "urlform" && (
-                  <UrlForm onSugerenciaClick={handleSugerenciaClick}/>
-                )}
-                {activeSidePanel === "analisisAgencia" && (
-                  <AgencyAnalysis userId={session.user.id} setAgencyFilter={setAgencyFilter} />
-                )}
-                {activeSidePanel === "particulares" && (
-                  <ParticularesView session={session} pisos={pisos} setAgencyFilter={setAgencyFilter} />
-                )}
-              </ActionPanel>
-
-              {mostrarListado && (
-                <ListSidebar
-                  pisos={pisos}
-                  filteredPisos={filteredPisos}
-                  onFilterChange={setFilteredPisos}
-                  viewMode={viewMode}
-                  color_por_zona={color_por_zona}
-                  minPrice={20000}
-                  maxPrice={5000000}
-                  onClose={() => setMostrarListado(false)}
-                  onPisoClick={(piso) => {
-                    setPisoSeleccionado(piso);
-                    setActiveSidePanel("piso"); // Set the active side panel to "piso"
-                    if (mapRef.current) {
-                      mapRef.current.setView([piso.latitud, piso.longitud], 16);
-                    }
-                  }}
-                />
-              )}
-              </div>
-            </>
-          )
-        } />
-      </Routes>
-    </Router>
+                </div>
+              </>
+            )
+          } />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

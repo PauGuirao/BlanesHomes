@@ -1,5 +1,5 @@
 .sidebar {
-  width: 350px;
+  width: 400px;
 }
 .sidebar h2 {
   text-align: left;
@@ -7,7 +7,7 @@
   font-weight: 700;
   margin-top: 0px;
   margin-bottom: 12px;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .sidebar-section-3 {
@@ -25,7 +25,7 @@
 }
 
 .sidebar-attribute {
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border: 1px solid #444;
   padding: 10px;
   border-radius: 8px;
@@ -43,7 +43,7 @@
 
 .sidebar-attribute span {
   font-size: 1.1rem;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .sidebar p {
@@ -54,7 +54,7 @@
 /* Update the general button style to be more specific */
 .sidebar .submit-button {
   background-color: #e74c3c;
-  color: #fff;
+  color: var(--text-primary);
   border: none;
   padding: 12px;
   width: 100%;
@@ -82,7 +82,7 @@
 
 .ia-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: var(--text-secondary);
   text-transform: uppercase;
   margin-bottom: 6px;
   font-weight: 500;
@@ -138,7 +138,7 @@
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 4px;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .reco-info {
@@ -201,7 +201,7 @@
 /* Hover */
 .sidebar-tabs button:hover {
   background-color: #333;
-  color: #fff;
+  color: var(--text-primary);
   border-color: #555;
 }
 
@@ -233,7 +233,7 @@
 .sidebar-extras {
   margin: 10px 0;
   padding: 10px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
 }
 
@@ -269,7 +269,7 @@
   margin: 0;
   font-size: 10px;
   text-align: center;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 /* No extras message */
@@ -320,7 +320,7 @@
 .predicted-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 5px;
 }
 

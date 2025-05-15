@@ -5,11 +5,14 @@ import { autoTable } from 'jspdf-autotable';
 import "./PisoForm.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next'; // Add this import
 
 import ExportModal from "../common/ExportModal";
 
 
 function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId }) {  // Add currentAgencyId prop
+  const { t } = useTranslation(); // Add translation hook
+  
   // Add state for locking the form
   const [isLocked, setIsLocked] = useState(false);
   
@@ -112,7 +115,7 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
     
     // If the form is locked, show a message and don't proceed
     if (isLocked) {
-      alert("El formulario está bloqueado. Desbloquéalo para realizar una nueva búsqueda.");
+      alert(t('pisoForm.formLocked', 'El formulario está bloqueado. Desbloquéalo para realizar una nueva búsqueda.'));
       return;
     }
     
@@ -160,24 +163,24 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
     
     // If exporting only agency properties but none exist
     if (exportOnlyAgencyProps && propertiesToExport.length === 0) {
-      alert("No hay propiedades de tu agencia para exportar.");
+      alert(t('pisoForm.noAgencyProps', 'No hay propiedades de tu agencia para exportar.'));
       return;
     }
 
     // Title
     doc.setFontSize(18);
-    doc.text("Real Estate Analysis Report", 10, 10);
+    doc.text(t('pisoForm.reportTitle', 'Real Estate Analysis Report'), 10, 10);
 
     // Date
     doc.setFontSize(12);
-    doc.text(`Date of Analysis: ${currentDate}`, 10, 20);
+    doc.text(`${t('pisoForm.dateOfAnalysis', 'Date of Analysis')}: ${currentDate}`, 10, 20);
 
     // Base Property
     doc.setFontSize(14);
-    doc.text("Base Property Searched:", 10, 30);
+    doc.text(t('pisoForm.basePropertySearched', 'Base Property Searched:'), 10, 30);
     doc.setFontSize(12);
     doc.text(
-      `Type: ${formData.tipo}, Zone: ${formData.zona}, Size: ${formData.metros} m², Rooms: ${formData.habitaciones}, Bathrooms: ${formData.baños}`,
+      `${t('pisoForm.type', 'Type')}: ${t(`propertyTypes.${formData.tipo}`, formData.tipo)}, ${t('pisoForm.zone', 'Zone')}: ${formData.zona}, ${t('pisoForm.size', 'Size')}: ${formData.metros} m², ${t('pisoForm.rooms', 'Rooms')}: ${formData.habitaciones}, ${t('pisoForm.bathrooms', 'Bathrooms')}: ${formData.baños}`,
       10,
       40
     );
@@ -265,18 +268,18 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
     });
 
     // Save the PDF
-    doc.save("RealEstateAnalysisReport.pdf");
+    doc.save(t('pisoForm.reportFilename', 'RealEstateAnalysisReport.pdf'));
   };
 
   return (
     <div className="piso-form">
       <div className="piso-form-header">
-        <h2>Busca una vivienda</h2>
+        <h2>{t('pisoForm.searchProperty', 'Busca una vivienda')}</h2>
         <button 
           type="button" 
           className={`lock-button ${isLocked ? 'locked' : 'unlocked'}`}
           onClick={toggleLock}
-          title={isLocked ? "Desbloquear formulario" : "Bloquear formulario"}
+          title={isLocked ? t('pisoForm.unlockForm', 'Desbloquear formulario') : t('pisoForm.lockForm', 'Bloquear formulario')}
         >
           <FontAwesomeIcon icon={isLocked ? faLock : faLockOpen} />
         </button>
@@ -286,7 +289,7 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
         {/* Form fields should be disabled when locked */}
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="zona">Zona</label>
+            <label htmlFor="zona">{t('pisoForm.zone', 'Zona')}</label>
             <select
               name="zona"
               value={formData.zona}
@@ -294,79 +297,83 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
               required
               disabled={isLocked}
             >
-              <option value="Centre">Centre</option>
-              <option value="La Plantera">La Plantera</option>
-              <option value="Els Pins">Els Pins</option>
-              <option value="Els Pavos">Els Pavos</option>
-              <option value="Semicentre">Semicentre</option>
+              <option value="Centre">{t('zones.Centre', 'Centre')}</option>
+              <option value="La Plantera">{t('zones.LaPlantera', 'La Plantera')}</option>
+              <option value="Els Pins">{t('zones.ElsPins', 'Els Pins')}</option>
+              <option value="Els Pavos">{t('zones.ElsPavos', 'Els Pavos')}</option>
+              <option value="Semicentre">{t('zones.Semicentre', 'Semicentre')}</option>
               <option value="Mont Ferrant - Sant Joan">
-                Mont Ferrant - Sant Joan
+                {t('zones.MontFerrantSantJoan', 'Mont Ferrant - Sant Joan')}
               </option>
               <option value="Cala Sant Francesc - Santa Cristina">
-                Cala Sant Francesc - Santa Cristina
+                {t('zones.CalaSantFrancescSantaCristina', 'Cala Sant Francesc - Santa Cristina')}
               </option>
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="metros">Tipo</label>
+            <label htmlFor="tipo">{t('pisoForm.type', 'Tipo')}</label>
             <select
               name="tipo"
               value={formData.tipo}
               onChange={handleChange}
               required
+              disabled={isLocked}
             >
-              <option value="piso">Piso</option>
-              <option value="casa">Casa</option>
-              <option value="estudio">Estudio</option>
+              <option value="piso">{t('propertyTypes.piso', 'Piso')}</option>
+              <option value="casa">{t('propertyTypes.casa', 'Casa')}</option>
+              <option value="estudio">{t('propertyTypes.estudio', 'Estudio')}</option>
             </select>
           </div>
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="metros">Metros</label>
+            <label htmlFor="metros">{t('pisoForm.meters', 'Metros')}</label>
             <input
               type="number"
               name="metros"
-              placeholder="Metros cuadrados"
+              placeholder={t('pisoForm.squareMeters', 'Metros cuadrados')}
               value={formData.metros}
               onChange={handleChange}
               min="0"
-              onInvalid={(e) => e.target.setCustomValidity('Por favor, introduce un valor de 0 o superior')}
+              onInvalid={(e) => e.target.setCustomValidity(t('pisoForm.invalidValue', 'Por favor, introduce un valor de 0 o superior'))}
               onInput={(e) => e.target.setCustomValidity('')}
               required
+              disabled={isLocked}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="habitaciones">Habitaciones</label>
+            <label htmlFor="habitaciones">{t('pisoForm.rooms', 'Habitaciones')}</label>
             <input
               type="number"
               name="habitaciones"
-              placeholder="Nº de habitaciones"
+              placeholder={t('pisoForm.numberOfRooms', 'Nº de habitaciones')}
               value={formData.habitaciones}
               onChange={handleChange}
               min="0"
-              onInvalid={(e) => e.target.setCustomValidity('Por favor, introduce un valor de 0 o superior')}
+              onInvalid={(e) => e.target.setCustomValidity(t('pisoForm.invalidValue', 'Por favor, introduce un valor de 0 o superior'))}
               onInput={(e) => e.target.setCustomValidity('')}
               required
+              disabled={isLocked}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="baños">Baños</label>
+            <label htmlFor="baños">{t('pisoForm.bathrooms', 'Baños')}</label>
             <input
               type="number"
               name="baños"
-              placeholder="Nº de baños"
+              placeholder={t('pisoForm.numberOfBathrooms', 'Nº de baños')}
               value={formData.baños}
               onChange={handleChange}
               min="0"
-              onInvalid={(e) => e.target.setCustomValidity('Por favor, introduce un valor de 0 o superior')}
+              onInvalid={(e) => e.target.setCustomValidity(t('pisoForm.invalidValue', 'Por favor, introduce un valor de 0 o superior'))}
               onInput={(e) => e.target.setCustomValidity('')}
               required
+              disabled={isLocked}
             />
           </div>
         </div>
         <div className="extras-header">
-          <label className="section-title">Extras</label>
+          <label className="section-title">{t('pisoForm.extras', 'Extras')}</label>
           <button type="button" className="toggle-button" onClick={() => setShowExtras(!showExtras)}>
             {showExtras ? "▲" : "▼"}
           </button>
@@ -394,9 +401,10 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
                         [name]: e.target.checked,
                       })
                     }
+                    disabled={isLocked}
                   />
                   <span className="extra-text">
-                    {name.charAt(0).toUpperCase() + name.slice(1).replace("_", " ")}
+                    {t(`extras.${name}`, name.charAt(0).toUpperCase() + name.slice(1).replace("_", " "))}
                   </span>
                 </label>
               ))}
@@ -404,14 +412,14 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
           </div>
         )}
         <button type="submit" className="submit-button" disabled={isLocked}>
-          {isLocked ? "Formulario bloqueado" : "Buscar"}
+          {isLocked ? t('pisoForm.formLocked', 'Formulario bloqueado') : t('pisoForm.search', 'Buscar')}
         </button>
       </form>
 
       {precioEstimado !== null && (
         <div className="resultado-section">
           <div className="resultado-card">
-            <h3>Nuestra IA estima un rango de</h3>
+            <h3>{t('pisoForm.aiEstimatesRange', 'Nuestra IA estima un rango de')}</h3>
             <div className="precio-estimado">
               {precioEstimado.lowerBound.toLocaleString()} € - {precioEstimado.upperBound.toLocaleString()} €
             </div>
@@ -422,8 +430,10 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
       {sugerencias.length > 0 ? (
         <div className="sugerencias-section">
           <div className="sugerencias-header">
-            <h3>Similares ({sugerencias.length})</h3>
-            <button onClick={handleExportClick} className="export-button">Exportar Analisis</button>
+            <h3>{t('pisoForm.similar', 'Similares')} ({sugerencias.length})</h3>
+            <button onClick={handleExportClick} className="export-button">
+              {t('pisoForm.exportAnalysis', 'Exportar Analisis')}
+            </button>
           </div>
           <ExportModal 
             isOpen={showExportModal}
@@ -438,7 +448,7 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
             <div className="agency-notice">
               <div className="agency-notice-content">
                 <span className="agency-notice-icon">⚠️</span>
-                <p>No hay viviendas en tu agencia que coincidan con estos criterios de búsqueda.</p>
+                <p>{t('pisoForm.noAgencyMatch', 'No hay viviendas en tu agencia que coincidan con estos criterios de búsqueda.')}</p>
               </div>
             </div>
           )}
@@ -455,31 +465,31 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
                   tabIndex={0}
                 >
                   <div className="sugerencia-tipo">
-                    {p.tipo} en {p.zona}
+                    {t(`propertyTypes.${p.tipo}`, p.tipo)} {t('pisoForm.in', 'en')} {p.zona}
                     <span className="similarity-score">{p.puntuacion.toFixed(1)}%</span>
-                    {p.agencia_id === currentAgencyId && <span className="agency-badge">Tu agencia</span>}
+                    {p.agencia_id === currentAgencyId && <span className="agency-badge">{t('pisoForm.yourAgency', 'Tu agencia')}</span>}
                   </div>
                   <div className="sugerencia-detalles">
                     <span>{p.metros} m²</span>
-                    <span>{p.habitaciones} hab</span>
-                    <span>{p.baños} baños</span>
+                    <span>{p.habitaciones} {t('pisoForm.roomsShort', 'hab')}</span>
+                    <span>{p.baños} {t('pisoForm.bathroomsShort', 'baños')}</span>
                   </div>
                   <div className="sugerencia-precio-row">
                     <div className="sugerencia-precio">{p.precio.toLocaleString()} €</div>
                     <div className="sugerencia-agencia">
-                      {p.anunciante || "Agencia privada"}
+                      {p.anunciante || t('pisoForm.privateAgency', 'Agencia privada')}
                     </div>
                   </div>
                 </div>
                 {selectedPiso === p && (
                   <div className="piso-details-panel">
-                    <h3>Detalles del Piso</h3>
-                    <p>Precio: {selectedPiso.precio.toLocaleString()} €</p>
-                    <p>Precio estimado: {precioEstimado.lowerBound.toLocaleString()} € - {precioEstimado.upperBound.toLocaleString()} €</p>
-                    <p>Extras:</p>
+                    <h3>{t('pisoForm.propertyDetails', 'Detalles del Piso')}</h3>
+                    <p>{t('pisoForm.price', 'Precio')}: {selectedPiso.precio.toLocaleString()} €</p>
+                    <p>{t('pisoForm.estimatedPrice', 'Precio estimado')}: {precioEstimado.lowerBound.toLocaleString()} € - {precioEstimado.upperBound.toLocaleString()} €</p>
+                    <p>{t('pisoForm.extras', 'Extras')}:</p>
                     <ul>
                       {Object.keys(formData).filter(key => formData[key] === true).map(extra => (
-                        <li key={extra}>{extra.charAt(0).toUpperCase() + extra.slice(1).replace("_", " ")}</li>
+                        <li key={extra}>{t(`extras.${extra}`, extra.charAt(0).toUpperCase() + extra.slice(1).replace("_", " "))}</li>
                       ))}
                     </ul>
                   </div>
@@ -491,8 +501,8 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
       ) : searchAttempted && (
         <div className="no-sugerencias resultado-section">
           <div className="resultado-card">
-            <h3>No se encontraron viviendas similares.</h3>
-            <p>Intenta ajustar tus criterios de búsqueda.</p>
+            <h3>{t('pisoForm.noSimilarProperties', 'No se encontraron viviendas similares.')}</h3>
+            <p>{t('pisoForm.adjustCriteria', 'Intenta ajustar tus criterios de búsqueda.')}</p>
           </div>
         </div>
       )}

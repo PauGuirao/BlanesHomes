@@ -3,6 +3,7 @@ import FilterBlock from "./FilterBlock";
 import "./ListSidebar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next'; // Add translation import
 import {
   createPriceScale, 
   createValorScale,
@@ -14,6 +15,7 @@ import {
 } from '../utils/colorUtils';
 
 const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 5000000, onClose, onPisoClick, filteredPisos, onFilterChange }) => {
+  const { t } = useTranslation(); // Add translation hook
   const [showFilters, setShowFilters] = useState(false);
 
   const initialFilters = {
@@ -170,7 +172,7 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
   return (
     <div className="list-sidebar">
       <div className="list-header">
-        <h2>Propiedades en Blanes</h2>
+        <h2>{t('listSidebar.propertiesInBlanes', 'Propiedades en Blanes')}</h2>
         <div className="filter-buttons">
             <button 
                 className={`filter-icon-button ${hasActiveFilters ? 'has-filters' : ''}`}
@@ -192,17 +194,17 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
 
       <div className="list-info">
         <div className="list-subtitle">
-          Ordenado por {
-            viewMode === "zona" ? "zona" : 
-            viewMode === "precio" ? "precio" : 
-            viewMode === "valoracion" ? "valoración" : 
-            viewMode === "ocupacion" ? "ocupación" :
-            viewMode === "densidad" ? "densidad de anuncios" :
-            "agencia"
+          {t('listSidebar.sortedBy', 'Ordenado por')} {
+            viewMode === "zona" ? t('listSidebar.zone', 'zona') : 
+            viewMode === "precio" ? t('listSidebar.price', 'precio') : 
+            viewMode === "valoracion" ? t('listSidebar.rating', 'valoración') : 
+            viewMode === "ocupacion" ? t('listSidebar.occupancy', 'ocupación') :
+            viewMode === "densidad" ? t('listSidebar.adDensity', 'densidad de anuncios') :
+            t('listSidebar.agency', 'agencia')
           }
         </div>
         <div className="results-count">
-          <span className="results-number">{filteredPisos.length}</span> propiedades
+          <span className="results-number">{filteredPisos.length}</span> {t('listSidebar.properties', 'propiedades')}
         </div>
       </div>
 
@@ -215,6 +217,13 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
               ? Math.max(...Object.values(groupedPisos).map(group => group.length))
               : 0;
               
+            // Translate occupancy status
+            const translatedGroupName = viewMode === "ocupacion" 
+              ? (groupName === "Ocupado" ? t('listSidebar.occupied', 'Ocupado') : t('listSidebar.available', 'Disponible'))
+              : viewMode === "zona" || viewMode === "densidad" 
+                ? t(`zones.${groupName}`, groupName)
+                : groupName;
+              
             return (
               <div key={groupName} className="piso-group">
                 <div className="group-header" style={{
@@ -226,7 +235,7 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
                         ? getDensityColor(groupPisos.length, maxCount)
                         : getAgencyColor(groupName)
                 }}>
-                  {groupName} <span className="group-count">({groupPisos.length})</span>
+                  {translatedGroupName} <span className="group-count">({groupPisos.length})</span>
                   {viewMode === "densidad" && (
                     <div className="density-bar" style={{ width: `${(groupPisos.length / maxCount) * 100}%` }}></div>
                   )}
@@ -246,18 +255,22 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
                       }}
                     ></div>
                     <div className="piso-info">
-                      <div className="piso-tipo">{piso.tipo}</div>
-                      {viewMode !== "zona" && viewMode !== "densidad" && <div className="piso-zona">Zona: {piso.zona}</div>}
-                      {viewMode !== "vendedor" && piso.anunciante && <div className="piso-agencia">{piso.anunciante}</div>}
+                      <div className="piso-tipo">{t(`propertyTypes.${piso.tipo}`, piso.tipo)}</div>
+                      {viewMode !== "zona" && viewMode !== "densidad" && 
+                        <div className="piso-zona">{t('listSidebar.zone', 'Zona')}: {t(`zones.${piso.zona}`, piso.zona)}</div>
+                      }
+                      {viewMode !== "vendedor" && piso.anunciante && 
+                        <div className="piso-agencia">{piso.anunciante}</div>
+                      }
                       <div className="piso-details">
                         <span>
-                          {piso.metros}m² • {piso.habitaciones} hab • {piso.baños} baños
+                          {piso.metros}m² • {piso.habitaciones} {t('listSidebar.roomsShort', 'hab')} • {piso.baños} {t('listSidebar.bathsShort', 'baños')}
                         </span>
                         <span className="piso-precio">{piso.precio.toLocaleString()}€</span>
                       </div>
                       {viewMode === "valoracion" && piso.valoracion_score && (
                         <div className="piso-valoracion">
-                          Valoración: <span>{(Math.max(0, Math.min(10, 7 - (piso.valoracion_score * 10)))).toFixed(1)}/10</span>
+                          {t('listSidebar.rating', 'Valoración')}: <span>{(Math.max(0, Math.min(10, 7 - (piso.valoracion_score * 10)))).toFixed(1)}/10</span>
                         </div>
                       )}
                     </div>
@@ -269,7 +282,7 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
         }
         
         {/* Render non-grouped properties (for price and rating views) */}
-        {viewMode !== "zona" && viewMode !== "vendedor" && viewMode !== "ocupacion" && 
+        {viewMode !== "zona" && viewMode !== "vendedor" && viewMode !== "ocupacion" && viewMode !== "densidad" && 
           organizedPisos.map((piso, index) => (
             <div key={index} className="piso-item" onClick={() => onPisoClick(piso)}>
               <div
@@ -281,18 +294,18 @@ const ListSidebar = ({ pisos, viewMode, color_por_zona, min = 20000, max = 50000
                 }}
               ></div>
               <div className="piso-info">
-                <div className="piso-tipo">{piso.tipo}</div>
-                <div className="piso-zona">Zona: {piso.zona}</div>
+                <div className="piso-tipo">{t(`propertyTypes.${piso.tipo}`, piso.tipo)}</div>
+                <div className="piso-zona">{t('listSidebar.zone', 'Zona')}: {t(`zones.${piso.zona}`, piso.zona)}</div>
                 {piso.anunciante && <div className="piso-agencia">{piso.anunciante}</div>}
                 <div className="piso-details">
                   <span>
-                    {piso.metros}m² • {piso.habitaciones} hab • {piso.baños} baños
+                    {piso.metros}m² • {piso.habitaciones} {t('listSidebar.roomsShort', 'hab')} • {piso.baños} {t('listSidebar.bathsShort', 'baños')}
                   </span>
                   <span className="piso-precio">{piso.precio.toLocaleString()}€</span>
                 </div>
                 {viewMode === "valoracion" && piso.valoracion_score && (
                   <div className="piso-valoracion">
-                    Valoración: <span>{(Math.max(0, Math.min(10, 7 - (piso.valoracion_score * 10)))).toFixed(1)}/10</span>
+                    {t('listSidebar.rating', 'Valoración')}: <span>{(Math.max(0, Math.min(10, 7 - (piso.valoracion_score * 10)))).toFixed(1)}/10</span>
                   </div>
                 )}
               </div>

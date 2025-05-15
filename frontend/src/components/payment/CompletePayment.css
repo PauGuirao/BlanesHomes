@@ -29,13 +29,13 @@
 }
 
 .app-tagline {
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 14px;
   margin: 0;
 }
 
 .payment-title {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 8px;
@@ -43,7 +43,7 @@
 }
 
 .payment-subtitle {
-  color: #aaa;
+  color: var(--text-secondary);
   text-align: center;
   margin-top: 0;
   margin-bottom: 30px;
@@ -93,7 +93,7 @@
 }
 
 .plan-header h3 {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 20px;
   margin: 0 0 10px 0;
 }
@@ -157,7 +157,7 @@
 .payment-footer {
   margin-top: 20px;
   text-align: center;
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -171,7 +171,7 @@
 }
 
 .loading-spinner {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 18px;
   text-align: center;
 }

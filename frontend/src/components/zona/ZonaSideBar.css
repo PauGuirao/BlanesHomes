@@ -24,7 +24,7 @@
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 12px;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .zona-stats {
@@ -35,14 +35,14 @@
 }
 
 .stat-group {
-  background: #1c1c1c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   padding: 15px;
   border: 1px solid #444;
 }
 
 .stat-group h3 {
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 14px;
   margin-bottom: 12px;
 }
@@ -66,11 +66,11 @@
 }
 
 .stat-label {
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .stat-value {
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 500;
 }
 .zona-sidebar__listado{
@@ -87,7 +87,7 @@
   display: flex;
   align-items: center;
   padding: 12px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border: 1px solid #444;
   border-radius: 8px;
   cursor: pointer;
@@ -106,14 +106,14 @@
   font-size: 15px;
   font-weight: 500;
   margin-bottom: 2px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .piso-details {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .piso-precio {
@@ -136,10 +136,10 @@
 .zona-tab {
   flex: 1;
   padding: 12px;
-  background: #1c1c1c;
+  background-color: var(--bg-secondary);
   border: 1px solid #444;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s ease;

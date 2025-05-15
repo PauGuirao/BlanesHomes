@@ -4,8 +4,7 @@
   top: 60px; /* Below navbar */
   width: 400px;
   height: calc(100vh - 108px);
-  background-color: #333;
-  color: #f1f1f1;
+  background-color: var(--bg-primary);
   box-shadow: -2px 0 8px rgba(0,0,0,0.3);
   z-index: 1000;
   overflow-y: auto;
@@ -18,11 +17,11 @@
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 8px;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .list-subtitle {
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -36,11 +35,12 @@
   display: flex;
   align-items: center;
   padding: 12px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   border: 1px solid #444;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-bottom: 8px;
 }
 
 .piso-item:hover {
@@ -63,7 +63,7 @@
   font-size: 15px;
   font-weight: 500;
   margin-bottom: 2px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .piso-zona {
@@ -76,7 +76,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .piso-precio {
@@ -125,7 +125,7 @@
 
 
 .price-filter {
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border: 1px solid #444;
   padding: 15px;
   border-radius: 8px;
@@ -139,7 +139,7 @@
 .price-labels {
   display: flex;
   justify-content: space-between;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -189,7 +189,7 @@
 
 .results-count {
   font-size: 13px;
-  color: #aaa;
+  color: var(--text-secondary);
   text-align: right;
 }
 
@@ -197,10 +197,10 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border: 1px solid #444;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.2s ease;
@@ -223,7 +223,7 @@
 .filter-icon-button {
   background: none;
   border: none;
-  color: #aaa;
+  color: var(--text-secondary);
   padding: 8px;
   cursor: pointer;
   font-size: 16px;
@@ -238,7 +238,7 @@
 
 .filter-icon-button:hover {
   background-color: #252525;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .filter-icon-button.has-filters {
@@ -276,7 +276,7 @@
   background-color: #2c3e50;
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -289,7 +289,7 @@
 
 
 .filter-block {
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border: 1px solid #444;
   border-radius: 8px;
   padding: 20px;
@@ -303,7 +303,7 @@
 
 .price-section h3 {
   font-size: 14px;
-  color: #aaa;
+  color: var(--text-secondary);
   margin-bottom: 15px;
 }
 
@@ -322,7 +322,7 @@
 
 .filter-item label {
   font-size: 12px;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .filter-item select {
@@ -331,7 +331,7 @@
   border-radius: 4px;
   background-color: #252525;
   border: 1px solid #444;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -344,7 +344,7 @@
   background-color: #2c3e50;
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;

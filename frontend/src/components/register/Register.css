@@ -40,7 +40,7 @@
   height: 32px;
   border-radius: 50%;
   background-color: #333;
-  color: #aaa;
+  color: var(--text-secondary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,7 +51,7 @@
 
 .step-label {
   font-size: 12px;
-  color: #aaa;
+  color: var(--text-secondary);
   text-align: center;
   transition: all 0.3s ease;
 }
@@ -85,7 +85,7 @@
 .register-title {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1.9rem;
 }
 
@@ -185,7 +185,7 @@
   height: 24px;
   border-radius: 50%;
   background-color: #333;
-  color: #aaa;
+  color: var(--text-secondary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -197,7 +197,7 @@
 
 .step-label-inline {
   font-size: 13px;
-  color: #aaa;
+  color: var(--text-secondary);
   transition: all 0.3s ease;
 }
 

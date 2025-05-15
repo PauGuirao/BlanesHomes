@@ -1,7 +1,7 @@
 .leaflet-tooltip.comparing-tooltip {
   background-color: #242424;
   border-radius: 5px;
-  color: #ffffff;
+  color: var(--text-primary);
   padding: 2px 6px;
   font-size: 12px;
   font-weight: bold;

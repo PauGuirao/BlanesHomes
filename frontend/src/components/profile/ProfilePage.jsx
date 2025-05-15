@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabase/supabaseClient';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -22,6 +23,7 @@ const ProfilePage = () => {
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language || 'es');
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     fetchProfile();
@@ -286,7 +288,21 @@ const ProfilePage = () => {
               </div>
             </div>
             
-            {/* You can add more configuration options here */}
+            {/* Theme Switcher */}
+            <div className="config-item">
+              <span className="config-label">{t('profile.theme', 'Tema')}</span>
+              <div className="theme-switcher">
+                <button 
+                  className={`theme-button ${theme === 'light' ? 'active' : ''}`}
+                  onClick={() => toggleTheme()}
+                >
+                  {theme === 'light' ? 
+                    <span>🌙 {t('profile.darkMode', 'Modo Oscuro')}</span> : 
+                    <span>☀️ {t('profile.lightMode', 'Modo Claro')}</span>
+                  }
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

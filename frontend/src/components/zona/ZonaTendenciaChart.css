@@ -4,7 +4,7 @@
 
 .zona-tendencia-chart h4 {
   margin: 0 0 20px 0;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 16px;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .tooltip-price {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 5px 0;

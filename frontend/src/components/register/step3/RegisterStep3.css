@@ -81,13 +81,13 @@
 
 .period {
   font-size: 1rem;
-  color: #aaa;
+  color: var(--text-secondary);
   margin-left: 0.5rem;
 }
 
 .pricing-billing {
   font-size: 0.8rem;
-  color: #aaa;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
   line-height: 1.4;
 }
@@ -211,6 +211,6 @@
 
 .plan-instruction {
   text-align: center;
-  color: #aaa;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
 }

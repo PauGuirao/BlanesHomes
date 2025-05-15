@@ -3,12 +3,15 @@
   right: 0;
   top: 60px; /* debajo del navbar */
   height: calc(100vh - 108px);
-  background-color: #333;
+  background-color: var(--bg-primary);
   color: #f1f1f1;
   padding: 24px;
   overflow-y: auto;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
   z-index: 1001;
+}
+.action-panel h2 {
+  color: var(--text-primary);
 }
 .close-button {
   position: absolute;

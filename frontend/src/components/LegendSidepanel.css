@@ -17,7 +17,7 @@
   margin-top: 5px;
   margin-bottom: 15px;
   font-size: 18px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .pisos-list {
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   padding: 12px;
-  background-color: #1c1c1c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   border: 1px solid #444;
 }
