@@ -29,3 +29,10 @@
 .close-button:hover {
   color: #e74c3c;
 }
+
+@media (max-width: 769px) {
+  .action-panel {
+    top:55%;
+    height: auto;
+  }
+}

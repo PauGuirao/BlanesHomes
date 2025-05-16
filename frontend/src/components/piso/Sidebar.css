@@ -341,3 +341,9 @@
 .idealista-link:hover {
   color: #008d4c;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: auto;
+  }
+}

@@ -12,3 +12,18 @@
 .leaflet-tooltip.comparing-tooltip::before {
   border-top-color: #242424 !important; /* flecha hacia abajo (si direction='top') */
 }
+
+@media (max-width: 769px) {
+  .panels-container {
+    height: calc(50vh - 60px);
+    overflow-y: auto;
+  }
+  .map-container {
+    height: 50vh;
+    flex: none;
+  }
+  .side-container {
+    height: calc(50vh - 60px);
+    overflow-y: auto;
+  }
+}

@@ -343,6 +343,9 @@
   .charts-container {
     flex-direction: column;
   }
+  .compare-panel{
+    width: auto;
+  }
 }
 
 

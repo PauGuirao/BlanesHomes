@@ -150,27 +150,6 @@ h2, h3, h4 {
   margin: 0 0 12px 0;
 }
 
-@media (max-width: 768px) {
-  .vendor-view {
-    position: absolute;
-    right: 0;
-    top: 50px;
-    width: 350px;
-    height: calc(100vh - 50px);
-    background-color: #333;
-    color: #f1f1f1;
-    padding: 24px;
-    padding-top: 16px;
-    overflow-y: auto;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.3);
-    z-index: 1001;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .zona-stats {
   display: flex;
   flex-direction: column;
@@ -558,16 +537,7 @@ h2, h3, h4 {
 
 /* Media query for smaller screens */
 @media (max-width: 768px) {
-  .stats-grid-container {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  
-  .vendor-detail-expanded {
-    padding: 15px;
-  }
-  
-  .vendor-detail-section {
-    padding: 12px;
+  .vendor-view{
+    width: auto;
   }
 }

@@ -137,21 +137,6 @@
   color: #3498db;
 }
 
-/* Responsive: stack on mobile */
-@media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    height: auto;
-    padding: 10px;
-  }
-  .navbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-    margin-left: 0;
-    margin-top: 8px;
-  }
-}
-
 .comparate-button {
   position: relative;
   background-color: #3498db;
@@ -280,4 +265,110 @@
   border-color: #3498db;
 }
 
+/* Responsive: stack on mobile */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .navbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
+
 /* You may need to adjust these styles to match your existing navbar design */
+
+/* Add these styles to your existing Navbar.css */
+
+/* Mobile navbar styles */
+.navbar-mobile {
+  padding: 5px 10px;
+}
+
+.mobile-navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  color: var(--text-primary);
+}
+
+.mobile-menu-toggle {
+  position: relative;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 200px;
+  padding: 10px;
+}
+
+.mobile-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  margin: 5px 0;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.mobile-menu button:hover {
+  background-color: var(--bg-hover);
+}
+
+.navbar-mobile .navbar-user {
+  margin-left: 0;
+}
+
+.navbar-mobile .user-name {
+  display: none;
+}
+
+.navbar-mobile .user-avatar {
+  width: 35px;
+  height: 35px;
+  font-size: 16px;
+}
+
+.navbar-mobile .navbar-title {
+  font-size: 18px;
+}
+
+.mobile-menu .navbar-city-selector {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.mobile-menu .city-select {
+  width: 100%;
+  padding: 8px;
+}
+
+.mobile-menu .compare-button-action {
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+}

@@ -108,3 +108,9 @@
     display: block;
     margin-bottom: 8px;
   }
+
+  @media (max-width: 768px) {
+    .agency-analysis-container {
+      width: auto;
+    }
+  }

@@ -414,3 +414,14 @@
   font-weight: 600;
   color: #e74c3c;
 }
+
+@media (max-width: 769px) {
+  .list-sidebar {
+    top: 55%;
+    height: auto;
+    width: auto;
+  }
+  .list-button{
+    display: none;
+  }
+}

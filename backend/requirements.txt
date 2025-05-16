@@ -6,3 +6,6 @@ beautifulsoup4
 requests
 undetected-chromedriver
 selenium
+google-generativeai
+xgboost
+stripe
