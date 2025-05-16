@@ -34,7 +34,6 @@ const RegisterStep3 = ({ userData, onBack }) => {
     try {
       // Create a Stripe checkout session
       // Update profile with agency ID and set status to pendiente_pago
-      console.log(formData.agencyId)
       await axios.post("http://localhost:8000/updateProfile", {
         id: userData.id,
         agencia_id: formData.agencyId,

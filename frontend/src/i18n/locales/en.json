@@ -172,5 +172,40 @@
         "priceDifference": "Price Difference",
         "month": "Month",
         "activeListings": "Active Listings"
+      },
+      "sidebar": {
+        "in": "in",
+        "viewOnIdealista": "View on Idealista",
+        "price": "Price",
+        "zone": "Area",
+        "size": "Size",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "extras": "Features",
+        "noExtras": "No features available for this property",
+        "aiEstimates": "Our AI estimates:",
+        "occupiedProperty": "Occupied property",
+        "occupiedDescription": "This property is currently occupied. Check with the agency for more details.",
+        "addToComparison": "Add to comparison",
+        "purchase": "Purchase",
+        "similar": "Similar"
+      },
+      "mortgage": {
+        "downPayment": "Down Payment",
+        "term": "Term",
+        "years": "Years",
+        "interestRate": "Interest Rate",
+        "youWillPay": "You'll pay",
+        "per": "per",
+        "month": "month",
+        "for": "for",
+        "loanSummary": "Loan Summary",
+        "price": "Price",
+        "taxes": "Taxes",
+        "initialTotal": "Initial Total",
+        "financedCapital": "Financed Capital",
+        "monthlyPayment": "Monthly Payment",
+        "totalRepayment": "Total Repayment",
+        "totalInterest": "Total Interest"
       }
 }

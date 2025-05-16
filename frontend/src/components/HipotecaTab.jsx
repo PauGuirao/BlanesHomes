@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./HipotecaTab.css";
+import { useTranslation } from 'react-i18next'; // Add translation import
 
 const HipotecaTab = ({ precio }) => {
+  const { t } = useTranslation(); // Add translation hook
   const [entrada, setEntrada] = useState(20);
   const [plazo, setPlazo] = useState(30);
   const [interes, setInteres] = useState(3.5);
@@ -39,13 +41,13 @@ const HipotecaTab = ({ precio }) => {
       totalDevolver,
       interesesTotales,
     });
-  }, [precio, entrada, plazo, interes]);
+  }, [precio, entrada, plazo, interes, entradaEuros, cuotaMensual]);
 
   return (
     <div className="hipoteca-tab">
       <div className="hipoteca-row-1">
         <div className="hipoteca-slider">
-          <label>💰 Entrada</label>
+          <label>💰 {t('mortgage.downPayment', 'Entrada')}</label>
           <div className="slider-row">
             <input
               type="range"
@@ -64,7 +66,7 @@ const HipotecaTab = ({ precio }) => {
       </div>
       <div className="hipoteca-row">
         <div className="hipoteca-slider">
-          <label>📅 Plazo (Años)</label>
+          <label>📅 {t('mortgage.term', 'Plazo')} ({t('mortgage.years', 'Años')})</label>
           <div className="slider-row">
             <input
               className="slider-hipoteca"
@@ -79,7 +81,7 @@ const HipotecaTab = ({ precio }) => {
           </div>
         </div>
         <div className="hipoteca-slider">
-          <label>🏦 Interés TIN</label>
+          <label>🏦 {t('mortgage.interestRate', 'Interés TIN')}</label>
           <div className="slider-row">
             <input
               className="slider-hipoteca"
@@ -96,50 +98,50 @@ const HipotecaTab = ({ precio }) => {
       </div>
       <div className="hipoteca-resultado">
         <div className="hipoteca-resultado-block">
-          <p>Pagaras</p>
+          <p>{t('mortgage.youWillPay', 'Pagarás')}</p>
           <span>{cuotaMensual.toLocaleString()} €</span>
         </div>
         <div className="hipoteca-resultado-block">
-          <p>al</p>
-          <span>mes</span>
+          <p>{t('mortgage.per', 'al')}</p>
+          <span>{t('mortgage.month', 'mes')}</span>
         </div>
         <div className="hipoteca-resultado-block">
-          <p>durante</p>
-          <span>{plazo} años</span>
+          <p>{t('mortgage.for', 'durante')}</p>
+          <span>{plazo} {t('mortgage.years', 'años')}</span>
         </div>
       </div>
       <div className="hipoteca-resumen">
-        <h4>🧾 Resumen del préstamo</h4>
+        <h4>🧾 {t('mortgage.loanSummary', 'Resumen del préstamo')}</h4>
         <ul>
           <li>
-            💰 <strong>Precio:</strong> {precio.toLocaleString()} €
+            💰 <strong>{t('mortgage.price', 'Precio')}:</strong> {precio.toLocaleString()} €
           </li>
           <li>
-            🔑 <strong>Entrada:</strong>{" "}
+            🔑 <strong>{t('mortgage.downPayment', 'Entrada')}:</strong>{" "}
             {resumenHipoteca.entradaEuros?.toLocaleString()} €
           </li>
           <li>
-            🏛️ <strong>Impuestos:</strong>{" "}
+            🏛️ <strong>{t('mortgage.taxes', 'Impuestos')}:</strong>{" "}
             {resumenHipoteca.impuestos?.toLocaleString()} €
           </li>
           <li>
-            💳 <strong>Total inicial:</strong>{" "}
+            💳 <strong>{t('mortgage.initialTotal', 'Total inicial')}:</strong>{" "}
             {resumenHipoteca.totalInicial?.toLocaleString()} €
           </li>
           <li>
-            🏦 <strong>Capital financiado:</strong>{" "}
+            🏦 <strong>{t('mortgage.financedCapital', 'Capital financiado')}:</strong>{" "}
             {resumenHipoteca.capitalFinanciado?.toLocaleString()} €
           </li>
           <li>
-            📆 <strong>Cuota mensual:</strong> {cuotaMensual?.toLocaleString()}{" "}
+            📆 <strong>{t('mortgage.monthlyPayment', 'Cuota mensual')}:</strong> {cuotaMensual?.toLocaleString()}{" "}
             €
           </li>
           <li>
-            🧮 <strong>Total a devolver:</strong>{" "}
+            🧮 <strong>{t('mortgage.totalRepayment', 'Total a devolver')}:</strong>{" "}
             {resumenHipoteca.totalDevolver?.toLocaleString()} €
           </li>
           <li>
-            💥 <strong>Intereses totales:</strong>{" "}
+            💥 <strong>{t('mortgage.totalInterest', 'Intereses totales')}:</strong>{" "}
             {resumenHipoteca.interesesTotales?.toLocaleString()} €
           </li>
         </ul>

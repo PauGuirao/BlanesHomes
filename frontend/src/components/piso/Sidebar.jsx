@@ -5,8 +5,10 @@ import HipotecaTab from "../HipotecaTab"; // Asegúrate de que la ruta sea corre
 import RecomendadosTab from "../RecomendadosTab";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next'; // Add translation import
 
 const Sidebar = ({ piso, onClose, onCompare }) => {
+  const { t } = useTranslation(); // Add translation hook
   if (!piso) return null;
   const [recomendados, setRecomendados] = useState([]);
   const [tab, setTab] = useState("compra"); // por defecto la tab dinámica
@@ -33,21 +35,20 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
   }, [piso]);
 
   // Capitalize first letter of property type
-  console.log("Tipo de piso:", piso);
   const capitalizedType = piso.tipo.charAt(0).toUpperCase() + piso.tipo.slice(1).toLowerCase();
-  const formattedTitle = capitalizedType;
+  const formattedTitle = t(`propertyTypes.${piso.tipo}`, capitalizedType);
 
   return (
     <div className="sidebar">
       <h2>
-        {formattedTitle} <span className="zona-subtitle">en {piso.zona}</span>
+        {formattedTitle} <span className="zona-subtitle">{t('sidebar.in', 'en')} {t(`zones.${piso.zona}`, piso.zona)}</span>
         {piso.url && (
           <a 
             href={piso.url} 
             target="_blank" 
             rel="noopener noreferrer" 
             className="idealista-link"
-            title="Ver en Idealista"
+            title={t('sidebar.viewOnIdealista', 'Ver en Idealista')}
           >
             <FontAwesomeIcon icon={faExternalLinkAlt} />
           </a>
@@ -56,34 +57,34 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
       <div className="sidebar-section-2">
         <div className="sidebar-attribute">
           <span role="img" aria-label="money">
-            💰 <strong> Precio:</strong>
+            💰 <strong> {t('sidebar.price', 'Precio')}:</strong>
           </span>{" "}
           <p>{piso.precio.toLocaleString()} €</p>
         </div>
         <div className="sidebar-attribute">
           <span role="img" aria-label="lightbulb">
-            📍 <strong>Zona:</strong>
+            📍 <strong>{t('sidebar.zone', 'Zona')}:</strong>
           </span>{" "}
-          <p style={{ fontSize: "14px" }}> {piso.zona}</p>
+          <p style={{ fontSize: "14px" }}> {t(`zones.${piso.zona}`, piso.zona)}</p>
         </div>
       </div>
 
       <div className="sidebar-section-3">
         <div className="sidebar-attribute">
           <span role="img" aria-label="ruler">
-            <strong>Metros:</strong>
+            <strong>{t('sidebar.size', 'Metros')}:</strong>
           </span>{" "}
           <p>{piso.metros} m²</p>
         </div>
         <div className="sidebar-attribute">
           <span role="img" aria-label="ruler">
-            <strong>Habitaciones:</strong>
+            <strong>{t('sidebar.bedrooms', 'Habitaciones')}:</strong>
           </span>{" "}
           <p>{piso.habitaciones}</p>
         </div>
         <div className="sidebar-attribute">
           <span role="img" aria-label="ruler">
-            <strong>Baños:</strong>
+            <strong>{t('sidebar.bathrooms', 'Baños')}:</strong>
           </span>{" "}
           <p>{piso.baños}</p>
         </div>
@@ -91,59 +92,58 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
 
       {/* Extras section - always show */}
       <div className="sidebar-extras">
-        <h3>Extras</h3>
+        <h3>{t('sidebar.extras', 'Extras')}</h3>
         <div className="extras-container">
           {piso.garaje === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="garage">🚗</span>
-              <p>Garaje</p>
+              <p>{t('extras.garaje', 'Garaje')}</p>
             </div>
           )}
           {piso.piscina === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="pool">🏊</span>
-              <p>Piscina</p>
+              <p>{t('extras.piscina', 'Piscina')}</p>
             </div>
           )}
           {piso.terraza === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="terrace">🏞️</span>
-              <p>Terraza</p>
+              <p>{t('extras.terraza', 'Terraza')}</p>
             </div>
           )}
           {piso.ascensor === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="elevator">🔼</span>
-              <p>Ascensor</p>
+              <p>{t('extras.ascensor', 'Ascensor')}</p>
             </div>
           )}
           {piso.balcon === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="balcony">🏙️</span>
-              <p>Balcón</p>
+              <p>{t('extras.balcon', 'Balcón')}</p>
             </div>
           )}
           {piso.aire_acondicionado === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="ac">❄️</span>
-              <p>A/C</p>
+              <p>{t('extras.aire_acondicionado', 'A/C')}</p>
             </div>
           )}
           {piso.jardin === 1 && (
             <div className="extra-item">
               <span role="img" aria-label="garden">🌳</span>
-              <p>Jardín</p>
+              <p>{t('extras.jardin', 'Jardín')}</p>
             </div>
           )}
           {(piso.n_extras === 0) && (
-            <p className="no-extras">No hay extras disponibles para esta propiedad</p>
-            
+            <p className="no-extras">{t('sidebar.noExtras', 'No hay extras disponibles para esta propiedad')}</p>
           )}
         </div>
       </div>
 
       <div className="sidebar-estimacion">
-        <div className="ia-label">🤖 Nuestra IA estima:</div>
+        <div className="ia-label">🤖 {t('sidebar.aiEstimates', 'Nuestra IA estima:')}</div>
         <div className="estimado-precio">
           <span className="predicted-price">{Math.round(piso.precio_estimado).toLocaleString()} €</span>
           <div className="price-difference">
@@ -163,8 +163,8 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
         <div className="sidebar-alert">
           <div className="alert-icon">⚠️</div>
           <div className="alert-content">
-            <div className="alert-title">Propiedad ocupada</div>
-            <div className="alert-description">Esta propiedad está actualmente ocupada. Consulta con la agencia para más detalles.</div>
+            <div className="alert-title">{t('sidebar.occupiedProperty', 'Propiedad ocupada')}</div>
+            <div className="alert-description">{t('sidebar.occupiedDescription', 'Esta propiedad está actualmente ocupada. Consulta con la agencia para más detalles.')}</div>
           </div>
         </div>
       )}
@@ -173,7 +173,7 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
           className="compare-action" 
           onClick={() => onCompare(piso)}
         >
-          🔍 Añadir a comparador
+          🔍 {t('sidebar.addToComparison', 'Añadir a comparador')}
         </button>
 
       {/* 🧭 Selector de pestañas */}
@@ -182,13 +182,13 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
           className={tab === "compra" ? "active" : ""}
           onClick={() => setTab("compra")}
         >
-          🏦 Compra
+          🏦 {t('sidebar.purchase', 'Compra')}
         </button>
         <button
           className={tab === "inversion" ? "active" : ""}
           onClick={() => setTab("inversion")}
         >
-          🔍 Similares
+          🔍 {t('sidebar.similar', 'Similares')}
         </button>
       </div>
       {tab === "compra" && <HipotecaTab precio={piso.precio} />}

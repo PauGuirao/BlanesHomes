@@ -195,7 +195,6 @@ function App() {
       if (loadingSession || !session || !session.token || hasFetchedZonas.current) return;
       hasFetchedZonas.current = true; // ✅ previene ejecución duplicada
 
-      console.log("SESSION 1 AQUI ES:",session);
       try {
         const res = await axios.get(`http://localhost:8000/zonas?ciudad=${selectedCity}`, {
           headers: {
@@ -228,7 +227,6 @@ function App() {
     const fetchPisos = async () => {
       if (loadingSession || !session || !session.token || hasFetchedPisos.current) return;
       hasFetchedPisos.current = true;
-      console.log("SESSION 2 AQUI ES:",session);
       try {
         // Add authorization header with Bearer token
         const res = await axios.get(`http://localhost:8000/pisos?ciudad=${selectedCity}`, {
@@ -402,7 +400,7 @@ function App() {
                     }}
                     comparateCount={comparePisos.length}
                     user={session.user}
-                    agencia={session.agencia}
+                    agencia={session.agency}
                     onLogout={handleLogout}
                     selectedCity={selectedCity}
                     availableCities={availableCities}

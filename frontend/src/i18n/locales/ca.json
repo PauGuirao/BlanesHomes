@@ -172,5 +172,40 @@
     "priceDifference": "Diferència de Preu",
     "month": "Mes",
     "activeListings": "Anuncis Actius"
+  },
+  "sidebar": {
+    "in": "a",
+    "viewOnIdealista": "Veure a Idealista",
+    "price": "Preu",
+    "zone": "Zona",
+    "size": "Metres",
+    "bedrooms": "Habitacions",
+    "bathrooms": "Banys",
+    "extras": "Extres",
+    "noExtras": "No hi ha extres disponibles per a aquesta propietat",
+    "aiEstimates": "La nostra IA estima:",
+    "occupiedProperty": "Propietat ocupada",
+    "occupiedDescription": "Aquesta propietat està actualment ocupada. Consulta amb l'agència per a més detalls.",
+    "addToComparison": "Afegir al comparador",
+    "purchase": "Compra",
+    "similar": "Similars"
+  },
+  "mortgage": {
+    "downPayment": "Entrada",
+    "term": "Termini",
+    "years": "Anys",
+    "interestRate": "Interès TIN",
+    "youWillPay": "Pagaràs",
+    "per": "al",
+    "month": "mes",
+    "for": "durant",
+    "loanSummary": "Resum del préstec",
+    "price": "Preu",
+    "taxes": "Impostos",
+    "initialTotal": "Total inicial",
+    "financedCapital": "Capital finançat",
+    "monthlyPayment": "Quota mensual",
+    "totalRepayment": "Total a retornar",
+    "totalInterest": "Interessos totals"
   }
 }

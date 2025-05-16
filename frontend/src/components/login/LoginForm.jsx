@@ -92,7 +92,7 @@ const LoginForm = ({ onLoginSuccess }) => {
       }
 
       //-------  4.If we reach here, login is successful --------//
-      onLoginSuccess({ user: data.user, agencia: agenciaData });
+      onLoginSuccess({ user: data.user, agency: agenciaData });
 
     } catch (error) {
       if (error.response?.status === 404) {
