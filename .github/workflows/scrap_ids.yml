@@ -1,0 +1,29 @@
+name: Scrap Idealista IDs Daily
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Todos los días a las 03:00 UTC
+  workflow_dispatch:     # Permite ejecución manual
+
+jobs:
+  scrap-ids:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libnss3 libxss1 libatk-bridge2.0-0 libgtk-3-0 libxshmfence1 libgbm1 libasound2-data
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run scraper with xvfb
+        run: xvfb-run python backend/crons/scrapIds.py
