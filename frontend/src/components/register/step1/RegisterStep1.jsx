@@ -5,6 +5,7 @@ import axios from "axios";
 import './RegisterStep1.css';
 
 const RegisterStep1 = ({ userData, onNext }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     name: userData.name || '',
     email: userData.email || '',
@@ -91,7 +92,7 @@ const RegisterStep1 = ({ userData, onNext }) => {
       
       if (authData && authData.user) {
         if (authData.user.identities && authData.user.identities.length > 0) {
-          await axios.post("http://localhost:8000/createProfile", {
+          await axios.post(`${API_URL}/createProfile`, {
             id: authData.user.id,
             nombre: formData.name,
             estado: "desactivado",

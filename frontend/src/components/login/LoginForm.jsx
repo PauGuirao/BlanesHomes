@@ -6,6 +6,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import './LoginForm.css';
 
 const LoginForm = ({ onLoginSuccess }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [searchParams] = useSearchParams();
   const emailFromParams = searchParams.get('email');
   
@@ -47,7 +48,7 @@ const LoginForm = ({ onLoginSuccess }) => {
       setUserData(data);
   
       //------- 2. Check if user's profile has the subscription active -------//
-      const res_pro = await axios.get('http://localhost:8000/get_profile', {
+      const res_pro = await axios.get(`${API_URL}/get_profile`, {
         params: { user_id: data.user.id },
         headers: {
           Authorization: `Bearer ${data.session.access_token}`
@@ -77,7 +78,7 @@ const LoginForm = ({ onLoginSuccess }) => {
       }
 
       //------- 3. Check if user's has an active agency in its profile -------//
-      const res_age = await axios.get('http://localhost:8000/get_profile_agency', {
+      const res_age = await axios.get(`${API_URL}/get_profile_agency`, {
         params: { user_id: data.user.id },
         headers: {
           Authorization: `Bearer ${data.session.access_token}`

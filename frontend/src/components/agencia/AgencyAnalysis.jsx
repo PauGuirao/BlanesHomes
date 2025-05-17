@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } fro
 import { useTranslation } from 'react-i18next'; // Add translation import
 
 const AgencyAnalysis = ({ userId, setAgencyFilter }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { t } = useTranslation(); // Add translation hook
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState(null);
@@ -15,7 +16,7 @@ const AgencyAnalysis = ({ userId, setAgencyFilter }) => {
   useEffect(() => {
     const fetchAnalysis = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/analiza_agencia?user_id=${userId}`);
+        const response = await axios.get(`${API_URL}/analiza_agencia?user_id=${userId}`);
         setAnalysis(response.data);
         setAgencyPisos(response.data.pisos);
         setAgencyFilter(response.data.agencia_nombre);

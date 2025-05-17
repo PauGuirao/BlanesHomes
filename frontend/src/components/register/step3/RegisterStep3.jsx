@@ -4,6 +4,7 @@ import axios from "axios";
 import './RegisterStep3.css';
 
 const RegisterStep3 = ({ userData, onBack }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     agencyId: userData.agencyId || '',
     plan: userData.plan || '',
@@ -34,13 +35,13 @@ const RegisterStep3 = ({ userData, onBack }) => {
     try {
       // Create a Stripe checkout session
       // Update profile with agency ID and set status to pendiente_pago
-      await axios.post("http://localhost:8000/updateProfile", {
+      await axios.post(`${API_URL}/updateProfile`, {
         id: userData.id,
         agencia_id: formData.agencyId,
         estado: "pendiente_pago"
       });
 
-      const response = await axios.post("http://localhost:8000/create-checkout-session", {
+      const response = await axios.post(`${API_URL}/create-checkout-session`, {
         userId: userData.id,
         plan: formData.plan,
         userEmail: userData.email,

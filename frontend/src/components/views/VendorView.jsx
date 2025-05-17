@@ -13,6 +13,7 @@ import {
 } from "recharts";
 
 const VendorView = ({ onClose, onPisoClick, onSelectAgency }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { t } = useTranslation(); // Add translation hook
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -20,7 +21,7 @@ const VendorView = ({ onClose, onPisoClick, onSelectAgency }) => {
   const [generalStats, setGeneralStats] = useState({});
 
   useEffect(() => {
-    axios.get('http://localhost:8000/vendedores')
+    axios.get(`${API_URL}/vendedores`)
       .then(response => {
         setVendors(response.data.vendedores);
         setGeneralStats(response.data.stats);
@@ -34,7 +35,7 @@ const VendorView = ({ onClose, onPisoClick, onSelectAgency }) => {
 
   const loadVendorDetails = (nombre) => {
     setLoading(true);
-    axios.get(`http://localhost:8000/vendedor/${encodeURIComponent(nombre)}`)
+    axios.get(`${API_URL}/vendedor/${encodeURIComponent(nombre)}`)
       .then(response => {
         setSelectedVendor(response.data);
         setLoading(false);

@@ -8,6 +8,7 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next'; // Add translation import
 
 const Sidebar = ({ piso, onClose, onCompare }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { t } = useTranslation(); // Add translation hook
   if (!piso) return null;
   const [recomendados, setRecomendados] = useState([]);
@@ -28,7 +29,7 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
     if (piso) {
       setTab("compra");
       axios
-        .post(`http://localhost:8000/recomendaciones?id=${piso.id}`) // ajusta el parámetro si es necesario
+        .post(`${API_URL}/recomendaciones?id=${piso.id}`) // ajusta el parámetro si es necesario
         .then((res) => setRecomendados(res.data))
         .catch((err) => console.error("Error al cargar recomendaciones", err));
     }

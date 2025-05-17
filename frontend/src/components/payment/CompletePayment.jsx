@@ -5,6 +5,7 @@ import axios from 'axios';
 import './CompletePayment.css';
 
 const CompletePayment = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -53,7 +54,7 @@ const CompletePayment = () => {
 
     try {
       // Call your payment API endpoint
-      const response = await axios.post('http://localhost:8000/create-checkout-session', {
+      const response = await axios.post(`${API_URL}/create-checkout-session`, {
         userId: userData.id,
         email: userData.email,
         plan: selectedPlan

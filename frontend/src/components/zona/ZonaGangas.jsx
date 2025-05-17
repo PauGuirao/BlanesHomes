@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 function ZonaGangas({ zona, onPisoClick }) {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [gangas, setGangas] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8000/zona/gangas?id=${encodeURIComponent(zona)}`)
+    fetch(`${API_URL}/zona/gangas?id=${encodeURIComponent(zona)}`)
       .then((res) => res.json())
       .then((data) => {
         setGangas(data.gangas);

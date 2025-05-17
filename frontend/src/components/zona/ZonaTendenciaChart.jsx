@@ -16,11 +16,11 @@ import "./ZonaTendenciaChart.css";
 
 const ZonaTendenciaChart = ({ zona }) => {
   const [tendenciaData, setTendenciaData] = useState(null);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     if (!zona) return;
 
-    fetch(`http://localhost:8000/zona/tendencia?id=${encodeURIComponent(zona)}`)
+    fetch(`${API_URL}/zona/tendencia?id=${encodeURIComponent(zona)}`)
       .then((res) => res.json())
       .then((data) => {
         setTendenciaData(data);

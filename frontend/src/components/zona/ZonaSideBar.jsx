@@ -7,14 +7,14 @@ import ZonaAgencyData from "./ZonaAgencyData";
 
 function ZonaSidebar({ zona, pisos, onClose, onSugerenciaClick, session }) {
   if (!zona) return null;
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [zonaStats, setZonaStats] = useState(null);
   const [loadingStats, setLoadingStats] = useState(false);
   const [activeTab, setActiveTab] = useState('stats'); // Add this state
 
   useEffect(() => {
     setLoadingStats(true);
-    fetch(`http://localhost:8000/zona?id=${encodeURIComponent(zona)}`)
+    fetch(`${API_URL}/zona?id=${encodeURIComponent(zona)}`)
       .then((res) => res.json())
       .then((data) => {
         setZonaStats(data);

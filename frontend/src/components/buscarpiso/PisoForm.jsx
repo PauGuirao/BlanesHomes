@@ -11,6 +11,7 @@ import ExportModal from "../common/ExportModal";
 
 
 function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId }) {  // Add currentAgencyId prop
+  const API_URL = import.meta.env.VITE_API_URL;
   const { t } = useTranslation(); // Add translation hook
   
   // Add state for locking the form
@@ -122,7 +123,7 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
     setSearchAttempted(true);
     try {
       const res = await axios.post(
-        "http://localhost:8000/estimar_precio",
+        `${API_URL}/estimar_precio`,
         formData
       );
       const estimatedPrice = res.data.precio_estimado;
@@ -132,7 +133,7 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
 
       // Llamar al endpoint de sugerencias
       const sugerenciaRes = await axios.post(
-        "http://localhost:8000/sugerencias",
+        `${API_URL}/sugerencias`,
         {
           ...formData,
           precio_estimado: estimatedPrice,

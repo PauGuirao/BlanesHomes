@@ -4,6 +4,7 @@ import { supabase } from '../../supabase/supabaseClient';
 import './UrlForm.css';
 
 function UrlForm({ onClose, onSugerenciaClick }) {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,7 +31,7 @@ function UrlForm({ onClose, onSugerenciaClick }) {
         setLoading(false);
         return;
       }
-      const response = await axios.get(`http://localhost:8000/analisisLink`, {
+      const response = await axios.get(`${API_URL}/analisisLink`, {
         params: { id },
         headers: {
           Authorization: `Bearer ${session.access_token}`
@@ -60,7 +61,7 @@ function UrlForm({ onClose, onSugerenciaClick }) {
   
   const saveRatingToBackend = async (pisoId, valoracion) => {
     try {
-      const response = await axios.post('http://localhost:8000/saveRating', {
+      const response = await axios.post(`${API_URL}/saveRating`, {
         piso_id: pisoId,
         description_rating: valoracion.descripcion,
         price_rating: valoracion.precio,

@@ -62,6 +62,7 @@ L.Icon.Default.mergeOptions({
 });
 
 function App() {
+  const API_URL = import.meta.env.VITE_API_URL;
   // Add a state to track screen size
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   
@@ -130,7 +131,7 @@ function App() {
 
   const handleSession = async (session) => {
     try {
-      const response = await axios.get('http://localhost:8000/get_profile', {
+      const response = await axios.get(`${API_URL}/get_profile`, {
         params: { user_id: session.user.id },
         headers: {
           Authorization: `Bearer ${session.access_token}`
@@ -141,7 +142,7 @@ function App() {
       setProfileStatus(profileData.estado);
   
       if (profileData.estado === 'pagado') {
-        const res_age = await axios.get('http://localhost:8000/get_profile_agency', {
+        const res_age = await axios.get(`${API_URL}/get_profile_agency`, {
           params: { user_id: session.user.id },
           headers: {
             Authorization: `Bearer ${session.access_token}`
@@ -208,7 +209,7 @@ function App() {
       hasFetchedZonas.current = true; // ✅ previene ejecución duplicada
 
       try {
-        const res = await axios.get(`http://localhost:8000/zonas?ciudad=${selectedCity}`, {
+        const res = await axios.get(`${API_URL}/zonas?ciudad=${selectedCity}`, {
           headers: {
             Authorization: `Bearer ${session.token}`
           }
@@ -241,7 +242,7 @@ function App() {
       hasFetchedPisos.current = true;
       try {
         // Add authorization header with Bearer token
-        const res = await axios.get(`http://localhost:8000/pisos?ciudad=${selectedCity}`, {
+        const res = await axios.get(`${API_URL}/pisos?ciudad=${selectedCity}`, {
           headers: {
             Authorization: `Bearer ${session.token}`
           }

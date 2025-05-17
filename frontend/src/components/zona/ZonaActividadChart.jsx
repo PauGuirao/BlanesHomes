@@ -13,11 +13,12 @@ import {
 } from "recharts";
 
 const ZonaActividadChart = ({ zona }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [data, setData] = useState(null);
 
   useEffect(() => {
     if (!zona) return;
-    fetch(`http://localhost:8000/zona/actividad?id=${encodeURIComponent(zona)}`)
+    fetch(`${API_URL}/zona/actividad?id=${encodeURIComponent(zona)}`)
       .then((res) => res.json())
       .then((data) => setData(data.actividad))
       .catch((err) => console.error("Error cargando actividad:", err));
