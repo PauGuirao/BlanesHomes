@@ -484,15 +484,209 @@ function PisoForm({ onClose, onSugerenciaClick, setSimilarPisos, currentAgencyId
                 </div>
                 {selectedPiso === p && (
                   <div className="piso-details-panel">
-                    <h3>{t('pisoForm.propertyDetails', 'Detalles del Piso')}</h3>
-                    <p>{t('pisoForm.price', 'Precio')}: {selectedPiso.precio.toLocaleString()} €</p>
-                    <p>{t('pisoForm.estimatedPrice', 'Precio estimado')}: {precioEstimado.lowerBound.toLocaleString()} € - {precioEstimado.upperBound.toLocaleString()} €</p>
-                    <p>{t('pisoForm.extras', 'Extras')}:</p>
-                    <ul>
-                      {Object.keys(formData).filter(key => formData[key] === true).map(extra => (
-                        <li key={extra}>{t(`extras.${extra}`, extra.charAt(0).toUpperCase() + extra.slice(1).replace("_", " "))}</li>
-                      ))}
-                    </ul>
+                    <div className="details-header">
+                      <h3>{t('pisoForm.propertyDetails', 'Detalles del Piso')}</h3>
+                      <span className="similarity-badge">{p.puntuacion.toFixed(1)}% {t('pisoForm.match', 'coi')}</span>
+                    </div>
+                    
+                    <div className="details-grid">
+                      <div className="details-section">
+                        <div className="info-row">
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.type', 'Tipo')}:</span>
+                            <span className="info-value">{t(`propertyTypes.${p.tipo}`, p.tipo)}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.zone', 'Zona')}:</span>
+                            <span className="info-value">{p.zona}</span>
+                          </div>
+                        </div>
+                        <div className="info-row">
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.size', 'Tamaño')}:</span>
+                            <span className="info-value">{p.metros} m²</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.price', 'Precio')}:</span>
+                            <span className="info-value price-value">{p.precio.toLocaleString()} €</span>
+                          </div>
+                        </div>
+                        <div className="info-row">
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.rooms', 'Habitaciones')}:</span>
+                            <span className="info-value">{p.habitaciones}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.bathrooms', 'Baños')}:</span>
+                            <span className="info-value">{p.baños}</span>
+                          </div>
+                        </div>
+                        <div className="info-row">
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.agency', 'Agencia')}:</span>
+                            <span className="info-value">{p.anunciante || t('pisoForm.privateAgency', 'Agencia privada')}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="info-label">{t('pisoForm.pricePerM2', 'Precio/m²')}:</span>
+                            <span className="info-value">{Math.round(p.precio / p.metros).toLocaleString()} €/m²</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="details-section price-prediction-section">
+                        <h4 className="ai-prediction-title">
+                          <span className="ai-icon">🤖</span> {t('pisoForm.aiPrediction', 'Predicción de IA')}
+                        </h4>
+                        <div className="price-comparisons">
+                          {p.precio_estimado && (
+                            <>
+                              <div className="price-comparison-row">
+                                <div className="price-column">
+                                  <div className="prediction-label">{t('pisoForm.estimatedPrice', 'Precio estimado')}:</div>
+                                  <div className="prediction-value">
+                                    {Math.round(p.precio_estimado).toLocaleString()} €
+                                  </div>
+                                </div>
+                                <div className="price-column">
+                                  <div className="actual-price-label">{t('pisoForm.actualPrice', 'Precio actual')}:</div>
+                                  <div className="actual-price-value">{Math.round(p.precio).toLocaleString()} €</div>
+                                </div>
+                              </div>
+                              
+                              <div className="price-analysis">
+                                {p.precio > p.precio_estimado && (
+                                  <div className={`price-difference-card ${Math.round((p.precio - p.precio_estimado) / p.precio_estimado * 100) <= 5 ? 'fair-price' : 'overpriced'}`}>
+                                    {Math.round((p.precio - p.precio_estimado) / p.precio_estimado * 100) > 15 ? (
+                                      <div className="price-tag">
+                                        <span className="tag-text">SOBREPRECIO</span>
+                                      </div>
+                                    ) : Math.round((p.precio - p.precio_estimado) / p.precio_estimado * 100) <= 5 ? (
+                                      <div className="price-tag">
+                                        <span className="tag-text">PRECIO JUSTO</span>
+                                      </div>
+                                    ) : null}
+                                    <div className="difference-amount">
+                                      +{Math.round(p.precio - p.precio_estimado).toLocaleString()} € 
+                                      <span className="difference-percent">
+                                        (+{Math.round((p.precio - p.precio_estimado) / p.precio_estimado * 100)}%)
+                                      </span>
+                                    </div>
+                                    <div className="difference-explanation">
+                                      {Math.round((p.precio - p.precio_estimado) / p.precio_estimado * 100) <= 5 
+                                        ? t('pisoForm.smallDifferenceExplanation', 'Precio muy cercano al estimado por la IA')
+                                        : t('pisoForm.aboveEstimateExplanation', 'Por encima del valor estimado por la IA')}
+                                    </div>
+                                  </div>
+                                )}
+                                
+                                {p.precio < p.precio_estimado && (
+                                  <div className={`price-difference-card ${Math.round((p.precio_estimado - p.precio) / p.precio_estimado * 100) <= 5 ? 'fair-price' : 'bargain'}`}>
+                                    {Math.round((p.precio_estimado - p.precio) / p.precio_estimado * 100) > 10 ? (
+                                      <div className="price-tag">
+                                        <span className="tag-text">GANGA</span>
+                                      </div>
+                                    ) : Math.round((p.precio_estimado - p.precio) / p.precio_estimado * 100) <= 5 ? (
+                                      <div className="price-tag">
+                                        <span className="tag-text">PRECIO JUSTO</span>
+                                      </div>
+                                    ) : null}
+                                    <div className="difference-amount">
+                                      -{Math.round(p.precio_estimado - p.precio).toLocaleString()} € 
+                                      <span className="difference-percent">
+                                        (-{Math.round((p.precio_estimado - p.precio) / p.precio_estimado * 100)}%)
+                                      </span>
+                                    </div>
+                                    <div className="difference-explanation">
+                                      {Math.round((p.precio_estimado - p.precio) / p.precio_estimado * 100) <= 5 
+                                        ? t('pisoForm.smallDifferenceExplanation', 'Precio muy cercano al estimado por la IA')
+                                        : t('pisoForm.belowEstimateExplanation', 'Por debajo del valor estimado por la IA')}
+                                    </div>
+                                  </div>
+                                )}
+                                
+                                {p.precio === p.precio_estimado && (
+                                  <div className="price-difference-card fair-price">
+                                    <div className="price-tag">
+                                      <span className="tag-text">PRECIO JUSTO</span>
+                                    </div>
+                                    <div className="difference-explanation">
+                                      {t('pisoForm.fairPriceExplanation', 'El precio coincide con la estimación de la IA')}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </>
+                          )}
+                          
+                          {!p.precio_estimado && (
+                            <div className="no-prediction">
+                              <span>{t('pisoForm.noPrediction', 'No hay predicción disponible para esta propiedad')}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Only show extras section if the property has any extras */}
+                    {(p.jardin === 1 || p.piscina === 1 || p.balcon === 1 || 
+                      p.terraza === 1 || p.garaje === 1 || p.ascensor === 1 || 
+                      p.aire_acondicionado === 1) && (
+                      <div className="extras-section">
+                        <h4>{t('pisoForm.extras', 'Características')}</h4>
+                        <div className="extras-grid">
+                          {p.jardin === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">🌳</span>
+                              <span className="extra-name">{t('extras.jardin', 'Jardín')}</span>
+                            </div>
+                          )}
+                          {p.piscina === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">🏊</span>
+                              <span className="extra-name">{t('extras.piscina', 'Piscina')}</span>
+                            </div>
+                          )}
+                          {p.balcon === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">🪟</span>
+                              <span className="extra-name">{t('extras.balcon', 'Balcón')}</span>
+                            </div>
+                          )}
+                          {p.terraza === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">☀️</span>
+                              <span className="extra-name">{t('extras.terraza', 'Terraza')}</span>
+                            </div>
+                          )}
+                          {p.garaje === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">🚗</span>
+                              <span className="extra-name">{t('extras.garaje', 'Garaje')}</span>
+                            </div>
+                          )}
+                          {p.ascensor === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">🔼</span>
+                              <span className="extra-name">{t('extras.ascensor', 'Ascensor')}</span>
+                            </div>
+                          )}
+                          {p.aire_acondicionado === 1 && (
+                            <div className="extra-item has-extra">
+                              <span className="extra-icon">❄️</span>
+                              <span className="extra-name">{t('extras.aire_acondicionado', 'Aire Acondicionado')}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {p.url && (
+                      <div className="property-actions">
+                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="view-listing-btn">
+                          {t('pisoForm.viewListing', 'Ver anuncio')}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 )}
               </React.Fragment>

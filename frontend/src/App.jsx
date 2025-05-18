@@ -425,12 +425,6 @@ function App() {
                 
                 {/* ----------- VIEW SELECTOR ------------- */}
                 <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
-                <button
-                  className="list-button"
-                  onClick={() => setMostrarListado(!mostrarListado)}
-                >
-                  <FontAwesomeIcon icon={faEye} />
-                </button>
                 {/* ---------------- MAPA ------------------ */}
                 <div className="map-container">
                   <MapContainer

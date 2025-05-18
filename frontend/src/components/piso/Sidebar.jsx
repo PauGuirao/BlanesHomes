@@ -170,32 +170,50 @@ const Sidebar = ({ piso, onClose, onCompare }) => {
         </div>
       )}
 
-      <button 
-          className="compare-action" 
-          onClick={() => onCompare(piso)}
-        >
-          🔍 {t('sidebar.addToComparison', 'Añadir a comparador')}
-        </button>
-
-      {/* 🧭 Selector de pestañas */}
-      <div className="sidebar-tabs">
-        <button
-          className={tab === "compra" ? "active" : ""}
-          onClick={() => setTab("compra")}
-        >
-          🏦 {t('sidebar.purchase', 'Compra')}
-        </button>
-        <button
-          className={tab === "inversion" ? "active" : ""}
-          onClick={() => setTab("inversion")}
-        >
-          🔍 {t('sidebar.similar', 'Similares')}
-        </button>
+      {/* Actions block */}
+      <div className="sidebar-actions">
+        <h3>{t('sidebar.actions', 'Acciones')}</h3>
+        <div className="actions-container">
+          <button 
+            className="action-button compare-action" 
+            onClick={() => onCompare(piso)}
+          >
+            🔍 {t('sidebar.addToComparison', 'Añadir a comparador')}
+          </button>
+          {/* Future action buttons will go here */}
+        </div>
       </div>
-      {tab === "compra" && <HipotecaTab precio={piso.precio} />}
-      {recomendados.length > 0 && tab === "inversion" && (
-        <RecomendadosTab recomendados={recomendados} />
-      )}
+
+      {/* Tabs section with titles */}
+      <div className="sidebar-tabs-container">
+        <h3>{t('sidebar.tools', 'Herramientas')}</h3>
+        <div className="sidebar-tabs">
+          <button
+            className={tab === "compra" ? "active" : ""}
+            onClick={() => setTab("compra")}
+          >
+            🏦 {t('sidebar.purchase', 'Compra')}
+          </button>
+          <button
+            className={tab === "inversion" ? "active" : ""}
+            onClick={() => setTab("inversion")}
+          >
+            🔍 {t('sidebar.similar', 'Similares')}
+          </button>
+        </div>
+        
+        {tab === "compra" && (
+          <div className="tab-content">
+            <HipotecaTab precio={piso.precio} />
+          </div>
+        )}
+        
+        {recomendados.length > 0 && tab === "inversion" && (
+          <div className="tab-content">
+            <RecomendadosTab recomendados={recomendados} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

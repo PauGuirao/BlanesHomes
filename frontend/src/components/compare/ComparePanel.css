@@ -429,3 +429,351 @@
     gap: 10px;
   }
 }
+
+
+/* Detailed comparisons section */
+.detailed-comparisons {
+  margin-top: 20px;
+  border-top: 1px solid #333;
+  padding-top: 20px;
+}
+
+.comparison-section {
+  margin-bottom: 30px;
+}
+
+.comparison-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #e0e0e0;
+}
+
+/* More compact price comparison container */
+.price-comparison-container {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* More compact price analysis grid */
+.price-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.price-analysis h4 {
+  font-size: 15px;
+  margin: 10px 0;
+  color: #e0e0e0;
+}
+
+/* Compact price analysis cards */
+.price-analysis-card {
+  position: relative;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #2a2a2a;
+  border-left: 4px solid transparent;
+  font-size: 0.9em;
+}
+
+.property-index {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.property-type {
+  font-weight: 500;
+  margin-bottom: 8px;
+  padding-right: 25px;
+  font-size: 0.95em;
+}
+
+/* Compact price information layout */
+.compact-price-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.diff-row {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.price-label {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.price-value {
+  font-weight: 500;
+}
+
+.difference-value {
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.assessment-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* Card styles based on price difference */
+.highly-overpriced {
+  border-left-color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+.highly-overpriced .assessment-badge {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.overpriced {
+  border-left-color: #f39c12;
+  background-color: rgba(243, 156, 18, 0.1);
+}
+
+.overpriced .assessment-badge {
+  background-color: rgba(243, 156, 18, 0.2);
+  color: #f39c12;
+}
+
+.fair-price {
+  border-left-color: #3498db;
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.fair-price .assessment-badge {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.good-deal .assessment-badge, .great-deal .assessment-badge {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.good-deal, .great-deal {
+  border-left-color: #2ecc71;
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.highly-overpriced .difference-value {
+  color: #e74c3c;
+}
+
+.overpriced .difference-value {
+  color: #f39c12;
+}
+
+.fair-price .difference-value {
+  color: #3498db;
+}
+
+.good-deal .difference-value, .great-deal .difference-value {
+  color: #2ecc71;
+}
+
+/* Button styling */
+.compare-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.compare-button:hover {
+  background-color: #2980b9;
+}
+
+
+/* Price comparison summary section */
+.price-comparison-summary {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #252525;
+  border-radius: 6px;
+  border-left: 4px solid #3498db;
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+
+.summary-title svg {
+  margin-right: 6px;
+  color: #3498db;
+}
+
+.summary-content {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #ccc;
+}
+
+.summary-highlight {
+  font-weight: 500;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin: 0 2px;
+}
+
+.highlight-fair {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.highlight-overpriced {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.highlight-bargain {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+/* Extras comparison styles */
+.extras-comparison-container {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.extras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.extras-card {
+  position: relative;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #2a2a2a;
+  font-size: 0.9em;
+}
+
+.extras-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.extra-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.has-extra {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.no-extra {
+  opacity: 0.6;
+}
+
+.extra-icon {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.extra-name {
+  flex-grow: 1;
+  font-size: 13px;
+}
+
+.extra-status {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.has-extra .extra-status {
+  color: #2ecc71;
+}
+
+.no-extra .extra-status {
+  color: #e74c3c;
+}
+
+.extras-summary {
+  margin-top: 12px;
+  text-align: center;
+  padding-top: 8px;
+  border-top: 1px solid #333;
+}
+
+.extras-count {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.extras-comparison-summary {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #252525;
+  border-radius: 6px;
+  border-left: 4px solid #3498db;
+}
+
+.extras-comparison-summary .summary-content p {
+  margin: 8px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .extras-grid {
+    grid-template-columns: 1fr;
+  }
+}

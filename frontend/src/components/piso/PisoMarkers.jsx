@@ -8,6 +8,7 @@ import {
     getOcupacionColor,
     getDensityColor
 } from '../../utils/colorUtils';
+import './PisoMarkers.css'; // Import the CSS file
 
 export default React.memo(function PisoMarkers({
   pisos,
@@ -139,13 +140,68 @@ export default React.memo(function PisoMarkers({
                 mouseout: () => markerRef.current[piso.id]?.closePopup()
               }}
             >
-              <Popup>
-                <b>{piso.tipo}</b>
-                <br />Zona: {piso.zona}
-                <br />Precio: {piso.precio.toLocaleString()} €
-                {isComparing && (
-                  <><br />✓ En comparador</>
-                )}
+              <Popup className="dark-popup">
+                <div className="marker-popup-content">
+                  <div className="popup-header">
+                    <h3>{piso.tipo} {piso.metros && `· ${piso.metros} m²`}</h3>
+                    {piso.precio_estimado && Math.abs(piso.precio - piso.precio_estimado) / piso.precio_estimado > 0.1 && (
+                      <div className={`price-tag ${piso.precio < piso.precio_estimado ? 'bargain' : 'overpriced'}`}>
+                        {piso.precio < piso.precio_estimado ? 'GANGA' : 'SOBREPRECIO'}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="popup-price">
+                    <span>{piso.precio.toLocaleString()} €</span>
+                    {piso.metros && <span className="price-per-m2">{Math.round(piso.precio / piso.metros).toLocaleString()} €/m²</span>}
+                  </div>
+                  
+                  <div className="popup-details">
+                    <div className="detail-item">
+                      <span className="detail-label">Zona:</span>
+                      <span className="detail-value">{piso.zona}</span>
+                    </div>
+                    {piso.habitaciones && (
+                      <div className="detail-item">
+                        <span className="detail-label">Hab:</span>
+                        <span className="detail-value">{piso.habitaciones}</span>
+                      </div>
+                    )}
+                    {piso.baños && (
+                      <div className="detail-item">
+                        <span className="detail-label">Baños:</span>
+                        <span className="detail-value">{piso.baños}</span>
+                      </div>
+                    )}
+                    {piso.anunciante && (
+                      <div className="detail-item">
+                        <span className="detail-label">Agencia:</span>
+                        <span className="detail-value">{piso.anunciante}</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {piso.precio_estimado && (
+                    <div className="popup-ai-prediction">
+                      <div className="ai-label">
+                        <span className="ai-icon">🤖</span> Predicción IA:
+                      </div>
+                      <div className="ai-value">{Math.round(piso.precio_estimado).toLocaleString()} €</div>
+                    </div>
+                  )}
+                  
+                  {isComparing && (
+                    <div className="popup-badge comparing">
+                      ✓ En comparador
+                    </div>
+                  )}
+                  
+                  {isSimilar && (
+                    <div className="popup-badge similar">
+                      ✓ Propiedad similar
+                    </div>
+                  )}
+                </div>
               </Popup>
               {isComparing && showCompareTooltips &&  (
                 <Tooltip permanent direction="top" offset={[0, -10]} className="comparing-tooltip">

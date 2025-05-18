@@ -17,6 +17,7 @@ from routes.getPisos import router as pisos_router
 from routes.getZonas import router as zonas_router
 from routes.getPriceEstimation import router as price_estimation_router
 from routes.getZona import router as zona_router
+from typing import List
 
 from deps.dependencies import (
     get_supabase,
@@ -93,6 +94,38 @@ def recomendaciones(id: int):
     
     return recomendados.to_dict(orient="records")
 
+mapa_zona_id = dict(zip(df_zonas["nombre"], df_zonas["id"]))
+@app.get("/precio_m2_zonas")
+def precio_m2_por_zonas(zonas: List[str] = Query(...)):
+    resultado = {}
+
+    for nombre in zonas:
+        zona_id = mapa_zona_id.get(nombre)
+
+        if zona_id is None:
+            resultado[nombre] = {
+                "error": "Zona no encontrada"
+            }
+            continue
+
+        precios = df.loc[df["zona_id"] == zona_id, "precio_m2"]
+
+        if precios.empty:
+            resultado[nombre] = {
+                "zona_id": int(zona_id),
+                "precio_m2_medio": None,
+                "n_pisos": 0
+            }
+            continue
+
+        resultado[nombre] = {
+            "zona_id": int(zona_id),
+            "precio_m2_medio": round(precios.mean(), 2),
+            "n_pisos": len(precios)
+        }
+
+    return JSONResponse(content=resultado)
+
 @app.post("/sugerencias")
 async def sugerencias(data: Request):
     input_data = await data.json()
@@ -101,7 +134,7 @@ async def sugerencias(data: Request):
         df_input[col] = pd.to_numeric(df_input[col], errors="coerce")
     
     precio_estimado = input_data.get("precio_estimado")
-    margen = 0.10
+    margen = 0.50
 
     min_precio = precio_estimado * (1 - margen)
     max_precio = precio_estimado * (1 + margen)

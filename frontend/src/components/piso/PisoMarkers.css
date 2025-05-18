@@ -1,0 +1,137 @@
+/* Dark Popup Styles - Fix for content wrapper */
+.leaflet-popup-content-wrapper {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-popup-tip {
+  background-color: #1a1a1a;
+}
+
+.marker-popup-content {
+  min-width: 200px;
+  padding: 5px;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.popup-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e74c3c;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.price-per-m2 {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: normal;
+}
+
+.popup-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.7rem;
+  color: #999;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.popup-ai-prediction {
+  background-color: rgba(74, 144, 226, 0.2);
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-label {
+  font-size: 0.8rem;
+  color: #4a90e2;
+  display: flex;
+  align-items: center;
+}
+
+.ai-icon {
+  margin-right: 4px;
+}
+
+.ai-value {
+  font-weight: 600;
+  color: #4a90e2;
+}
+
+.popup-badge {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.popup-badge.comparing {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.popup-badge.similar {
+  background-color: rgba(155, 89, 182, 0.2);
+  color: #9b59b6;
+}
+
+.price-tag {
+  font-size: 0.6rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.price-tag.bargain {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.price-tag.overpriced {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Make sure the popup is on top of other elements */
+.leaflet-popup {
+  z-index: 1000 !important;
+}
