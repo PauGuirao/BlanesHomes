@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './LandingPage.css';
+import LandingMap from './LandingMap';
+import AdAnalysisFeature from './AdAnalysisFeature';
+
 
 const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,7 +17,11 @@ const LandingPage = () => {
       {/* Navbar */}
       <nav className="landing-navbar">
         <div className="navbar-logo">
-          <Link to="/">BlanesHomes</Link>
+          <Link to="/">
+            <img src="/images/logo2.png" alt="Habinia Logo" className="logo-icon" />
+            <span className="logo-main">HABIN</span>
+            <span className="logo-gradient">IA</span>
+          </Link>
         </div>
         <button 
           className="mobile-menu-button" 
@@ -36,9 +43,9 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
-          <h1>Análisis inmobiliario inteligente para profesionales</h1>
+          <h1>Domina tu mercado inmobiliario con IA y datos 🔥</h1>
           <ul className="hero-features">
-            <li>Valora propiedades con precisión usando IA y datos de mercado en tiempo real</li>
+            <li>Valora propiedades con precisión usando IA y datos en tiempo real</li>
             <li>Optimiza tus anuncios para conseguir más visitas y ventas más rápidas</li>
             <li>Identifica oportunidades de inversión antes que la competencia</li>
             <li>Genera informes profesionales para tus clientes con un solo clic</li>
@@ -53,56 +60,142 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="features" id="features">
-        <h2>Potencia tu negocio inmobiliario</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon">📊</div>
-            <h3>Análisis de mercado</h3>
-            <p>Conoce el valor real de cada propiedad con nuestro algoritmo de IA que analiza miles de datos del mercado local.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">📈</div>
-            <h3>Optimización de anuncios</h3>
-            <p>Mejora tus descripciones, títulos y precios con recomendaciones personalizadas basadas en datos.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🔍</div>
-            <h3>Detección de oportunidades</h3>
-            <p>Identifica propiedades infravaloradas y oportunidades de inversión antes que la competencia.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">📱</div>
-            <h3>Informes detallados</h3>
-            <p>Genera informes profesionales para tus clientes con datos precisos sobre cada propiedad y zona.</p>
+      {/* Detailed Features */}
+      <section className="detailed-features">
+        <div className="detailed-feature">
+          <h2>Valora tus propiedades en segundos</h2>
+          <p className="feature-description">Obtén valoraciones precisas basadas en miles de datos del mercado local y algoritmos avanzados de inteligencia artificial.</p>
+          
+          <div className="feature-showcase">
+            <div className="feature-form">
+              <h3>Datos de la propiedad</h3>
+              <div className="form-simulation">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Ubicación</label>
+                    <div className="form-input">Blanes Centro</div>
+                  </div>
+                  <div className="form-group">
+                    <label>Superficie</label>
+                    <div className="form-input">85 m²</div>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Habitaciones</label>
+                    <div className="form-input">3</div>
+                  </div>
+                  <div className="form-group">
+                    <label>Baños</label>
+                    <div className="form-input">2</div>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Antigüedad</label>
+                    <div className="form-input">15 años</div>
+                  </div>
+                  <div className="form-group">
+                    <label>Estado</label>
+                    <div className="form-input">Buen estado</div>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Extras</label>
+                    <div className="form-input">Balcón, Ascensor</div>
+                  </div>
+                  <div className="form-group">
+                    <label>Planta</label>
+                    <div className="form-input">3ª</div>
+                  </div>
+                </div>
+                <div className="form-button">Calcular precio</div>
+              </div>
+            </div>
+            
+            <div className="feature-result">
+              <div className="prediction-result">
+                <h3>Valoración estimada</h3>
+                <div className="price-prediction">
+                  <div className="predicted-price">235.000€</div>
+                  <div className="price-range">±5% (223.250€ - 246.750€)</div>
+                </div>
+                
+                <div className="prediction-confidence">
+                  <div className="confidence-bar">
+                    <div className="confidence-level" style={{width: '92%'}}></div>
+                  </div>
+                  <span>92% de confianza</span>
+                </div>
+                
+                <h4>Propiedades similares</h4>
+                <div className="similar-properties">
+                  <div className="similar-property">
+                    <div className="property-image"></div>
+                    <div className="property-details">
+                      <div className="property-price">229.000€</div>
+                      <div className="property-specs">82m² · 3 hab · 2 baños</div>
+                      <div className="property-location">Blanes Centro</div>
+                    </div>
+                  </div>
+                  <div className="similar-property">
+                    <div className="property-image"></div>
+                    <div className="property-details">
+                      <div className="property-price">242.500€</div>
+                      <div className="property-specs">90m² · 3 hab · 2 baños</div>
+                      <div className="property-location">Blanes Centro</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* How it Works */}
-      <section className="how-it-works">
-        <h2>Cómo funciona</h2>
-        <div className="steps">
-          <div className="step">
-            <div className="step-number">1</div>
-            <h3>Regístrate</h3>
-            <p>Crea tu cuenta en menos de 2 minutos y elige el plan que mejor se adapte a tus necesidades.</p>
+      {/* Map Feature Section */}
+      <LandingMap />
+
+      {/* New Feature: Analiza tus anuncios */}
+      <AdAnalysisFeature />
+
+      {/* Testimonials */}
+      <section className="testimonials">
+        <h2>Lo que dicen nuestros clientes</h2>
+        <div className="testimonials-grid">
+          <div className="testimonial-card">
+            <div className="testimonial-content">
+              <p>"BlanesHomes ha transformado completamente nuestra agencia. Ahora podemos ofrecer valoraciones precisas y vender propiedades un 30% más rápido."</p>
+            </div>
+            <div className="testimonial-author">
+              <div>
+                <h4>María García</h4>
+                <p>Directora, Inmobiliaria Costa</p>
+              </div>
+            </div>
           </div>
-          <div className="step">
-            <div className="step-number">2</div>
-            <h3>Conecta tus propiedades</h3>
-            <p>Importa tus anuncios o añade propiedades manualmente para comenzar a analizarlas.</p>
+          <div className="testimonial-card">
+            <div className="testimonial-content">
+              <p>"La herramienta de análisis de anuncios nos ha permitido mejorar nuestras descripciones y destacar frente a la competencia. Totalmente recomendado."</p>
+            </div>
+            <div className="testimonial-author">
+              <div>
+                <h4>Carlos Martínez</h4>
+                <p>Agente Inmobiliario</p>
+              </div>
+            </div>
           </div>
-          <div className="step">
-            <div className="step-number">3</div>
-            <h3>Obtén insights</h3>
-            <p>Recibe análisis detallados y recomendaciones para mejorar cada anuncio.</p>
-          </div>
-          <div className="step">
-            <div className="step-number">4</div>
-            <h3>Optimiza y vende más rápido</h3>
-            <p>Implementa las mejoras sugeridas y aumenta tus posibilidades de venta.</p>
+          <div className="testimonial-card">
+            <div className="testimonial-content">
+              <p>"Gracias a BlanesHomes hemos identificado oportunidades de inversión que antes pasábamos por alto. Ha sido una inversión que se ha pagado sola."</p>
+            </div>
+            <div className="testimonial-author">
+              <div>
+                <h4>Laura Sánchez</h4>
+                <p>Inversora Inmobiliaria</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -218,48 +311,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="testimonials">
-        <h2>Lo que dicen nuestros clientes</h2>
-        <div className="testimonials-grid">
-          <div className="testimonial-card">
-            <div className="testimonial-content">
-              <p>"BlanesHomes ha transformado completamente nuestra agencia. Ahora podemos ofrecer valoraciones precisas y vender propiedades un 30% más rápido."</p>
-            </div>
-            <div className="testimonial-author">
-              <img src="/images/testimonial1.jpg" alt="María García" />
-              <div>
-                <h4>María García</h4>
-                <p>Directora, Inmobiliaria Costa</p>
-              </div>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="testimonial-content">
-              <p>"La herramienta de análisis de anuncios nos ha permitido mejorar nuestras descripciones y destacar frente a la competencia. Totalmente recomendado."</p>
-            </div>
-            <div className="testimonial-author">
-              <img src="/images/testimonial2.jpg" alt="Carlos Martínez" />
-              <div>
-                <h4>Carlos Martínez</h4>
-                <p>Agente Inmobiliario</p>
-              </div>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="testimonial-content">
-              <p>"Gracias a BlanesHomes hemos identificado oportunidades de inversión que antes pasábamos por alto. Ha sido una inversión que se ha pagado sola."</p>
-            </div>
-            <div className="testimonial-author">
-              <img src="/images/testimonial3.jpg" alt="Laura Sánchez" />
-              <div>
-                <h4>Laura Sánchez</h4>
-                <p>Inversora Inmobiliaria</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* FAQ Section */}
       <section className="faq">

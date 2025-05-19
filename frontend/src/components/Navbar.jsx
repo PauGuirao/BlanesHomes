@@ -143,7 +143,7 @@ const Navbar = ({
               )}
             </div>
             
-            <div className="navbar-title">Blanes Homes</div>
+            <div className="navbar-title">habinia</div>
             
             <div className="navbar-user" ref={userDropdownRef}>
               <div className="user-avatar" onClick={() => setShowUserDropdown((v) => !v)}>
@@ -241,7 +241,7 @@ const Navbar = ({
               )}
             </div>
           </div>
-          <div className="navbar-title">Blanes Homes</div>
+          <div className="navbar-title">Habinia</div>
           <div className="navbar-user" ref={userDropdownRef}>
             <div className="user-info" onClick={() => setShowUserDropdown((v) => !v)}>
               <div className="user-avatar">

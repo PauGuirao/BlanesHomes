@@ -80,11 +80,11 @@ export const zonas = {
 };
 
 export const color_por_zona = {
-  Centre: "#1f77b4",
+  "Centre": "#1f77b4",
   "La Plantera": "#ff7f0e",
   "Els Pins": "#2ca02c",
   "Els Pavos": "#d62728",
-  Semicentre: "#9467bd",
+  "Semicentre": "#9467bd",
   "Mont Ferrant - Sant Joan": "#8c564b",
   "Cala Sant Francesc - Santa Cristina": "#e377c2",
 };

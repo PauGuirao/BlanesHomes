@@ -5,13 +5,14 @@
   --bg-tertiary: #2a2a2a;
   --text-primary: #ffffff;
   --text-secondary: #ddd;
-  --accent-color: #e74c3c;
+  --accent-color: linear-gradient(90deg, #ff6d00, #ffa72c);
   --border-color: #444;
   --card-bg: #1c1c1c;
   --button-bg: #333;
   --button-hover-bg: #444;
   --button-text: #fff;
   --shadow-color: rgba(0, 0, 0, 0.3);
+  
 }
 
 /* Light theme */
