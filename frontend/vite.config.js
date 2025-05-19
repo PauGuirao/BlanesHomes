@@ -6,5 +6,5 @@ const isGithubPages = process.env.NODE_ENV === 'production';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: isGithubPages ? '/BlanesHomes/' : '/',
+  base: '/',
 })
