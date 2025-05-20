@@ -104,24 +104,19 @@ function App() {
   //----------------------------- AUTH ACTIONS --------------------------- //
   const [session, setSession] = useState(null);
   const [loadingSession, setLoadingSession] = useState(true);
+  const hasHandledSession = useRef(false);
 
   const [profileStatus, setProfileStatus] = useState(null);
   
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
-        console.log("🔑 Usuario logueado", session);
         await handleSession(session);
       }
     });
   
-    // También revisa si ya estaba logueado (ej. recarga)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        handleSession(session);
-      } else {
-        setLoadingSession(false);
-      }
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      await handleSession(session);
     });
   
     return () => {
@@ -130,12 +125,15 @@ function App() {
   }, []);
 
   const handleSession = async (session) => {
+    if (!session || hasHandledSession.current) return; // ❌ Ya fue procesado
+    hasHandledSession.current = true; // ✅ Marcar como hecho
+  
     try {
       const response = await axios.get(`${API_URL}/get_profile`, {
         params: { user_id: session.user.id },
         headers: {
-          Authorization: `Bearer ${session.access_token}`
-        }
+          Authorization: `Bearer ${session.access_token}`,
+        },
       });
   
       const profileData = response.data;
@@ -145,8 +143,8 @@ function App() {
         const res_age = await axios.get(`${API_URL}/get_profile_agency`, {
           params: { user_id: session.user.id },
           headers: {
-            Authorization: `Bearer ${session.access_token}`
-          }
+            Authorization: `Bearer ${session.access_token}`,
+          },
         });
   
         const agenciaData = res_age.data;
@@ -440,11 +438,13 @@ function App() {
 
                     <Suspense fallback={null}>
                       {/* Dibujar polígonos de zonas */}
-                      <ZonaPolygons
-                        zonas={cityZonas}
-                        selectedZona={zonaSeleccionada}
-                        onZoneClick={handleZoneClick}
-                      />
+                      {cityZonas && (
+                        <ZonaPolygons
+                          zonas={cityZonas}
+                          selectedZona={zonaSeleccionada}
+                          onZoneClick={handleZoneClick}
+                        />
+                      )}
                       {/* Dibujar pisos */}
                       {viewMode === "densidad" ? (
                           <HeatmapLayer 

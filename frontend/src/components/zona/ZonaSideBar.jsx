@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import ZonaTrends from "./ZonaTrends";
 import "./ZonaSideBar.css";
 import PropertiesList from "../PropertiesList";
@@ -7,24 +8,24 @@ import ZonaAgencyData from "./ZonaAgencyData";
 
 function ZonaSidebar({ zona, pisos, onClose, onSugerenciaClick, session }) {
   if (!zona) return null;
-  const API_URL = import.meta.env.VITE_API_URL;
-  const [zonaStats, setZonaStats] = useState(null);
-  const [loadingStats, setLoadingStats] = useState(false);
-  const [activeTab, setActiveTab] = useState('stats'); // Add this state
 
-  useEffect(() => {
-    setLoadingStats(true);
-    fetch(`${API_URL}/zona?id=${encodeURIComponent(zona)}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setZonaStats(data);
-        setLoadingStats(false);
-      })
-      .catch((error) => {
-        console.error("Error cargando estadísticas:", error);
-        setLoadingStats(false);
-      });
-  }, [zona]);
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [activeTab, setActiveTab] = useState('stats');
+
+  // ✅ Load zona stats using React Query
+  const {
+    data: zonaStats,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["zonaStats", zona],
+    queryFn: () =>
+      fetch(`${API_URL}/zona?id=${encodeURIComponent(zona)}`).then((res) =>
+        res.json()
+      ),
+    enabled: !!zona, // only run if zona is defined
+    staleTime: 1000 * 60 * 60 * 6, // 6h cache (adjust as needed)
+  });
 
   const pisosZona = pisos.filter((p) => p.zona === zona);
 
@@ -35,37 +36,27 @@ function ZonaSidebar({ zona, pisos, onClose, onSugerenciaClick, session }) {
       </h2>
 
       <div className="zona-tabs">
-        <button
-          className={`zona-tab ${activeTab === 'stats' ? 'active' : ''}`}
-          onClick={() => setActiveTab('stats')}
-        >
-          General
-        </button>
-        <button
-          className={`zona-tab ${activeTab === 'agency' ? 'active' : ''}`}
-          onClick={() => setActiveTab('agency')}
-        >
-          Agency
-        </button>
-        <button
-          className={`zona-tab ${activeTab === 'trends' ? 'active' : ''}`}
-          onClick={() => setActiveTab('trends')}
-        >
-          Datos
-        </button>
-        <button
-          className={`zona-tab ${activeTab === 'properties' ? 'active' : ''}`}
-          onClick={() => setActiveTab('properties')}
-        >
-          Lista ({pisosZona.length})
-        </button>
+        {["stats", "agency", "trends", "properties"].map((tab) => (
+          <button
+            key={tab}
+            className={`zona-tab ${activeTab === tab ? "active" : ""}`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab === "stats" && "General"}
+            {tab === "agency" && "Agency"}
+            {tab === "trends" && "Datos"}
+            {tab === "properties" && `Lista (${pisosZona.length})`}
+          </button>
+        ))}
       </div>
 
-      {loadingStats ? (
+      {isLoading ? (
         <p>Cargando estadísticas...</p>
+      ) : isError ? (
+        <p>Error al cargar estadísticas.</p>
       ) : zonaStats ? (
         <>
-          {activeTab === 'stats' && (
+          {activeTab === "stats" && (
             <div className="zona-stats">
               <div className="stat-group">
                 <h3>Datos generales</h3>
@@ -100,22 +91,33 @@ function ZonaSidebar({ zona, pisos, onClose, onSugerenciaClick, session }) {
                   </div>
                 ))}
               </div>
+
               <div className="stat-group">
-              <h3>Oportunidades</h3>
+                <h3>Oportunidades</h3>
                 <ZonaGangas zona={zona} onPisoClick={onSugerenciaClick} />
               </div>
             </div>
           )}
 
-          {activeTab === 'trends' && (
+          {activeTab === "trends" && (
             <ZonaTrends zonaStats={zonaStats} zona={zona} />
           )}
 
-          {activeTab === 'properties' && (
-            <PropertiesList pisos={pisosZona} onPisoClick={onSugerenciaClick} />
+          {activeTab === "properties" && (
+            <PropertiesList
+              pisos={pisosZona}
+              onPisoClick={onSugerenciaClick}
+            />
           )}
-          {activeTab === 'agency' && (
-            <ZonaAgencyData pisos={pisosZona} onPisoClick={onSugerenciaClick} session={session} zona={zona} zonaStats={zonaStats} />
+
+          {activeTab === "agency" && (
+            <ZonaAgencyData
+              pisos={pisosZona}
+              onPisoClick={onSugerenciaClick}
+              session={session}
+              zona={zona}
+              zonaStats={zonaStats}
+            />
           )}
         </>
       ) : (
