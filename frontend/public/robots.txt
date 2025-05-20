@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://habinia.com/sitemap.xml

@@ -3,7 +3,7 @@ import { supabase } from '../src/supabase/supabaseClient';
 import axios from "axios";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import './styles/themes.css';
 
