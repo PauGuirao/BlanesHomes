@@ -654,11 +654,6 @@ h1, h2, h3, h4 {
   font-size: 0.9rem;
 }
 
-/* FAQ section */
-.faq {
-  background-color: #1a1a1a;
-}
-
 .faq-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
