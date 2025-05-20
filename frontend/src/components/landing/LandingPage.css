@@ -108,7 +108,7 @@ h1, h2, h3, h4 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/images/bg-pattern-1.png');
+  background-image: url('/images/bg-pattern-1.webp');
   background-repeat: repeat-x;
   opacity: 0.2;
   z-index: 0;

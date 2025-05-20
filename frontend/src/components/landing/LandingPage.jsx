@@ -56,12 +56,20 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="hero-image">
-          <img src="/images/hero-right.png" alt="BlanesHomes Dashboard" className="hero-image-3d" />
+          <img 
+            src="/images/hero-right.webp" 
+            alt="Habinia Dashboard App" 
+            className="hero-image-3d"
+            width="600"
+            height="450"
+            loading="eager"
+            fetchpriority="high"
+          />
         </div>
       </section>
 
       {/* Detailed Features */}
-      <section className="detailed-features">
+      <section className="detailed-features" id='features'>
         <div className="detailed-feature">
           <h2>Valora tus propiedades en segundos</h2>
           <p className="feature-description">Obtén valoraciones precisas basadas en miles de datos del mercado local y algoritmos avanzados de inteligencia artificial.</p>
@@ -314,7 +322,7 @@ const LandingPage = () => {
 
 
       {/* FAQ Section */}
-      <section className="faq">
+      <section className="faq" id='faq'>
         <h2>Preguntas frecuentes</h2>
         <div className="faq-grid">
           <div className="faq-item">
