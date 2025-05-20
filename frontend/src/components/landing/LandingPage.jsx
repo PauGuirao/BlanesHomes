@@ -63,7 +63,7 @@ const LandingPage = () => {
             width="600"
             height="450"
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
           />
         </div>
       </section>
@@ -174,11 +174,11 @@ const LandingPage = () => {
         <div className="testimonials-grid">
           <div className="testimonial-card">
             <div className="testimonial-content">
-              <p>"BlanesHomes ha transformado completamente nuestra agencia. Ahora podemos ofrecer valoraciones precisas y vender propiedades un 30% más rápido."</p>
+              <p>"HABINIA ha transformado completamente nuestra agencia. Ahora podemos ofrecer valoraciones precisas y vender propiedades un 30% más rápido."</p>
             </div>
             <div className="testimonial-author">
               <div>
-                <h4>María García</h4>
+                <h3 className="author-name">María García</h3>
                 <p>Directora, Inmobiliaria Costa</p>
               </div>
             </div>
@@ -189,18 +189,18 @@ const LandingPage = () => {
             </div>
             <div className="testimonial-author">
               <div>
-                <h4>Carlos Martínez</h4>
+                <h3 className="author-name">Carlos Martínez</h3>
                 <p>Agente Inmobiliario</p>
               </div>
             </div>
           </div>
           <div className="testimonial-card">
             <div className="testimonial-content">
-              <p>"Gracias a BlanesHomes hemos identificado oportunidades de inversión que antes pasábamos por alto. Ha sido una inversión que se ha pagado sola."</p>
+              <p>"Gracias a HABINIA hemos identificado oportunidades de inversión que antes pasábamos por alto. Ha sido una inversión que se ha pagado sola."</p>
             </div>
             <div className="testimonial-author">
               <div>
-                <h4>Laura Sánchez</h4>
+                <h3 className="author-name">Laura Sánchez</h3>
                 <p>Inversora Inmobiliaria</p>
               </div>
             </div>

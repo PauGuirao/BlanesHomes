@@ -307,11 +307,7 @@
   .url-input-container {
     flex-direction: column;
   }
-  
-  .url-analyze-button {
-    align-self: flex-start;
-  }
-  
+
   .analysis-content {
     flex-direction: column;
   }

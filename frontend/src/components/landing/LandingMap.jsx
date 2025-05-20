@@ -98,10 +98,13 @@ const LandingMap = () => {
             </div>
             <MapContainer 
               center={[41.6748, 2.7904]} 
-              zoom={14} 
+              zoom={14}
+              minZoom={13} 
+              maxZoom={15}
               scrollWheelZoom={true}
               className="leaflet-container"
               id="property-map"
+              preferCanvas={true}
             >
               <TileLayer 
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 

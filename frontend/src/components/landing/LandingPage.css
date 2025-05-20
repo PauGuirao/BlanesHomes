@@ -66,6 +66,8 @@ h1, h2, h3, h4 {
   padding: 2rem;
   overflow: hidden;
   margin-bottom: -1px; /* Prevent gap between sections */
+  contain-intrinsic-size: 1px 700px;
+  will-change: auto;
 }
 .hero-fade-out {
   position: absolute;
@@ -174,6 +176,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-image img {
+  display: block;
   max-width: 100%;
   height: auto;
   border-radius: 3px;
@@ -276,6 +279,9 @@ h1, h2, h3, h4 {
   border-radius: 5px;
   font-size: 1.1rem;
   color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .form-button {
@@ -396,6 +402,10 @@ h1, h2, h3, h4 {
   
   .predicted-price {
     font-size: 2rem;
+  }
+  .form-input.url-input {
+    font-size: 0.9rem;
+    padding: 8px;
   }
 }
 /* How it works section */
@@ -783,10 +793,12 @@ h1, h2, h3, h4 {
     flex-direction: column;
     text-align: center;
     gap: 3rem;
+    contain-intrinsic-size: 1px 700px;
   }
   
   .hero-content {
     max-width: 100%;
+    min-height: 300px;
   }
   
   .hero h2 {
