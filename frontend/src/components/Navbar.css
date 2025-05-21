@@ -372,3 +372,51 @@
   margin: 5px 0;
   padding: 10px;
 }
+
+/* Add this to your existing Navbar.css file */
+/* Update the existing navbar-logo and navbar-title styles */
+.navbar-logo {
+  height: 30px;
+  width: auto;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.navbar-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add these new styles for the logo text */
+.logo-text {
+  display: flex;
+  align-items: center;
+}
+
+.logo-main {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #ffffff;
+}
+
+.logo-gradient {
+  font-weight: 700;
+  font-size: 1.4rem;
+  background: linear-gradient(90deg, #ff6d00, #ffa72c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* For mobile view, adjust the sizes */
+@media (max-width: 768px) {
+  .navbar-logo {
+    height: 24px;
+    margin-right: 6px;
+  }
+  
+  .logo-main, .logo-gradient {
+    font-size: 1.2rem;
+  }
+}

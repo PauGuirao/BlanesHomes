@@ -146,8 +146,14 @@ const LoginForm = ({ onLoginSuccess }) => {
   return (
     <div className="login-form-container">
       <div className="login-header">
-        <h1 className="app-title">BlanesHomes</h1>
-        <p className="app-tagline">Tu plataforma inmobiliaria inteligente</p>
+        <div className="app-logo">
+          <img src="/images/logo2.png" alt="HABINIA Logo" className="logo-icon" />
+          <h1 className="app-title">
+            <span className="logo-main">HABIN</span>
+            <span className="logo-gradient">IA</span>
+          </h1>
+        </div>
+        <p className="app-tagline">Análisis inmobiliario inteligente</p>
       </div>
       
       <div className="login-form-title">Iniciar sesión</div>

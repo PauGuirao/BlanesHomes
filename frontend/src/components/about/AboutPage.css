@@ -1,0 +1,372 @@
+.about-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header Styles */
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 5%;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.about-logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+}
+
+.logo-main {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #ffffff;
+}
+
+.logo-gradient {
+  font-weight: 700;
+  font-size: 1.8rem;
+  background: linear-gradient(90deg, #ff6d00, #ffa72c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, #ff6d00, #ffa72c);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover:after, .nav-link.active:after {
+  width: 100%;
+}
+
+/* Main Content Styles */
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.about-hero {
+  text-align: center;
+  padding: 5rem 1rem;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  margin-bottom: 4rem;
+  border-radius: 8px;
+}
+
+.about-hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Section Styles */
+section {
+  margin-bottom: 5rem;
+}
+
+.about-mission, .about-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.section-content h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+.section-content p {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.mission-image img, .story-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Team Section */
+.about-team {
+  text-align: center;
+}
+
+.about-team h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.team-intro {
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  font-size: 1.1rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.team-member {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.member-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1.5rem;
+}
+
+.member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-member h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.member-role {
+  color: #ff6d00;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Values Section */
+.about-values {
+  text-align: center;
+}
+
+.about-values h2 {
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.value-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+}
+
+.value-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.value-card h3 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+/* Contact Section */
+.about-contact {
+  text-align: center;
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/images/contact-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 4rem 2rem;
+  border-radius: 8px;
+}
+
+.about-contact h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.about-contact p {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.contact-button {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff6d00, #ffa72c);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Footer Styles */
+.about-footer {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 3rem 5%;
+  margin-top: 5rem;
+}
+
+
+.footer-legal {
+  text-align: right;
+}
+
+.legal-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.legal-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.legal-links a:hover {
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .about-mission, .about-story {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .story-image {
+    order: -1;
+  }
+
+  .footer-legal {
+    text-align: center;
+  }
+  
+  .legal-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-header {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .about-nav {
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+  
+  .about-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .section-content h2 {
+    font-size: 1.8rem;
+  }
+}
+
+
+/* Make all section titles white */
+.about-content h1,
+.about-content h2,
+.about-content h3 {
+  color: white;
+}
+
+/* Ensure the value card titles remain visible against the card background */
+.value-card h3 {
+  color: #333;
+}
+
+/* Make sure the hero section text is visible */
+.about-hero {
+  color: white;
+}
+
+/* Ensure paragraph text has good contrast */
+.about-content p {
+  color: #e0e0e0;
+}
+
+/* Keep the value card text dark for better readability */
+.value-card p {
+  color: #333;
+}
+
+/* Ensure contact section text is visible */
+.about-contact p {
+  color: white;
+}

@@ -143,7 +143,9 @@ const Navbar = ({
               )}
             </div>
             
-            <div className="navbar-title">habinia</div>
+            <div className="navbar-title">
+              <img src="/images/logo2.png" alt="Habinia" className="navbar-logo" />
+            </div>
             
             <div className="navbar-user" ref={userDropdownRef}>
               <div className="user-avatar" onClick={() => setShowUserDropdown((v) => !v)}>
@@ -241,7 +243,14 @@ const Navbar = ({
               )}
             </div>
           </div>
-          <div className="navbar-title">Habinia</div>
+          <div className="navbar-title">
+            <img src="/images/logo2.png" alt="Habinia" className="navbar-logo" />
+            <div className="logo-text">
+              <span className="logo-main">HABIN</span>
+              <span className="logo-gradient">IA</span>
+            </div>
+          </div>
+
           <div className="navbar-user" ref={userDropdownRef}>
             <div className="user-info" onClick={() => setShowUserDropdown((v) => !v)}>
               <div className="user-avatar">

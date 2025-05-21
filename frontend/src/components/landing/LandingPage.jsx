@@ -16,7 +16,7 @@ const LandingPage = () => {
     <div className="landing-container">
       {/* Navbar */}
       <nav className="landing-navbar">
-        <div className="navbar-logo">
+        <div className="landing-navbar-logo">
           <Link to="/">
             <img src="/images/logo2.png" alt="Habinia Logo" className="logo-icon" />
             <span className="logo-main">HABIN</span>
@@ -354,9 +354,12 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="landing-footer">
         <div className="footer-content">
-          <div className="footer-logo">
-            <h3>BlanesHomes</h3>
-            <p>Análisis inmobiliario inteligente</p>
+        <div className="footer-logo">
+            <img src="/images/logo2.png" alt="Habinia Logo" className="footer-logo-img" />
+            <div className="logo-text">
+              <span className="logo-main">HABIN</span>
+              <span className="logo-gradient">IA</span>
+            </div>
           </div>
           <div className="footer-links">
             <div className="footer-column">
@@ -371,7 +374,6 @@ const LandingPage = () => {
               <h4>Empresa</h4>
               <ul>
                 <li><a href="/about">Sobre nosotros</a></li>
-                <li><a href="/blog">Blog</a></li>
                 <li><a href="/contact">Contacto</a></li>
               </ul>
             </div>
@@ -385,7 +387,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} BlanesHomes. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Habinia. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>
