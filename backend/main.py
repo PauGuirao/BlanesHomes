@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from supabase import create_client, Client
 import os
+import httpx
 from routes.analisis_link import router as analisis_router
 from routes.getPisos import router as pisos_router
 from routes.getZonas import router as zonas_router
@@ -29,7 +30,9 @@ from deps.dependencies import (
     get_df,
     get_stripe,
     get_stripe_endpoint_secret,
-    get_df_zonas
+    get_df_zonas,
+    get_resend,
+    get_recaptcha_secret
 )
 
 # ========== INICIALIZACIÓN FASTAPI ==========
@@ -60,6 +63,8 @@ df = get_df()
 df_zonas = get_df_zonas()
 stripe = get_stripe()
 endpoint_secret = get_stripe_endpoint_secret()
+resend = get_resend()
+RECAPTCHA_SECRET = get_recaptcha_secret()
 
 # ========== ENDPOINTS ==========
 @app.post("/recomendaciones")
@@ -666,6 +671,56 @@ async def stripe_webhook(request: Request):
         # Buscas por user_id si lo tienes, o por email si es un fallback
         print(f"❌ Payment failed or cancelled for user")
     return {"received": True}
+
+
+@app.post("/contact")
+async def send_contact_email(request: Request):
+    try:
+        data = await request.json()
+
+        # Extrae datos del formulario
+        name = data.get("name")
+        email = data.get("email")
+        subject = data.get("subject")
+        message = data.get("message")
+        token = data.get("token")  # token de reCAPTCHA enviado desde el frontend
+
+        # Validación básica de campos
+        if not all([name, email, subject, message, token]):
+            return JSONResponse(status_code=400, content={"success": False, "error": "Faltan campos obligatorios"})
+
+        # Verificar reCAPTCHA con Google
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://www.google.com/recaptcha/api/siteverify",
+                data={
+                    "secret": RECAPTCHA_SECRET,
+                    "response": token
+                }
+            )
+            verification = response.json()
+
+        if not verification.get("success"):
+            return JSONResponse(status_code=403, content={"success": False, "error": "reCAPTCHA inválido"})
+
+        # Enviar email con Resend
+        resend.Emails.send({
+            "from": "Habinia <contact@habinia.com>",  # dominio verificado
+            "to": ["guiraocastells@gmail.com"],        # destinatario real
+            "subject": f"Nuevo mensaje: {subject}",
+            "html": f"""
+                <p><strong>Nombre:</strong> {name}</p>
+                <p><strong>Email:</strong> {email}</p>
+                <p><strong>Mensaje:</strong></p>
+                <p>{message}</p>
+            """
+        })
+
+        return {"success": True, "message": "Correo enviado correctamente"}
+
+    except Exception as e:
+        print("Error al enviar el correo:", e)
+        return JSONResponse(status_code=500, content={"success": False, "error": "Error interno del servidor"})
 
 # ========== IMPORTS ========== #
 from supabase_querys import get_agencia_from_profile, get_profile_from_user_id

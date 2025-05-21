@@ -19,6 +19,8 @@ import google.generativeai as genai
 #------------------- STRIPE ---------------------#
 import stripe
 
+import resend
+
 #------------------- MODELOS ---------------------#
 model_precio = joblib.load("models/modelo_xgboost_precio.pkl")
 features_precio = joblib.load("models/features_xgboost_precio.pkl")  # columnas del modelo
@@ -38,6 +40,11 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 #------------------- STRIPE ---------------------#
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 endpoint_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
+
+#------------------- CORS ---------------------#
+resend.api_key = os.getenv("RESEND_API_KEY")
+
+RECAPTCHA_SECRET = os.getenv("CAPTCHA_SECRET_KEY") 
 
 #------------------- DATAFRAME ---------------------#
 response = supabase.table("pisos").select("*", "tipos(nombre)", "zonas(nombre)").not_.is_("descripcion", None).execute()
@@ -118,3 +125,9 @@ def get_stripe():
 
 def get_stripe_endpoint_secret():
     return endpoint_secret
+
+def get_resend():
+    return resend
+
+def get_recaptcha_secret():
+    return RECAPTCHA_SECRET

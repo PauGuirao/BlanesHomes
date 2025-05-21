@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './ContactPage.css';
 
 const ContactPage = () => {
+const API_URL = import.meta.env.VITE_API_URL;
+const CAPTCHA_SITE_KEY = import.meta.env.VITE_CAPTCHA_SITE_KEY;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,22 +24,54 @@ const ContactPage = () => {
       [name]: value
     }));
   };
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }, []);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormStatus({ submitted: false, error: null });
-    
+  
     try {
-      // Here you would typically send the form data to your backend
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setFormStatus({ submitted: true, error: null });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      const token = document.querySelector('[name="g-recaptcha-response"]')?.value;
+  
+      if (!token) {
+        setFormStatus({
+          submitted: false,
+          error: 'Debes completar el reCAPTCHA.',
+        });
+        return;
+      }
+  
+      const response = await axios.post(`${API_URL}/contact`, {
+        ...formData,
+        token, // 👈 añade el token
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.data.success) {
+        setFormStatus({ submitted: true, error: null });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setFormStatus({ submitted: false, error: 'Error al enviar el formulario.' });
+      }
     } catch (error) {
-      setFormStatus({ submitted: false, error: 'Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.' });
+      setFormStatus({
+        submitted: false,
+        error: 'Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.',
+      });
+      console.error(error);
     }
   };
+  
 
   return (
     <div className="contact-container">
@@ -130,7 +165,7 @@ const ContactPage = () => {
                     required
                   ></textarea>
                 </div>
-                
+                <div className="g-recaptcha" data-sitekey={CAPTCHA_SITE_KEY}></div>
                 <button type="submit" className="submit-button">Enviar mensaje</button>
               </form>
             )}
