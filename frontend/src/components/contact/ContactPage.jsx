@@ -39,7 +39,7 @@ const CAPTCHA_SITE_KEY = import.meta.env.VITE_CAPTCHA_SITE_KEY;
   
     try {
       const token = document.querySelector('[name="g-recaptcha-response"]')?.value;
-  
+      console.log("reCAPTCHA token:", token); 
       if (!token) {
         setFormStatus({
           submitted: false,
