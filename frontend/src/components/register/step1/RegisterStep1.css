@@ -82,7 +82,7 @@
 }
 
 .register-button {
-  background-color: #ff5722;
+  background: linear-gradient(90deg, #ff7300, #ffb553);;
   color: white;
   border: none;
   padding: 14px;
@@ -300,4 +300,8 @@
 
 .verification-login-link:hover {
   background-color: #e64a19;
+}
+
+.app-logo a {
+  text-decoration: none;
 }

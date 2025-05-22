@@ -37,9 +37,17 @@ const ForgotPassword = () => {
   return (
     <div className="forgot-password-container">
       <div className="forgot-password-card">
-        <div className="forgot-header">
-          <h1 className="app-title">BlanesHomes</h1>
-          <p className="app-tagline">Tu plataforma inmobiliaria inteligente</p>
+        <div className="login-header">
+          <div className="app-logo">
+            <Link to="/">
+              <img src="/images/logo2.png" alt="HABINIA Logo" className="logo-icon" />
+              <h1 className="app-title">
+                <span className="logo-main">HABIN</span>
+                <span className="logo-gradient">IA</span>
+              </h1>
+            </Link>
+          </div>
+          <p className="app-tagline">Análisis inmobiliario inteligente</p>
         </div>
 
         <h2 className="forgot-title">Recuperar contraseña</h2>

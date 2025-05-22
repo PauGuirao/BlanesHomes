@@ -147,11 +147,13 @@ const LoginForm = ({ onLoginSuccess }) => {
     <div className="login-form-container">
       <div className="login-header">
         <div className="app-logo">
-          <img src="/images/logo2.png" alt="HABINIA Logo" className="logo-icon" />
-          <h1 className="app-title">
-            <span className="logo-main">HABIN</span>
-            <span className="logo-gradient">IA</span>
-          </h1>
+          <Link to="/">
+            <img src="/images/logo2.png" alt="HABINIA Logo" className="logo-icon" />
+            <h1 className="app-title">
+              <span className="logo-main">HABIN</span>
+              <span className="logo-gradient">IA</span>
+            </h1>
+          </Link>
         </div>
         <p className="app-tagline">Análisis inmobiliario inteligente</p>
       </div>

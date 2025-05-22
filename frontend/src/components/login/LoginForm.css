@@ -195,6 +195,10 @@ body.login-page {
 
 /* Add these styles to your existing LoginForm.css */
 
+.app-logo a {
+  text-decoration: none;
+}
+
 .password-input-container {
   position: relative;
   display: flex;

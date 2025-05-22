@@ -684,7 +684,6 @@ async def send_contact_email(request: Request):
         subject = data.get("subject")
         message = data.get("message")
         token = data.get("token")  # token de reCAPTCHA enviado desde el frontend
-
         # Validación básica de campos
         if not all([name, email, subject, message, token]):
             return JSONResponse(status_code=400, content={"success": False, "error": "Faltan campos obligatorios"})
