@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import './LandingPage.css';
 import LandingMap from './LandingMap';
 import AdAnalysisFeature from './AdAnalysisFeature';
+import { usePostHog } from 'posthog-js/react'
 
 
 const LandingPage = () => {
+  const posthog = usePostHog()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const toggleMobileMenu = () => {
@@ -34,8 +36,14 @@ const LandingPage = () => {
           <a href="#features" onClick={() => setMobileMenuOpen(false)}>Características</a>
           <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>Precios</a>
           <a href="#faq" onClick={() => setMobileMenuOpen(false)}>FAQ</a>
-          <Link to="/login" className="navbar-login" onClick={() => setMobileMenuOpen(false)}>Iniciar sesión</Link>
-          <Link to="/register" className="navbar-register" onClick={() => setMobileMenuOpen(false)}>Registrarse</Link>
+          <Link to="/login" className="navbar-login"
+            onClick={() => { setMobileMenuOpen(false); posthog.capture('clicked_login_link', { location: 'navbar',});}}>
+            Iniciar sesión
+          </Link>
+          <Link to="/register" className="navbar-register"
+            onClick={() => { setMobileMenuOpen(false); posthog.capture('clicked_register_link', {location: 'navbar',});}}>
+            Registrarse
+          </Link>
         </div>
       </nav>
 

@@ -28,6 +28,7 @@
     "jspdf-autotable": "^5.0.2",
     "leaflet": "^1.9.4",
     "leaflet.heat": "^0.2.0",
+    "posthog-js": "^1.245.2",
     "rc-slider": "^11.1.8",
     "rc-tooltip": "^6.4.0",
     "react": "^19.0.0",

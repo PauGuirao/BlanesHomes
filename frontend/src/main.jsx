@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+import { PostHogProvider} from 'posthog-js/react'
 import './i18n'
 
 const queryClient = new QueryClient({
@@ -16,6 +17,10 @@ const queryClient = new QueryClient({
     }
   }
 }); 
+
+const options = {
+  api_host: import.meta.env.VITE_POSTHOG_HOST,
+}
 
 const localStoragePersister = createSyncStoragePersister({
   storage: window.localStorage,
@@ -44,7 +49,9 @@ preloadHeroImage();
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <PostHogProvider apiKey={import.meta.env.VITE_POSTHOG_KEY} options={options}>
+        <App />
+      </PostHogProvider>
     </QueryClientProvider>
   </StrictMode>,
 )
