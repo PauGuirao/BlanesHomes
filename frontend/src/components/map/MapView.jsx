@@ -52,6 +52,7 @@ const MapView = (props) => {
   
       if (value !== prevValue) {
         console.log(`[MapView] prop '${key}' cambió`);
+        /*
         console.log("  🔁 Anterior:", prevValue);
         console.log("  🔁 Actual:  ", value);
   
@@ -60,6 +61,7 @@ const MapView = (props) => {
           console.log(`  🔍 Longitud antes: ${prevValue.length}, ahora: ${value.length}`);
           console.log(`  🔍 Igual por JSON: ${JSON.stringify(prevValue) === JSON.stringify(value)}`);
         }
+          */
       }
     });
   

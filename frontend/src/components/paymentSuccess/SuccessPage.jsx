@@ -9,7 +9,7 @@ const SuccessPage = () => {
         <div className="success-icon">✅</div>
         <h1 className="success-title">¡Pago completado!</h1>
         <p className="success-message">
-          Gracias por suscribirte a BlanesHomes. Ya puedes usar todas las funcionalidades premium.
+          Gracias por suscribirte a HABINIA. Ya puedes usar todas las funcionalidades premium.
         </p>
         <div className="success-actions">
           <Link to="/dashboard" className="primary-button">

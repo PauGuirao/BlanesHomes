@@ -1,6 +1,6 @@
 /* src/components/Navbar.css */
 .navbar {
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-primary);
   opacity: 1;
   color: var(--text-primary);
   display: flex;
@@ -10,7 +10,8 @@
   position: sticky;
   top: 0;
   z-index: 2000;
-  height: 60px;
+  height: 59px;
+  border-bottom: 1px solid #515151;
 }
 
 .navbar-title {
@@ -59,9 +60,9 @@
 }
 
 .compare-button-action{
-  background: #e74c3c;
+  background: var(--bg-secondary);
   color: white;
-  border: none;
+  border: 1px solid #ffa72c;
   padding: 10px 22px;
   margin-right: 0;
   cursor: pointer;
@@ -83,15 +84,16 @@
 }
 
 .tools-button {
-  background: #3498db;
+  background: var(--bg-secondary);
   color: white;
-  border: none;
+  border: 1px solid #ffa72c;
   padding: 10px 22px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
   transition: background 0.2s;
+  min-width: 150px;
 }
 
 .tools-button:hover {
@@ -245,6 +247,7 @@
 }
 
 .navbar-city-selector {
+  display: none;
   margin: 0 0px;
 }
 

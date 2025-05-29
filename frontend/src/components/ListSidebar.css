@@ -81,7 +81,7 @@
 
 .piso-precio {
   font-weight: 600;
-  color: #e74c3c;
+  font-size: 14px;
 }
 
 .close-button {
@@ -372,7 +372,7 @@
 }
 
 .results-number {
-  color: #e74c3c;
+  color: #ffa72c;
   font-weight: 600;
 }
 

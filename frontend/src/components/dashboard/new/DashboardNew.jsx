@@ -68,7 +68,7 @@ const DashboardNew = () => {
     <div className="dashboard-new-container">
       <div className="dashboard-new-header">
         <h1>Completa tu perfil</h1>
-        <p>Configura tu agencia para comenzar a usar BlanesHomes</p>
+        <p>Configura tu agencia para comenzar a usar HABINIA</p>
       </div>
       
       <div className="dashboard-new-steps">

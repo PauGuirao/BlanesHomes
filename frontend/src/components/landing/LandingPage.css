@@ -903,11 +903,11 @@ h1, h2, h3, h4 {
 }
 
 .navbar-links a:hover {
-  color: #ff5722;
+  color: #ffa72c;
 }
 
 .navbar-login {
-  color: #ff5722 !important;
+  color: #ffa72c !important;
   font-weight: 500;
 }
 

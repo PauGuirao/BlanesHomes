@@ -81,7 +81,7 @@ const CompletePayment = () => {
     <div className="complete-payment-container">
       <div className="payment-card">
         <div className="payment-header">
-          <h1 className="app-title">BlanesHomes</h1>
+          <h1 className="app-title">HABINIA</h1>
           <p className="app-tagline">Tu plataforma inmobiliaria inteligente</p>
         </div>
         

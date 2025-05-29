@@ -586,6 +586,16 @@ def create_profile(data: dict):
     }).execute()
     return {"ok": True}
 
+@app.post("/createOrganization")
+def create_organization(data: dict):
+    response = supabase.table("organization").insert({
+        "plan": data["plan"],
+        "admin_id": data["admin_id"],
+        "agency_id": data["agency_id"],
+        "estado": data.get("estado", "pendiente_pago")
+    }).select("id").single().execute()
+    return {"id": response.data["id"]}
+
 # create another route that updates the profile
 @app.post("/updateProfile")
 def update_profile(data: dict):
@@ -666,6 +676,13 @@ async def stripe_webhook(request: Request):
             "estado": "pagado",
             "plan": plan
         }).eq("id", user_id).execute()
+        # actualiza la tabla organization
+        supabase.table("organization").update({
+            "plan": plan,
+            "estado": "pagado",
+            "stripe_id": session['customer']
+
+        }).eq("admin_id", user_id).execute()
         print(f"✅ Updated user {user_id} to plan '{plan}'")
     elif event['type'] in ['checkout.session.expired', 'invoice.payment_failed', 'payment_intent.payment_failed', 'charge.failed','customer.subscription.deleted']:
         # Buscas por user_id si lo tienes, o por email si es un fallback
@@ -724,6 +741,7 @@ async def send_contact_email(request: Request):
 # ========== IMPORTS ========== #
 from supabase_querys import get_agencia_from_profile, get_profile_from_user_id
 from auth import get_current_user
+
 @app.get("/get_profile_agency")
 def get_profile_agencia(user_id: str = Query(...), user=Depends(get_current_user)):
     agencia = get_agencia_from_profile(user_id)
@@ -741,6 +759,121 @@ def get_profile(user_id: str = Query(...), user=Depends(get_current_user)):
     else:
         return {"error": "No se encontró el perfil para el usuario especificado"}, 404
 
+@app.get("/get_organization")
+def get_organization(user_id: str = Query(...), user=Depends(get_current_user)):
+    # 1. Primero obtén el perfil del usuario
+    profile = supabase.table("profiles").select("organization_id").eq("id", user_id).single().execute()
+    org_id = profile.data["organization_id"]
+
+    # 2. Ahora busca la organización por ese ID
+    organization = supabase.table("organization").select("*").eq("id", org_id).single().execute()
+    if organization:
+        return organization.data
+    else:
+        return {"estado": "desactivado"}
+
+@app.get("/get_organization_agency")
+def get_organization_agency(user_id: str = Query(...), user=Depends(get_current_user)):
+    # 1. Primero obtén el perfil del usuario
+    profile = supabase.table("profiles").select("organization_id").eq("id", user_id).single().execute()
+    org_id = profile.data["organization_id"]
+
+    # 2. Ahora busca la organización por ese ID
+    organization = supabase.table("organization").select("*").eq("id", org_id).single().execute()
+    if not organization.data:
+        return {"error": "Organización no encontrada"}, 404
+
+    # Buscar la agencia directamente usando el agency_id
+    agency_id = organization.data["agency_id"]
+    agencia = supabase.table("agencias").select("*").eq("id", agency_id).single().execute()
+    return agencia.data
+
+@app.post("/invite_user")
+async def invite_user(request: Request):
+    try:
+        data = await request.json()
+
+        email = data.get("email")
+        organization_id = data.get("organization_id")
+
+        if not email or not organization_id:
+            return JSONResponse(status_code=400, content={"success": False, "error": "Faltan campos obligatorios"})
+
+        # Insertar la invitación en la tabla 'invitations'
+        supabase.table("invitations").insert({
+            "email": email,
+            "organization_id": organization_id,
+            "accepted": False
+        }).execute()
+
+        # Construir enlace de registro con email
+        invite_link = f"http://localhost:5173/register?email={email}"
+
+        # Enviar correo con Resend
+        resend.Emails.send({
+            "from": "Habinia <contact@habinia.com>",
+            "to": [email],
+            "subject": "Te han invitado a unirte a HABINIA",
+            "html": f"""
+            <div style="font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
+            <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div style="text-align: center; margin-bottom: 20px;">
+                <img src="https://yourdomain.com/logo.png" alt="HABINIA Logo" style="height: 50px;" />
+                </div>
+
+                <h2 style="color: #ffa72c; font-size: 22px; text-align: center;">¡Te han invitado a HABINIA!</h2>
+                
+                <p style="font-size: 16px; color: #555555;">Hola 👋</p>
+                <p style="font-size: 16px; color: #555555;">
+                Has sido invitado a unirte a una organización en <strong>HABINIA</strong>, la plataforma de análisis inmobiliario inteligente.
+                </p>
+
+                <p style="font-size: 16px; color: #555555;">
+                Haz clic en el botón a continuación para crear tu cuenta y unirte:
+                </p>
+
+                <div style="text-align: center; margin: 30px 0;">
+                <a href="{invite_link}" 
+                    style="background-color: #ffa72c; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-weight: bold; display: inline-block;">
+                    Registrarme en HABINIA
+                </a>
+                </div>
+
+                <p style="font-size: 14px; color: #999999;">Si no esperabas este mensaje, puedes ignorarlo sin problema.</p>
+
+                <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #cccccc;">
+                © 2025 HABINIA · Todos los derechos reservados
+                </div>
+            </div>
+            </div>
+            """
+        })
+
+        return {"success": True, "message": "Invitación enviada correctamente"}
+
+    except Exception as e:
+        print("Error al enviar la invitación:", e)
+        return JSONResponse(status_code=500, content={"success": False, "error": "Error interno del servidor"})
+
+@app.post("/check_invitation_and_assign")
+def check_invitation_and_assign(data: dict):
+    email = data["email"]
+    user_id = data["user_id"]
+
+    # Buscar invitación
+    invitation = supabase.table("invitations").select("*").eq("email", email).eq("accepted", False).single().execute()
+
+    if not invitation.data:
+        return {"message": "No invitation found"}
+
+    # Actualizar profile con organization_id
+    org_id = invitation.data["organization_id"]
+    supabase.table("profiles").update({"organization_id": org_id}).eq("id", user_id).execute()
+
+    # Marcar invitación como aceptada
+    supabase.table("invitations").update({"accepted": True}).eq("id", invitation.data["id"]).execute()
+
+    return {"message": "Usuario asignado a organización"}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

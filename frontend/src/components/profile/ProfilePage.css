@@ -403,3 +403,175 @@
   border-color: #ff5722;
   color: white;
 }
+
+/* Estilos para la sección de miembros de agencia */
+.profile-agency-section {
+  margin-top: 2rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.invite-button {
+  background-color: #ff5722; /* Color naranja */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Bordes más redondeados */
+  padding: 0.7rem 1.2rem; /* Padding más amplio */
+  font-size: 0.95rem;
+  font-weight: 600; /* Texto más grueso */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Transición más suave */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invite-button:hover {
+  background-color: #e64a19; /* Naranja más oscuro al pasar el ratón */
+  transform: translateY(-2px); /* Efecto de elevación */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+}
+
+.invite-button:active {
+  transform: translateY(0); /* Regresa a la posición original al hacer clic */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida */
+}
+
+.invite-form-container {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.invite-form h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.invite-status {
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.invite-status.info {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.invite-status.success {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.invite-status.error {
+  background-color: #ffebee;
+  color: #b71c1c;
+}
+
+.send-invite-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.send-invite-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.members-list {
+  margin-top: 1rem;
+}
+
+.no-members {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 1rem;
+}
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.members-header {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 0.8fr 1fr;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-light);
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.member-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 0.8fr 1fr;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.member-row:last-child {
+  border-bottom: none;
+}
+
+.member-name, .member-email, .member-role, .member-date {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-role {
+  text-transform: capitalize;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .members-header, .member-row {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 0.5rem;
+  }
+  
+  .member-role, .member-date {
+    display: none;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .invite-button {
+    width: 100%;
+  }
+}

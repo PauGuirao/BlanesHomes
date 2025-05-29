@@ -129,26 +129,24 @@ function App() {
   const handleSession = async (session) => {
     if (!session || hasHandledSession.current) return; // ❌ Ya fue procesado
     hasHandledSession.current = true; // ✅ Marcar como hecho
-  
     try {
-      const response = await axios.get(`${API_URL}/get_profile`, {
+      const response = await axios.get(`${API_URL}/get_organization`, {
         params: { user_id: session.user.id },
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
       });
   
-      const profileData = response.data;
-      setProfileStatus(profileData.estado);
+      const organizationData = response.data;
+      setProfileStatus(organizationData.estado);
   
-      if (profileData.estado === 'pagado') {
-        const res_age = await axios.get(`${API_URL}/get_profile_agency`, {
+      if (organizationData.estado === 'pagado') {
+        const res_age = await axios.get(`${API_URL}/get_organization_agency`, {
           params: { user_id: session.user.id },
           headers: {
             Authorization: `Bearer ${session.access_token}`,
           },
         });
-  
         const agenciaData = res_age.data;
         setSession({
           token: session.access_token,

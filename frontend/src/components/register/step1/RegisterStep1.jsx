@@ -97,6 +97,12 @@ const RegisterStep1 = ({ userData, onNext }) => {
             nombre: formData.name,
             estado: "desactivado",
           });
+
+          // ✅ Check if the user was invited and assign them to an organization
+          await axios.post(`${API_URL}/check_invitation_and_assign`, {
+            email: formData.email,
+            user_id: authData.user.id
+          });
           
           // Store the registered email and show verification message
           setRegisteredEmail(formData.email);

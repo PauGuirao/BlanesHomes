@@ -48,37 +48,37 @@ const LoginForm = ({ onLoginSuccess }) => {
       setUserData(data);
   
       //------- 2. Check if user's profile has the subscription active -------//
-      const res_pro = await axios.get(`${API_URL}/get_profile`, {
+      const res_pro = await axios.get(`${API_URL}/get_organization`, {
         params: { user_id: data.user.id },
         headers: {
           Authorization: `Bearer ${data.session.access_token}`
         }
       });
-      const profileData = res_pro.data;
-  
-      // If profile is "desactivado", redirect to dashboard/new
-      if (profileData.estado === 'desactivado') {
-      // Sign out from Supabase first to prevent auto-login to dashboard
-      await supabase.auth.signOut();
-      
-      // Then redirect to dashboard/new with state
-      navigate('/dashboard/new', { 
-        state: { 
-          userId: data.user.id,
-          name: data.user.user_metadata?.name || '',
-          email: data.user.email
-        } 
-      });
-      return;
-      } else if (profileData.estado !== 'pagado') {
+      const organizationData = res_pro.data;
+
+      if (!organizationData || organizationData.estado === 'desactivado') {
+        console.log('DES');
+        // Sign out from Supabase first to prevent auto-login to dashboard
+        await supabase.auth.signOut();
+        // Then redirect to dashboard/new with state
+        navigate('/dashboard/new', { 
+          state: { 
+            userId: data.user.id,
+            name: data.user.user_metadata?.name || '',
+            email: data.user.email
+          } 
+        });
+        return;
+      } else if (organizationData.estado !== 'pagado') {
+        console.log(organizationData);
         setPaymentPending({ isPending: true, userId: data.user.id, email: email });
         // Sign out the user
         await supabase.auth.signOut();
         return;
       }
-
+      console.log('User data:', data);
       //------- 3. Check if user's has an active agency in its profile -------//
-      const res_age = await axios.get(`${API_URL}/get_profile_agency`, {
+      const res_age = await axios.get(`${API_URL}/get_organization_agency`, {
         params: { user_id: data.user.id },
         headers: {
           Authorization: `Bearer ${data.session.access_token}`

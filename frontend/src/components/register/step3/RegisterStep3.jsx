@@ -34,11 +34,23 @@ const RegisterStep3 = ({ userData, onBack }) => {
     
     try {
       // Create a Stripe checkout session
-      // Update profile with agency ID and set status to pendiente_pago
+      // 1. Crear la organización
+      const orgResponse = await axios.post(`${API_URL}/createOrganization`, {
+        plan: formData.plan,
+        agency_id: formData.agencyId,
+        admin_id: userData.id,
+        estado: "pendiente_pago"
+      });
+
+      // 2. Extraer el ID de la organización creada
+      const organizationId = orgResponse.data?.id; // Asegúrate que tu endpoint lo devuelve
+
+      // 3. Actualizar el perfil con agency_id, estado y organization_id
       await axios.post(`${API_URL}/updateProfile`, {
         id: userData.id,
         agencia_id: formData.agencyId,
-        estado: "pendiente_pago"
+        estado: "pendiente_pago",
+        organization_id: organizationId
       });
 
       const response = await axios.post(`${API_URL}/create-checkout-session`, {
