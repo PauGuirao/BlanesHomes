@@ -804,23 +804,60 @@ def get_organization_agency(user_id: str = Query(...), user=Depends(get_current_
         raise HTTPException(status_code=404, detail="Agencia no encontrada")
     return agency_response.data
 
+
+PLAN_LIMITS = {
+    "starter": 1,
+    "basic": 5,
+    "pro": 10,
+    "premium": 20
+}
+
 @app.post("/invite_user")
 async def invite_user(request: Request):
     try:
         data = await request.json()
-
         email = data.get("email")
         organization_id = data.get("organization_id")
 
         if not email or not organization_id:
             return JSONResponse(status_code=400, content={"success": False, "error": "Faltan campos obligatorios"})
 
-        # Insertar la invitación en la tabla 'invitations'
-        supabase.table("invitations").insert({
-            "email": email,
-            "organization_id": organization_id,
-            "accepted": False
-        }).execute()
+        # 1. Obtener el plan de la organización
+        org_resp = supabase.from_("organization").select("plan").eq("id", organization_id).single().execute()
+        if org_resp.error:
+            return JSONResponse(status_code=500, content={"success": False, "error": "Error al obtener plan de la organización"})
+
+        plan = org_resp.data.get("plan", "starter").lower()
+        max_members = PLAN_LIMITS.get(plan, 1)
+
+        # 2. Contar miembros actuales en profiles
+        profiles_resp = supabase.from_("profiles").select("id", count="exact").eq("organization_id", organization_id).execute()
+        if profiles_resp.error:
+            return JSONResponse(status_code=500, content={"success": False, "error": "Error al contar miembros"})
+
+        current_profiles = profiles_resp.count or 0
+        total_count = current_profiles
+        if total_count >= max_members:
+            return JSONResponse(
+                status_code=403,
+                content={"success": False, "error": f"Tu plan ({plan}) permite un máximo de {max_members} miembros (incluyendo invitaciones pendientes)."}
+            )
+
+        # 4. Comprobar si ya se ha enviado una invitación a ese email (no aceptada)
+        existing_invite = supabase.from_("invitations") \
+            .select("id") \
+            .eq("email", email) \
+            .eq("organization_id", organization_id) \
+            .eq("accepted", False) \
+            .execute()
+
+        if not existing_invite.data or len(existing_invite.data) == 0:
+            # Insertar la invitación en la tabla 'invitations'
+            supabase.table("invitations").insert({
+                "email": email,
+                "organization_id": organization_id,
+                "accepted": False
+            }).execute()
 
         # Construir enlace de registro con email
         invite_link = f"{FRONTEND_URL}/register?email={email}"

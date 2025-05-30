@@ -92,7 +92,6 @@ const RegisterStep3 = ({ userData, onBack }) => {
               </div>
               <div className="pricing-billing">
                 Facturado anualmente €228
-                <br />6+ meses gratis
               </div>
               <button 
                 type="button" 
@@ -135,7 +134,6 @@ const RegisterStep3 = ({ userData, onBack }) => {
               </div>
               <div className="pricing-billing">
                 Facturado anualmente €468
-                <br />6+ meses gratis
               </div>
               <button 
                 type="button" 
@@ -179,7 +177,6 @@ const RegisterStep3 = ({ userData, onBack }) => {
               </div>
               <div className="pricing-billing">
                 Facturado anualmente €708
-                <br />6+ meses gratis
               </div>
               <button 
                 type="button" 

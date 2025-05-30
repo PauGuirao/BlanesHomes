@@ -231,19 +231,18 @@ const LandingPage = () => {
               </div>
               <div className="pricing-billing">
                 Facturado anualmente €228
-                <br />6+ meses gratis
               </div>
             </div>
             
             <div className="pricing-features">
               <div className="feature">
-                <span className="check">✓</span> Hasta 10 propiedades
+                <span className="check">✓</span> Propiedades ilimitadas
               </div>
               <div className="feature">
-                <span className="check">✓</span> 1 usuario
+                <span className="check">✓</span> 5 usuarios
               </div>
               <div className="feature">
-                <span className="check">✓</span> Análisis básico
+                <span className="check">✓</span> Análisis básicos
               </div>
               <div className="feature">
                 <span className="check">✓</span> Soporte por email
@@ -262,7 +261,6 @@ const LandingPage = () => {
               </div>
               <div className="pricing-billing">
                 Facturado anualmente €468
-                <br />6+ meses gratis
               </div>
             </div>
             
@@ -271,10 +269,10 @@ const LandingPage = () => {
                 <span className="check">✓</span> Propiedades ilimitadas
               </div>
               <div className="feature">
-                <span className="check">✓</span> 3 usuarios
+                <span className="check">✓</span> 10 usuarios
               </div>
               <div className="feature">
-                <span className="check">✓</span> Análisis avanzado
+                <span className="check">✓</span> Análisis avanzados
               </div>
               <div className="feature">
                 <span className="check">✓</span> Soporte prioritario
@@ -297,7 +295,6 @@ const LandingPage = () => {
               </div>
               <div className="pricing-billing">
                 Facturado anualmente €708
-                <br />6+ meses gratis
               </div>
             </div>
             
@@ -306,19 +303,16 @@ const LandingPage = () => {
                 <span className="check">✓</span> Propiedades ilimitadas
               </div>
               <div className="feature">
-                <span className="check">✓</span> 10 usuarios
+                <span className="check">✓</span> 20 usuarios
               </div>
               <div className="feature">
-                <span className="check">✓</span> Análisis completo
+                <span className="check">✓</span> Análisis completos
               </div>
               <div className="feature">
                 <span className="check">✓</span> Soporte 24/7
               </div>
               <div className="feature">
-                <span className="check">✓</span> API integración
-              </div>
-              <div className="feature">
-                <span className="check">✓</span> Herramientas avanzadas
+                <span className="check">✓</span> Exportación de informes
               </div>
             </div>
             
