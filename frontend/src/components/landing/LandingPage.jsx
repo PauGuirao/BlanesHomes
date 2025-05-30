@@ -347,7 +347,7 @@ const LandingPage = () => {
           </div>
           <div className="faq-item">
             <h3>¿Cómo se integra con mis anuncios existentes?</h3>
-            <p>a hemos importado automáticamente todos los anuncios publicados en internet, incluyendo los de las principales plataformas inmobiliarias. Nuestra plataforma analiza todos los anuncios de todas las agencias, por lo que no necesitas añadirlos manualmente</p>
+            <p>Ya hemos importado automáticamente todos los anuncios publicados en internet, incluyendo los de las principales plataformas inmobiliarias. Nuestra plataforma analiza todos los anuncios de todas las agencias, por lo que no necesitas añadirlos manualmente</p>
           </div>
         </div>
       </section>
