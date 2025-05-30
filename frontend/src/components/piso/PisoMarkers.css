@@ -34,7 +34,7 @@
 .popup-price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #e74c3c;
+  color: var(--accent-color-simple);
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;

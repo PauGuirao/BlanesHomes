@@ -103,11 +103,15 @@ function UrlForm({ onClose, onSugerenciaClick }) {
             <div className="valoration-container">
               <h3>Nota</h3>
               <div className="valoration-score">
-                <span className="score">{propertyDetails.valoracion.overall_score}</span>
+                <span
+                  className={`score ${getScoreClass(propertyDetails.valoracion.overall_score)}`}
+                >
+                  {propertyDetails.valoracion.overall_score}
+                </span>
                 <span className="max-score">/10</span>
               </div>
             </div>
-            
+                      
             <div className="valoration-breakdown">
               <h3>Desglose de valoración</h3>
               <div className="breakdown-items">
@@ -153,13 +157,13 @@ function UrlForm({ onClose, onSugerenciaClick }) {
           <div className="property-details-container">
             <div className="top-group">
               <div className="property-info-block">
-                <h3>Property Information</h3>
+                <h3>Informacion general</h3>
                 <span><strong>Tipo:</strong> {propertyDetails.piso.tipo}</span>
-                <span><strong>Zone:</strong> {propertyDetails.piso.zona}</span>
-                <span><strong>Size:</strong> {propertyDetails.piso.metros} m²</span>
-                <span><strong>Rooms:</strong> {propertyDetails.piso.habitaciones}</span>
-                <span><strong>Bathrooms:</strong> {propertyDetails.piso.baños}</span>
-                <span><strong>Category:</strong> {propertyDetails.piso.categoria_valor}</span>
+                <span><strong>Zona:</strong> {propertyDetails.piso.zona}</span>
+                <span><strong>Metros:</strong> {propertyDetails.piso.metros} m²</span>
+                <span><strong>Habitaciones:</strong> {propertyDetails.piso.habitaciones}</span>
+                <span><strong>Baños:</strong> {propertyDetails.piso.baños}</span>
+                <span><strong>Categoria:</strong> {propertyDetails.piso.categoria_valor}</span>
               </div>
               <div className='top-group-right'>           
                 {/* Add extras block */}
@@ -193,11 +197,13 @@ function UrlForm({ onClose, onSugerenciaClick }) {
             <div className="price-comparison">
               <div className=" price-block real-price">
                 <h3>Precio real</h3>
-                <span>{propertyDetails.piso.precio.toLocaleString()} €</span>
+                <div className='piso-price'>
+                  <span className='price'>{propertyDetails.piso.precio.toLocaleString()} €</span>
+                </div>
               </div>
               <div className="price-block estimated-price">
                 <h3>Nuestra IA predice</h3>
-                <div className='predicted-price'>
+                <div className='piso-price'>
                   <span className="price">{propertyDetails.precio_estimado.toLocaleString()} €</span>
                   <span className="difference">{propertyDetails.price_difference}%</span>
                 </div>
@@ -294,3 +300,9 @@ function UrlForm({ onClose, onSugerenciaClick }) {
 }
 
 export default UrlForm;
+
+const getScoreClass = (score) => {
+  if (score >= 8) return 'good';
+  if (score >= 5) return 'medium';
+  return 'bad';
+};

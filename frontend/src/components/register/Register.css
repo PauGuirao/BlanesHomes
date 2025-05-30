@@ -120,12 +120,6 @@
   margin-top: 1rem;
   font-size: 0.9rem;
 }
-
-.login-link a {
-  color: #1976d2;
-  text-decoration: none;
-}
-
 .login-link a:hover {
   text-decoration: underline;
 }

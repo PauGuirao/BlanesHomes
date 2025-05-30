@@ -160,14 +160,14 @@
 }
 
 .login-link {
-  color: #ff5722;
+  color: var(--accent-color-simple);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .login-link:hover {
-  color: #e64a19;
+  color: var(accent-color-simple);
   text-decoration: underline;
 }
 

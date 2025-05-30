@@ -6,6 +6,7 @@
   --text-primary: #ffffff;
   --text-secondary: #ddd;
   --accent-color: linear-gradient(90deg, #ff6d00, #ffa72c);
+  --accent-color-simple:#ffa72c;
   --border-color: #444;
   --card-bg: #1c1c1c;
   --button-bg: #333;
@@ -22,7 +23,8 @@ body[data-theme='light'] {
   --bg-tertiary: #fcfcfc;
   --text-primary: #414141;
   --text-secondary: #666666;
-  --accent-color: #ffa72c;
+  --accent-color: linear-gradient(90deg, #ff6d00, #ffa72c);
+  --accent-color-simple:#ffa72c;
   --border-color: #dddddd;
   --card-bg: #ffffff;
   --button-bg: #e0e0e0;

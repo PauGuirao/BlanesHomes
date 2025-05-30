@@ -201,7 +201,7 @@ h2, h3, h4 {
 }
 
 .vendor-properties {
-  color: #e74c3c;
+  color: var(--accent-color-simple);
   font-weight: 500;
 }
 
@@ -236,14 +236,6 @@ h2, h3, h4 {
 .vendor-detail-left, .vendor-detail-right {
   flex: 1;
 }
-
-.vendor-detail-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #e74c3c;
-}
-
 .compact-stat {
   margin-bottom: 15px;
 }
@@ -386,7 +378,6 @@ h2, h3, h4 {
 .vendor-detail-title {
   font-size: 20px;
   font-weight: 700;
-  color: #e74c3c;
   margin-bottom: 5px;
 }
 

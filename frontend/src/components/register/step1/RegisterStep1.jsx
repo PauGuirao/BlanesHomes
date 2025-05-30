@@ -111,11 +111,15 @@ const RegisterStep1 = ({ userData, onNext }) => {
           // We don't call onNext here anymore
         } else {
           setError("El email ya está en uso");
-        }
+        } 
       }
     } catch (error) {
       console.error('Error de registro:', error);
-      setError(error.message || 'Ocurrió un error durante el registro');
+      if (error.message.includes('Password should be at least 6 characters')) {
+        setError('La contraseña debe tener al menos 6 caracteres');
+      } else {
+        setError(error.message || 'Ocurrió un error durante el registro');
+      }
     } finally {
       setLoading(false);
     }

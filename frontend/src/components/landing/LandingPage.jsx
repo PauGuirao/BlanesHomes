@@ -59,7 +59,7 @@ const LandingPage = () => {
             <li>Genera informes profesionales para tus clientes con un solo clic</li>
           </ul>
           <div className="hero-buttons">
-            <Link to="/register" className="btn btn-primary">Comenzar ahora</Link>
+            <Link to="/register" className="btn btn-primary">Comenzar gratis!</Link>
             <a href="#pricing" className="btn btn-secondary">Ver planes</a>
           </div>
         </div>
@@ -354,9 +354,9 @@ const LandingPage = () => {
 
       {/* CTA Section */}
       <section className="cta">
-        <h2>Comienza a optimizar tus anuncios hoy mismo</h2>
+        <h2>Comienza a optimizar tus ventas hoy mismo</h2>
         <p>Únete a cientos de profesionales inmobiliarios que ya están aprovechando el poder de los datos para vender más y mejor.</p>
-        <Link to="/register" className="btn btn-primary">Prueba gratis por 14 días</Link>
+        <Link to="/register" className="btn btn-primary">Prueba gratis por 30 días</Link>
       </section>
 
       {/* Footer */}

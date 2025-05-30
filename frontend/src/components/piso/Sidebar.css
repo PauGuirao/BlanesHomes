@@ -74,7 +74,7 @@
 .sidebar-estimacion {
   background-color: #1d1d1d;
   border: 1px solid #444;
-  border-left: 5px solid #3498db;
+  border-left: 5px solid var(--accent-color-simple);
   padding: 16px;
   margin-bottom: 24px;
   border-radius: 8px;
@@ -396,7 +396,7 @@
 }
 
 .compare-action {
-  background-color: #3498db;
+  background: var(--accent-color);
   color: white;
 }
 

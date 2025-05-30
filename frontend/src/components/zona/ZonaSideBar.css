@@ -148,8 +148,7 @@
 }
 
 .zona-tab.active {
-  background: #e74c3c;
-  border-color: #e74c3c;
+  background: var(--accent-color);
 }
 
 .zona-properties {
@@ -200,8 +199,9 @@
 }
 
 .ganga-precio {
-  color: #e74c3c;
-  font-weight: 500;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 .ganga-discount {

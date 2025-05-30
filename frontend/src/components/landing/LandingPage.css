@@ -42,14 +42,13 @@ h1, h2, h3, h4 {
 }
 
 .btn-primary:hover {
-  background-color: #e64a19;
   transform: translateY(-2px);
 }
 
 .btn-secondary {
   background-color: transparent;
   color: white;
-  border: 2px solid #ff5722;
+  border: 2px solid var(--accent-color-simple);
 }
 
 .btn-secondary:hover {
@@ -674,7 +673,7 @@ h1, h2, h3, h4 {
 .faq-item h3 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  color: #ff5722;
+  color: var(--accent-color-simple);
 }
 
 .faq-item p {
@@ -763,7 +762,7 @@ h1, h2, h3, h4 {
 }
 
 .footer-column a:hover {
-  color: #ff5722;
+  color: var(--accent-color-simple);
 }
 
 .footer-bottom {

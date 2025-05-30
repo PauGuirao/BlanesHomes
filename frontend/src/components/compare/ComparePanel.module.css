@@ -90,7 +90,7 @@
     width: 100%;
     padding: 12px;
     margin-top: 15px;
-    background-color: #3498db;
+    background: var(--accent-color);
     color: white;
     border: none;
     border-radius: 6px;
@@ -98,11 +98,6 @@
     cursor: pointer;
     transition: background-color 0.2s;
   }
-  
-  .compareButton:hover {
-    background-color: #2980b9;
-  }
-  
   .compareRow {
     display: grid;
     grid-template-columns: 0.3fr 0.6fr 0.7fr 0.5fr 0.5fr 0.7fr 0.7fr 0.38fr;

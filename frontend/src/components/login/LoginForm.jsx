@@ -39,6 +39,8 @@ const LoginForm = ({ onLoginSuccess }) => {
       if (error) { 
         if (error.message.includes('Email not confirmed')) {
           setEmailNotVerified(true);
+        } else if (error.message.includes('Invalid login credentials')) {
+          setErrorMsg('Credenciales inválidas');
         } else {
           setErrorMsg(error.message); 
         }

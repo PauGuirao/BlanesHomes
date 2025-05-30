@@ -73,7 +73,7 @@
 }
 
 .compare-button-action:hover {
-  background: #cf711c;
+  background: var(--accent-color);
 }
 
 .navbar-tools {
@@ -97,7 +97,7 @@
 }
 
 .tools-button:hover {
-  background: #217dbb;
+  background: var(--accent-color);
 }
 
 .tools-dropdown {
@@ -190,7 +190,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #ff5722;
+  background: var(--accent-color);
   color: white;
   display: flex;
   align-items: center;
