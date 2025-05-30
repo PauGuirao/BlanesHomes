@@ -65,6 +65,7 @@ stripe = get_stripe()
 endpoint_secret = get_stripe_endpoint_secret()
 resend = get_resend()
 RECAPTCHA_SECRET = get_recaptcha_secret()
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 # ========== ENDPOINTS ==========
 @app.post("/recomendaciones")
@@ -649,8 +650,8 @@ async def create_checkout_session(request: Request):
             }
         },
         mode="subscription",
-        success_url="http://localhost:5173/success",
-        cancel_url="http://localhost:5173/cancel",
+        success_url=f"{FRONTEND_URL}/success",
+        cancel_url=f"{FRONTEND_URL}/cancel",
     )
     return {"url": session.url}
 
@@ -822,7 +823,7 @@ async def invite_user(request: Request):
         }).execute()
 
         # Construir enlace de registro con email
-        invite_link = f"http://localhost:5173/register?email={email}"
+        invite_link = f"{FRONTEND_URL}/register?email={email}"
 
         # Enviar correo con Resend
         resend.Emails.send({
