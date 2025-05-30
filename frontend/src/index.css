@@ -78,7 +78,7 @@ button:focus-visible {
   font-size: 14px;
   color: var(--text-primary);
   text-align: center;
-  left: 200px;
+  left: 210px;
   width: 200px;
   max-height: 30px;
 }

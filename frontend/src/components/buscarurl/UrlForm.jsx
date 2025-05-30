@@ -84,7 +84,7 @@ function UrlForm({ onClose, onSugerenciaClick }) {
 
   return (
     <div className="url-form">
-      <h2>Analiza el anuncio</h2>
+      <h2>Analizar un anuncio</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

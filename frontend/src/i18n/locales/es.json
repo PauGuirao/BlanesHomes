@@ -11,11 +11,11 @@
   "navbar": {
     "tools": "Herramientas",
     "compare": "Comparar",
-    "searchProperty": "Buscar propiedad",
-    "analyzeAd": "Analiza un anuncio",
-    "agencies": "Las Agencias",
-    "analyzeMyAgency": "Analiza mi agencia",
-    "viewPrivate": "Ver particulares",
+    "searchProperty": "Buscar una propiedad",
+    "analyzeAd": "Analizar un anuncio",
+    "agencies": "Analizar competidores",
+    "analyzeMyAgency": "Analizar mi agencia",
+    "viewPrivate": "Buscar oportunidades",
     "profile": "Mi Perfil",
     "logout": "Cerrar sesión"
   },
@@ -103,7 +103,7 @@
     "aire_acondicionado": "Aire acondicionado"
   },
   "vendorView": {
-    "agencies": "Agencias",
+    "agencies": "Competidores",
     "generalStatistics": "Estadísticas Generales",
     "totalAgencies": "Total de Agencias",
     "privateSellers": "Vendedores Particulares",

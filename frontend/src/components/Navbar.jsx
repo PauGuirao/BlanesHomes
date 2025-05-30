@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faBrain, faBuilding, faChartLine, faUser } from '@fortawesome/free-solid-svg-icons';
 import "./Navbar.css";
 
 const Navbar = ({
@@ -121,7 +123,7 @@ const Navbar = ({
                       setShowMobileMenu(false);
                     }}
                   >
-                    Las Agencias
+                    {t('navbar.agencies')}
                   </button>
                   <button
                     onClick={() => {
@@ -199,45 +201,20 @@ const Navbar = ({
               </button>
               {showDropdown && (
                 <div className="tools-dropdown">
-                  <button
-                    onClick={() => {
-                      setShowDropdown(false);
-                      onAbrirFormulario();
-                    }}
-                  >
-                    {t('navbar.searchProperty')}
+                  <button onClick={() => { setShowDropdown(false); onAbrirFormulario(); }}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} /> {t('navbar.searchProperty')}
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowDropdown(false);
-                      onAbrirUrlForm();
-                    }}
-                  >
-                    {t('navbar.analyzeAd')}
+                  <button onClick={() => { setShowDropdown(false); onAnalizaMiAgencia(); }}>
+                    <FontAwesomeIcon icon={faChartLine} /> {t('navbar.analyzeMyAgency')}
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowDropdown(false);
-                      onAbrirVendor();
-                    }}
-                  >
-                    Las Agencias
+                  <button onClick={() => { setShowDropdown(false); onAbrirUrlForm(); }}>
+                    <FontAwesomeIcon icon={faBrain} /> {t('navbar.analyzeAd')}
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowDropdown(false);
-                      onAnalizaMiAgencia();
-                    }}
-                  >
-                    Analiza mi agencia
+                  <button onClick={() => { setShowDropdown(false); onAbrirVendor(); }}>
+                    <FontAwesomeIcon icon={faBuilding} /> {t('navbar.agencies')}
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowDropdown(false);
-                      onAbrirParticulares();
-                    }}
-                  >
-                    Ver particulares
+                  <button onClick={() => { setShowDropdown(false); onAbrirParticulares(); }}>
+                    <FontAwesomeIcon icon={faUser} /> {t('navbar.viewPrivate')}
                   </button>
                 </div>
               )}

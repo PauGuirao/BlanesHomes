@@ -7,7 +7,7 @@ const Legend = ({ viewMode, color_por_zona, min, max, colorScale }) => {
 
   useEffect(() => {
     // If viewMode is zona, don't create a legend at all
-    if (viewMode === "zona") {
+    if (viewMode === "zona" || viewMode === "ocupacion") {
       return;
     }
     
@@ -59,8 +59,6 @@ const Legend = ({ viewMode, color_por_zona, min, max, colorScale }) => {
             }
           }
         }, 0);
-      } else if (viewMode === "ocupacion") {
-        
       }
 
       return div;
