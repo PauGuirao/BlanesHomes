@@ -4,17 +4,18 @@
   align-items: center;
   min-height: 80vh;
   padding: 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--bg-primary);
 }
 
 .success-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px var(--shadow-color);
   padding: 2.5rem;
   max-width: 500px;
   width: 100%;
   text-align: center;
+  border: 1px solid var(--border-color);
 }
 
 .success-icon {
@@ -31,7 +32,7 @@
 
 .success-message {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
   line-height: 1.5;
 }
@@ -52,23 +53,27 @@
 }
 
 .primary-button {
-  background-color: #ff5722;
+  background-color: var(--accent-color);
   color: white;
   border: none;
 }
 
 .primary-button:hover {
   background-color: #e64a19;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .secondary-button {
   background-color: transparent;
-  color: #ff5722;
-  border: 2px solid #ff5722;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
 }
 
 .secondary-button:hover {
   background-color: rgba(255, 87, 34, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 @media (max-width: 600px) {

@@ -6,20 +6,17 @@ const Legend = ({ viewMode, color_por_zona, min, max, colorScale }) => {
   const map = useMap();
 
   useEffect(() => {
+    // If viewMode is zona, don't create a legend at all
+    if (viewMode === "zona") {
+      return;
+    }
+    
     const legend = L.control({ position: "bottomleft" });
 
     legend.onAdd = function () {
       const div = L.DomUtil.create("div", "custom-legend");
 
-      if (viewMode === "zona") {
-        /*
-        div.innerHTML = "<b>Zonas</b><br/>";
-        for (const zona in color_por_zona) {
-          const color = color_por_zona[zona];
-          div.innerHTML += `<i style="background:${color}; width: 18px; height: 18px; display: inline-block; margin-right: 6px;"></i>${zona}<br/>`;
-        }
-          */
-      } else if (viewMode === "precio") {
+      if (viewMode === "precio") {
         div.innerHTML = `
           <canvas id="legend-canvas" width="200" height="10"></canvas>
             <div class="legend-labels">

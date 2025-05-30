@@ -44,7 +44,6 @@ const RegisterStep3 = ({ userData, onBack }) => {
 
       // 2. Extraer el ID de la organización creada
       const organizationId = orgResponse.data?.id; // Asegúrate que tu endpoint lo devuelve
-
       // 3. Actualizar el perfil con agency_id, estado y organization_id
       await axios.post(`${API_URL}/updateProfile`, {
         id: userData.id,

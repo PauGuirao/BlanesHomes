@@ -136,11 +136,10 @@ function App() {
           Authorization: `Bearer ${session.access_token}`,
         },
       });
-  
-      const organizationData = response.data;
+      const organizationData = response.data.organization;
       setProfileStatus(organizationData.estado);
-  
       if (organizationData.estado === 'pagado') {
+        console.log('PAGO');
         const res_age = await axios.get(`${API_URL}/get_organization_agency`, {
           params: { user_id: session.user.id },
           headers: {
@@ -148,6 +147,7 @@ function App() {
           },
         });
         const agenciaData = res_age.data;
+        console.log(agenciaData);
         setSession({
           token: session.access_token,
           user: session.user,

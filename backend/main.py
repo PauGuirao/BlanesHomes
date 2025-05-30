@@ -588,20 +588,25 @@ def create_profile(data: dict):
 
 @app.post("/createOrganization")
 def create_organization(data: dict):
-    response = supabase.table("organization").insert({
+    result = supabase.table("organization").insert({
         "plan": data["plan"],
         "admin_id": data["admin_id"],
         "agency_id": data["agency_id"],
-        "estado": data.get("estado", "pendiente_pago")
-    }).select("id").single().execute()
-    return {"id": response.data["id"]}
+        "estado": data.get("estado", "pendiente_pago")  # si usas estado
+    }).execute()
+
+    if result.data:
+        return {"ok": True, "id": result.data[0]["id"]}
+    else:
+        return {"error": "No se pudo crear la organización"}, 500
 
 # create another route that updates the profile
 @app.post("/updateProfile")
 def update_profile(data: dict):
     supabase.table("profiles").update({
         "agencia_id": data["agencia_id"],
-        "estado": data.get("estado", "activo")
+        "estado": data.get("estado", "activo"),
+        "organization_id": data.get("organization_id", None)  # si usas organization_id
     }).eq("id", data["id"]).execute()
     return {"ok": True}
 
@@ -760,33 +765,43 @@ def get_profile(user_id: str = Query(...), user=Depends(get_current_user)):
         return {"error": "No se encontró el perfil para el usuario especificado"}, 404
 
 @app.get("/get_organization")
-def get_organization(user_id: str = Query(...), user=Depends(get_current_user)):
-    # 1. Primero obtén el perfil del usuario
+def get_organization(user_id: str):
+    # Obtener el perfil del usuario
     profile = supabase.table("profiles").select("organization_id").eq("id", user_id).single().execute()
-    org_id = profile.data["organization_id"]
+    if not profile.data or not profile.data["organization_id"]:
+        return {"error": "Este usuario no pertenece a ninguna organización"}, 404
 
-    # 2. Ahora busca la organización por ese ID
+    org_id = profile.data["organization_id"]
+    # Obtener datos de la organización solo si org_id es válido
     organization = supabase.table("organization").select("*").eq("id", org_id).single().execute()
-    if organization:
-        return organization.data
-    else:
-        return {"estado": "desactivado"}
+    return {"organization": organization.data}
 
 @app.get("/get_organization_agency")
 def get_organization_agency(user_id: str = Query(...), user=Depends(get_current_user)):
-    # 1. Primero obtén el perfil del usuario
-    profile = supabase.table("profiles").select("organization_id").eq("id", user_id).single().execute()
-    org_id = profile.data["organization_id"]
+    # 1. Obtener el perfil del usuario
+    profile_response = supabase.table("profiles").select("organization_id").eq("id", user_id).single().execute()
 
-    # 2. Ahora busca la organización por ese ID
-    organization = supabase.table("organization").select("*").eq("id", org_id).single().execute()
-    if not organization.data:
-        return {"error": "Organización no encontrada"}, 404
+    if not profile_response.data or profile_response.data.get("organization_id") is None:
+        raise HTTPException(status_code=404, detail="Organización no asignada al perfil")
 
-    # Buscar la agencia directamente usando el agency_id
-    agency_id = organization.data["agency_id"]
-    agencia = supabase.table("agencias").select("*").eq("id", agency_id).single().execute()
-    return agencia.data
+    org_id = profile_response.data["organization_id"]
+
+    # 2. Buscar la organización
+    organization_response = supabase.table("organization").select("*").eq("id", org_id).single().execute()
+
+    if not organization_response.data:
+        raise HTTPException(status_code=404, detail="Organización no encontrada")
+
+    # 3. Buscar la agencia por agency_id
+    agency_id = organization_response.data.get("agency_id")
+    if not agency_id:
+        raise HTTPException(status_code=404, detail="La organización no tiene una agencia asociada")
+
+    agency_response = supabase.table("agencias").select("*").eq("id", agency_id).single().execute()
+
+    if not agency_response.data:
+        raise HTTPException(status_code=404, detail="Agencia no encontrada")
+    return agency_response.data
 
 @app.post("/invite_user")
 async def invite_user(request: Request):
@@ -860,18 +875,17 @@ def check_invitation_and_assign(data: dict):
     email = data["email"]
     user_id = data["user_id"]
 
-    # Buscar invitación
-    invitation = supabase.table("invitations").select("*").eq("email", email).eq("accepted", False).single().execute()
+    # Buscar invitación (sin .single())
+    invitation = supabase.table("invitations").select("*").eq("email", email).eq("accepted", False).limit(1).execute()
 
-    if not invitation.data:
+    # Si no hay invitación, se trata de un registro normal
+    if not invitation.data or len(invitation.data) == 0:
         return {"message": "No invitation found"}
 
-    # Actualizar profile con organization_id
-    org_id = invitation.data["organization_id"]
+    # Si hay invitación, asignar organización
+    org_id = invitation.data[0]["organization_id"]
     supabase.table("profiles").update({"organization_id": org_id}).eq("id", user_id).execute()
-
-    # Marcar invitación como aceptada
-    supabase.table("invitations").update({"accepted": True}).eq("id", invitation.data["id"]).execute()
+    supabase.table("invitations").update({"accepted": True}).eq("id", invitation.data[0]["id"]).execute()
 
     return {"message": "Usuario asignado a organización"}
 

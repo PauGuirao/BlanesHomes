@@ -138,10 +138,11 @@ const ProfilePage = () => {
       // Buscar todos los perfiles con ese organization_id
       const { data: members, error: membersError } = await supabase
         .from('profiles')
-        .select('id, nombre')
+        .select('id, nombre,creado_en')
         .eq('organization_id', organizationId);
   
       if (membersError) throw membersError;
+      console.log('Members:', members); // Add this line for debugging
   
       setAgencyMembers(members || []);
     } catch (error) {
@@ -350,7 +351,7 @@ const ProfilePage = () => {
                     <span className="member-name">{member.nombre || 'Sin nombre'}</span>
                     <span className="member-email">{member.email}</span>
                     <span className="member-date">
-                      {new Date(member.created_at).toLocaleDateString('es-ES')}
+                      {new Date(member.creado_en).toLocaleDateString('es-ES')}
                     </span>
                   </div>
                 ))}

@@ -29,6 +29,7 @@ const LoginForm = ({ onLoginSuccess }) => {
   
     try {
       //-------- 1. Sign in with email and password --------//
+      console.log('User data:');
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -46,7 +47,6 @@ const LoginForm = ({ onLoginSuccess }) => {
       }
       
       setUserData(data);
-  
       //------- 2. Check if user's profile has the subscription active -------//
       const res_pro = await axios.get(`${API_URL}/get_organization`, {
         params: { user_id: data.user.id },
@@ -54,13 +54,12 @@ const LoginForm = ({ onLoginSuccess }) => {
           Authorization: `Bearer ${data.session.access_token}`
         }
       });
-      const organizationData = res_pro.data;
-
+      
+      const organizationData = res_pro.data.organization;
+      console.log(organizationData);  
       if (!organizationData || organizationData.estado === 'desactivado') {
         console.log('DES');
-        // Sign out from Supabase first to prevent auto-login to dashboard
         await supabase.auth.signOut();
-        // Then redirect to dashboard/new with state
         navigate('/dashboard/new', { 
           state: { 
             userId: data.user.id,
@@ -70,13 +69,10 @@ const LoginForm = ({ onLoginSuccess }) => {
         });
         return;
       } else if (organizationData.estado !== 'pagado') {
-        console.log(organizationData);
         setPaymentPending({ isPending: true, userId: data.user.id, email: email });
-        // Sign out the user
         await supabase.auth.signOut();
         return;
       }
-      console.log('User data:', data);
       //------- 3. Check if user's has an active agency in its profile -------//
       const res_age = await axios.get(`${API_URL}/get_organization_agency`, {
         params: { user_id: data.user.id },
@@ -84,14 +80,12 @@ const LoginForm = ({ onLoginSuccess }) => {
           Authorization: `Bearer ${data.session.access_token}`
         }
       });
-
       const agenciaData = res_age.data;
       if (!agenciaData || Object.keys(agenciaData).length === 0) {
         setErrorMsg('No tienes una agencia vinculada a tu cuenta.');
-        await supabase.auth.signOut();
+        //await supabase.auth.signOut();
         return;
       }
-
       //-------  4.If we reach here, login is successful --------//
       onLoginSuccess({ user: data.user, agency: agenciaData });
 
